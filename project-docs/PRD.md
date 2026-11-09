@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-09T17:35:58Z
 ---
 
 # PRD.md — CFDC
@@ -12,6 +12,8 @@ updated: 2026-11-09T17:14:13Z
 >
 > **Essayez d'abord sans agent.** Ce document-ci en particulier mérite que vous y réfléchissiez avant d'ouvrir un agent — sur papier ou dans un brouillon. Un agent peut aider à formaliser une réponse que vous avez déjà ; s'il fournit la réponse à votre place, l'exercice ne construit pas la compétence qu'il vise : votre propre capacité à réfléchir et à planifier.
 
+**En une ligne :** l'application CFDC retrace les formations que dispense l'Autorité Aéroportuaire Nationale (AAN) et aide à planifier leur calendrier.
+
 ---
 
 ## 1. Énoncé du produit
@@ -20,7 +22,27 @@ updated: 2026-11-09T17:14:13Z
 > 2. Quel problème réel résout-il ? En résout-il plus d'un, distinct, pour plus d'un public distinct ?
 > 3. Pourquoi a-t-il besoin d'exister maintenant, pour cette personne, plutôt que d'être résolu autrement ?
 
-*(À écrire)*
+**Ce que fait le produit.** L'application CFDC retrace les formations que dispense l'Autorité Aéroportuaire Nationale (AAN), à travers son Centre de Formation et de Développement des Compétences (CFDC). Pour chaque formation, elle conserve :
+- la **présence** de chaque participant ;
+- son **évaluation** ;
+- son **attestation** : la preuve de sa participation, qui sert surtout au centre lui-même.
+
+Les formations portent surtout sur la **sûreté et la sécurité** aéroportuaires, par exemple :
+- la sensibilisation à la carte d'accès aéroportuaire ;
+- la conduite sur le tarmac.
+
+L'application joue deux rôles :
+- une **base de données** des formations, à disposition des formateurs, des coordonnateurs et des chefs de service ;
+- un **outil de planification** : programmer les sessions de formation et noter les formations demandées, afin d'affiner le calendrier.
+
+**Pour qui.** Les formateurs, les coordonnateurs et les chefs de service de l'AAN. Les participants, qu'ils soient internes à l'AAN ou externes (concessionnaires, etc.), n'utilisent pas l'application pour l'instant : ils sont enregistrés à la main par le personnel du CFDC.
+
+**Le problème résolu.** Aujourd'hui, tout est géré sur papier. Cela pose trois problèmes :
+- **les pertes** : un document égaré efface l'historique de formation ;
+- **la fiabilité** : les informations sur papier sont difficiles à vérifier et peuvent être erronées ;
+- **la dépendance envers une personne** : le suivi repose sur une seule personne ; sans elle, l'information n'est plus accessible.
+
+**Pourquoi maintenant.** Le projet répond à une demande de la direction du CFDC, adjointe à la direction des ressources humaines de l'AAN.
 
 ## 2. Public
 
