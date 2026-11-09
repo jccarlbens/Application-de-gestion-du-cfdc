@@ -1,0 +1,31 @@
+# Secrets. Cette ligne est la raison pour laquelle ce fichier est livré avec le
+# kit plutôt que créé par la première génération de structure : entre
+# `git init` et votre premier scaffold, `git add -A` prendrait tout - et un
+# secret committé ne se répare pas en l'ajoutant ici après coup.
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+
+# Un fichier de base de données local est jetable par conception. Supprimez-le
+# pour repartir propre.
+database/*.db
+database/*.db-journal
+
+# Surcharges locales de l'agent. Le `.claude/` committé est partagé avec tous
+# ceux qui clonent ; tout ce qui est propre à une machine appartient à un
+# fichier `.local` à côté.
+.claude/settings.local.json
+
+# Rapports de couverture, régénérés à chaque exécution des tests.
+.coverage
+coverage.json
+frontend/coverage/

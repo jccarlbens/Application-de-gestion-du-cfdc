@@ -1,0 +1,33 @@
+#!/bin/sh
+# Estampille `updated:` sur le markdown indexé. Voir .githooks/stamp_updated.py.
+# Activé par `git config core.hooksPath .githooks` - AGENTS.md section 9.
+#
+# Trouver un Python 3 avant d'en employer un, et ne jamais bloquer un commit
+# à cause de son absence.
+#
+# `python3` est essayé en premier parce que sur un macOS d'origine c'est le
+# seul nom qui existe - le `python` nu a disparu depuis la 12.3 - et parce que
+# sous Windows un `python` nu est souvent le stub du Microsoft Store, qui se
+# résout puis ne fait rien d'utile. Le test de version est ce qui les
+# distingue, donc un nom qui se résout n'est pas cru avant d'avoir répondu.
+#
+# Quand aucun interpréteur n'est trouvé, le hook avertit et sort en 0. Un
+# horodatage manquant est un problème cosmétique ; un commit impossible à
+# faire ne l'est pas, et une commodité qui vous empêche de committer est pire
+# que pas de commodité. La première version de ce hook lançait `python` sans
+# condition avec `|| exit 1`, donc une machine sans ce nom exact dans le PATH
+# refusait chaque commit en ne disant que « python: command not found » -
+# aucune mention d'un hook, et rien sur quoi agir.
+for candidate in python3 python py; do
+    if command -v "$candidate" >/dev/null 2>&1 \
+        && "$candidate" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 8) else 1)' >/dev/null 2>&1
+    then
+        "$candidate" .githooks/stamp_updated.py || exit 1
+        exit 0
+    fi
+done
+
+echo "pre-commit : aucun Python 3.8+ dans le PATH, « updated: » n'a pas été estampillé." >&2
+echo "             Le commit se fait quand même. Installez Python, mettez les dates" >&2
+echo "             à la main, ou retirez le hook avec : git config --unset core.hooksPath" >&2
+exit 0
