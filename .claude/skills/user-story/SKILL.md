@@ -2,12 +2,12 @@
 name: user-story
 description: Créer, affiner, mettre à jour ou supprimer une user story de ce projet. La création écrit le fichier de spécification et la ligne de suivi. L'affinage est le cadrage avant construction d'une user story existante à faire — lire le code source, résoudre les questions ouvertes, consigner les décisions — avant qu'aucun code ne soit écrit. À utiliser dès qu'on demande d'écrire une nouvelle user story, de la cadrer avant de la construire, de changer le périmètre, le statut ou les tâches d'une user story existante, ou d'en supprimer une. Create, refine, update, or delete a user story.
 created: 2026-09-08T17:38:40Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-09T18:27:04Z
 ---
 
 # Compétence : user story
 
-> **Réglage, une fois, avant la première utilisation :** remplacez `[OWNER]/[REPO]` ci-dessous par vos véritables `owner/repo` GitHub, et `[TRACKER_PROJECT_NUMBER]` / `[Tracker Project Name]` par le numéro et le nom de votre tableau GitHub Projects (v2), si vous en utilisez un. Si vous n'utilisez pas du tout GitHub Issues ni Projects, adaptez le §3 et les procédures de création, de mise à jour et de suppression à l'outil de suivi que nomme `project-docs/PROJECT_WORKFLOW.md` § Suivi du travail. **`CLAUDE.md` porte cette décision** — lisez-la là plutôt que de la reprendre à chaque fois.
+> **Réglage, une fois, avant la première utilisation :** remplacez `[OWNER]/[REPO]` ci-dessous par vos véritables `owner/repo` GitHub, et `4` / `CFDC` par le numéro et le nom de votre tableau GitHub Projects (v2), si vous en utilisez un. Si vous n'utilisez pas du tout GitHub Issues ni Projects, adaptez le §3 et les procédures de création, de mise à jour et de suppression à l'outil de suivi que nomme `project-docs/PROJECT_WORKFLOW.md` § Suivi du travail. **`CLAUDE.md` porte cette décision** — lisez-la là plutôt que de la reprendre à chaque fois.
 
 ## 1. Vue d'ensemble
 
@@ -74,7 +74,7 @@ chemin.]
 
 ## 3. Contexte GitHub Projects
 
-Si un GitHub Project (v2, tableau) est utilisé : **« [Tracker Project Name] »**, numéro de projet `[TRACKER_PROJECT_NUMBER]`, propriétaire `jccarlbens` — `https://github.com/users/jccarlbens/projects/[TRACKER_PROJECT_NUMBER]`. Son champ à choix unique `Status` propose typiquement des options comme Backlog, To Do, In Progress, Review, Done. Chaque issue créée via la procédure de création de cette compétence (§ ci-dessous) doit être ajoutée à ce projet. Ne définissez ni ne changez jamais le champ `Status`, et ne déplacez jamais une issue d'un état du tableau à un autre — c'est le propriétaire du projet qui le fait manuellement. Cette compétence ne fait jamais que créer des issues, les ajouter au projet (en laissant `Status` à la valeur par défaut qu'applique le projet) et éditer le corps ou le titre ; elle ne touche pas à la position sur le tableau et ne ferme pas d'issue, sauf lors d'une suppression explicite (§ Suppression ci-dessous).
+Si un GitHub Project (v2, tableau) est utilisé : **« CFDC »**, numéro de projet `4`, propriétaire `jccarlbens` — `https://github.com/users/jccarlbens/projects/4`. Son champ à choix unique `Status` propose typiquement des options comme Backlog, To Do, In Progress, Review, Done. Chaque issue créée via la procédure de création de cette compétence (§ ci-dessous) doit être ajoutée à ce projet. Ne définissez ni ne changez jamais le champ `Status`, et ne déplacez jamais une issue d'un état du tableau à un autre — c'est le propriétaire du projet qui le fait manuellement. Cette compétence ne fait jamais que créer des issues, les ajouter au projet (en laissant `Status` à la valeur par défaut qu'applique le projet) et éditer le corps ou le titre ; elle ne touche pas à la position sur le tableau et ne ferme pas d'issue, sauf lors d'une suppression explicite (§ Suppression ci-dessous).
 
 ## 4. Définition du terminé
 
@@ -97,7 +97,7 @@ Chaque terme employé dans une user story doit se résoudre en une définition d
    gh issue create --repo jccarlbens/Application-de-gestion-du-cfdc --title "US-NNN: [Titre court]" --body-file <fichier-temporaire> --milestone "<titre exact du milestone>"
    ```
    Récupérez l'URL et le numéro d'issue renvoyés.
-6. **Ajouter l'issue au projet de suivi** (§3, s'il est utilisé) : `gh project item-add [TRACKER_PROJECT_NUMBER] --owner jccarlbens --url "<url-de-l-issue>"`. Ne définissez ni ne touchez le champ `Status` — le propriétaire du projet gère la position sur le tableau manuellement.
+6. **Ajouter l'issue au projet de suivi** (§3, s'il est utilisé) : `gh project item-add 4 --owner jccarlbens --url "<url-de-l-issue>"`. Ne définissez ni ne touchez le champ `Status` — le propriétaire du projet gère la position sur le tableau manuellement.
 7. **Renseigner la ligne GitHub Issue** du fichier de spécification avec le vrai lien.
 8. **Ajouter une ligne à `project-docs/execution/EPIC_EXECUTION.md`** dans le tableau de l'Epic correspondant, au statut `🔲 À faire`, avec un lien vers le nouveau fichier de spécification.
 9. **Rapporter** le numéro de la nouvelle user story, le chemin du fichier de spécification et l'URL de l'issue, et confirmer que l'issue a été ajoutée au projet. Ne déplacez ni ne définissez pas le champ `Status` du projet pour le nouvel élément.

@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:35:58Z
+updated: 2026-11-09T18:27:04Z
 ---
 
 # PRD.md — CFDC
@@ -50,7 +50,21 @@ L'application joue deux rôles :
 > 2. Y a-t-il une logique derrière qui obtient l'accès et qui ne l'obtient pas ?
 > 3. Quel public compte le plus si ses besoins entrent en conflit avec ceux d'un autre ?
 
-*(À écrire)*
+**Les publics.** L'application connaît ces rôles :
+- la **secrétaire**, qui enregistre les informations : formations, sessions, participants, présences, évaluations ;
+- le **coordonnateur**, qui supervise et planifie les sessions de formation, et qui voit tout ;
+- les **chefs de service**, qui voient tout ;
+- les **formateurs**, qui consultent les documents de cours ;
+- l'**administrateur informatique**, qui crée les comptes et effectue les modifications et les suppressions ;
+- toute autre **personne autorisée**, qui peut consulter les informations.
+
+Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : ils sont enregistrés par la secrétaire (§1).
+
+**Qui obtient l'accès.** Seules les personnes autorisées accèdent à l'application. Ce sont l'administrateur informatique et le coordonnateur qui donnent l'autorisation.
+
+**Qui peut modifier ou supprimer.** Une information déjà enregistrée ne se modifie ou ne se supprime que **par l'intermédiaire de l'administrateur informatique**, y compris quand la demande vient de la secrétaire, du coordonnateur ou d'un chef de service.
+
+**En cas de conflit.** La **simplicité d'utilisation**, surtout pour la secrétaire qui saisit, passe avant le reste, par exemple avant le détail des bilans.
 
 ## 3. Scénario idéal de bout en bout
 

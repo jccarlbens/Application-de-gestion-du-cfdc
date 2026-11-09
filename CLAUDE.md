@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-09T18:27:04Z
 ---
 
 @AGENTS.md
@@ -11,7 +11,7 @@ updated: 2026-11-09T17:14:13Z
 
 ### Les compétences `epic` et `user-story` : suivi sur GitHub
 
-**Décision à prendre** (`project-docs/PROJECT_WORKFLOW.md` § Suivi du travail). Le dépôt est déjà renseigné dans les deux compétences : `jccarlbens/Application-de-gestion-du-cfdc`. Si un tableau GitHub Projects est utilisé, remplacez `[TRACKER_PROJECT_NUMBER]` et `[Tracker Project Name]` dans `.claude/skills/user-story/SKILL.md` ; sinon, adaptez les étapes `gh` à l'outil retenu.
+**Le travail est suivi sur GitHub** : appliquez les étapes `gh` de ces deux compétences telles qu'elles sont écrites. Le réglage est fait : dépôt `jccarlbens/Application-de-gestion-du-cfdc`, tableau Projects « CFDC », numéro `4`, propriétaire `jccarlbens`. Le détail des colonnes et des statuts reste à écrire dans `project-docs/PROJECT_WORKFLOW.md` § Suivi du travail.
 
 **Avant de créer une user story, vérifiez que le Milestone de son Epic existe.** S'il manque, arrêtez-vous et demandez.
 
