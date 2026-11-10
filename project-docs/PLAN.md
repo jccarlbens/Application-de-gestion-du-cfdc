@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T17:07:51Z
+updated: 2026-11-10T17:13:09Z
 ---
 
 # PLAN.md — CFDC
@@ -25,7 +25,7 @@ updated: 2026-11-10T17:07:51Z
 
 | Ordre | Epic | Workstreams | Priorité | Statut |
 |---|---|---|---|---|
-| 1 | `epic-001-setup-and-access` | WS-01, WS-05 (journal) | Must | ⏳ Pas démarré |
+| 1 | `epic-001-setup-and-access` — Epic 1 — Mise en place et accès | WS-01, WS-05 (journal) | Must | 🟡 En cours — affinage |
 | 2 | `epic-002-trainings-and-modules` | WS-02 | Must | ⏳ Pas démarré |
 | 3 | `epic-003-requests-and-sessions` | WS-03 | Must | ⏳ Pas démarré |
 | 4 | `epic-004-participants-and-tracking` | WS-04 | Must | ⏳ Pas démarré |

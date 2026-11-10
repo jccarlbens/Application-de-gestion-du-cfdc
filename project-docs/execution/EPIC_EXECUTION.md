@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-10T17:13:09Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -16,4 +16,18 @@ updated: 2026-11-09T17:14:13Z
 
 ---
 
-*Aucun Epic pour l'instant. Le premier sera créé avec la compétence `epic`, une fois `PLAN.md` rempli.*
+## Epic 1 — Mise en place et accès
+
+**Dossier :** `epic-001-setup-and-access/`
+**Workstreams :** WS-01 Comptes et accès, WS-05 Corrections et traçabilité (le journal seulement)
+**Milestone GitHub :** « Epic 1 — Mise en place et accès »
+**Statut :** 🟡 En cours — affinage
+
+Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de test) et l'accès sécurisé du personnel du CFDC : comptes, rôles, connexion par badge, double authentification, blocage, déconnexion automatique, mot de passe oublié, et le journal des modifications.
+
+**Affinage :** [epic-001-refinement.md](epic-001-setup-and-access/epic-001-refinement.md) — les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
+
+| User story | Titre | Statut | Spec |
+|---|---|---|---|
+
+*Aucune user story créée : elles le seront une fois l'affinage confirmé.*
