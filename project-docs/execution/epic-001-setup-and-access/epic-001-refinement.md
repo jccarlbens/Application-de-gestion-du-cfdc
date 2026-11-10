@@ -1,6 +1,6 @@
 ---
 created: 2026-11-10T00:00:00Z
-updated: 2026-11-10T17:13:09Z
+updated: 2026-11-10T17:20:51Z
 ---
 
 # Affinage de l'Epic 001 — Mise en place et accès
@@ -28,20 +28,23 @@ Tout ce dont les Epics suivants ont besoin pour exister : le code de départ (ba
 |---|---|---|
 | E1-1 | Aucun code n'existe encore : il n'y a rien à lire dans le code source. Les constats viendront de la construction | Ouvert |
 | E1-2 | Le Milestone GitHub doit être créé à la main : l'agent n'a pas d'outil pour créer un Milestone dans cette session | Ouvert |
+| E1-3 | Un hébergement gratuit public pour le serveur de test contredit l'hypothèse « réseau interne seulement » (`SOLUTION_DESIGN.md` §12) si de vraies données personnelles y passent | Ouvert |
 
 ## Questions ouvertes
 
 | # | Question | Recommandation | Réponse |
 |---|---|---|---|
-| Q1 | Comment créer le **premier compte administrateur**, puisque personne ne peut s'inscrire seul ? | Une commande en ligne, lancée une fois à l'installation sur le serveur | — |
-| Q2 | Quels **tests** exiger ? | `pytest` (unitaires et intégration sur une vraie base PostgreSQL) et Vitest, lancés par GitHub Actions ; la fusion sur `main` exige qu'ils passent. Pas de seuil de couverture chiffré au départ | — |
-| Q3 | Quel **serveur d'email** pour le développement et le serveur de test ? | Un faux serveur SMTP qui capture les emails (Mailpit) dans Docker Compose ; le vrai serveur SMTP seulement en production | — |
-| Q4 | Où mettre le **serveur de test** tant que les serveurs de l'AAN ne sont pas accessibles ? | Sur le poste d'un membre de l'équipe avec Docker Compose, plutôt qu'un hébergement public, puisque l'application doit rester sur le réseau interne | — |
-| Q5 | Protéger la branche `main` sur GitHub ? | Oui : GitHub Actions doit être vert et une relecture approuvée est exigée, conformément à `PROJECT_WORKFLOW.md` | — |
-| Q6 | Y a-t-il une **charte graphique** de l'AAN (logo, couleurs, polices) pour l'interface ? | Si oui, la fournir avant l'écran de connexion ; sinon, une interface sobre aux couleurs neutres | — |
-| Q7 | Que garde le **journal** pour chaque modification ? | La fiche visée, l'action, l'auteur, l'heure, et les valeurs avant et après en entier | — |
+| Q1 | Comment créer le **premier compte administrateur**, puisque personne ne peut s'inscrire seul ? | Une commande en ligne, lancée une fois à l'installation sur le serveur | ✅ Oui (2026-11-10) |
+| Q2 | Quels **tests** exiger ? | `pytest` (unitaires et intégration sur une vraie base PostgreSQL) et Vitest, lancés par GitHub Actions ; la fusion sur `main` exige qu'ils passent. Pas de seuil de couverture chiffré au départ | ✅ Oui |
+| Q3 | Quel **serveur d'email** pour le développement et le serveur de test ? | Un faux serveur SMTP qui capture les emails (Mailpit) dans Docker Compose ; le vrai serveur SMTP seulement en production | ✅ Oui |
+| Q4 | Où mettre le **serveur de test** tant que les serveurs de l'AAN ne sont pas accessibles ? | Sur le poste d'un membre de l'équipe avec Docker Compose, plutôt qu'un hébergement public, puisque l'application doit rester sur le réseau interne | 🟡 Oui, mais un **hébergement gratuit** est aussi envisagé — à trancher (voir E1-3) |
+| Q5 | Protéger la branche `main` sur GitHub ? | Oui : GitHub Actions doit être vert et une relecture approuvée est exigée, conformément à `PROJECT_WORKFLOW.md` | ✅ Oui |
+| Q6 | Y a-t-il une **charte graphique** de l'AAN (logo, couleurs, polices) pour l'interface ? | Si oui, la fournir avant l'écran de connexion ; sinon, une interface sobre aux couleurs neutres | ✅ Pas de charte formelle : interface **bleu et blanc** |
+| Q7 | Que garde le **journal** pour chaque modification ? | La fiche visée, l'action, l'auteur, l'heure, et les valeurs avant et après en entier | ✅ Oui |
 
-## Lot de user stories proposé
+## Lot de user stories
+
+*Découpage et ordre validés par l'utilisateur le 2026-11-10.*
 
 | Ordre | User story | Périmètre en une ligne | Dépend de |
 |---|---|---|---|
