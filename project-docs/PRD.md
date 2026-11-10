@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:07:39Z
+updated: 2026-11-10T16:09:22Z
 ---
 
 # PRD.md — CFDC
@@ -188,17 +188,13 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 | Rechercher | Un utilisateur indique un participant, une formation ou une période | Les résultats correspondants, dont l'historique de formation d'un participant |
 | Exporter | Un utilisateur choisit une liste ou un bilan | Un fichier **Excel** ou **PDF**, au choix |
 
-**Notifications**
-
-| Capacité | Déclencheur | Résultat |
-|---|---|---|
-| Recevoir une notification | *(à préciser : quels événements)* | Une notification par **email ou SMS**, selon le choix de l'utilisateur ; l'email est le canal par défaut |
+**Notifications.** L'application n'envoie des emails ou des SMS que pour la **double authentification**. Il n'y a pas d'autre notification dans la V1 : l'information circule de vive voix, comme aujourd'hui.
 
 **Ce que tout le monde supposera, mais qui n'est pas prévu.**
 - Les participants n'ont **pas de compte** : ils ne se connectent pas.
 - L'application **ne génère pas** les attestations ni les certificats : elle note seulement leur remise.
 - **Aucun paiement.**
-- Les participants **ne reçoivent aucune notification** : leur convocation reste hors de l'application pour l'instant.
+- **Aucune notification** en dehors de la double authentification : ni pour les demandes de correction, ni de rappel avant une session. Les participants ne sont pas convoqués par l'application.
 
 ## 7. Ce que le produit ne doit jamais faire
 
