@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:09:22Z
+updated: 2026-11-10T16:12:30Z
 ---
 
 # PRD.md — CFDC
@@ -202,7 +202,13 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 > 2. Y a-t-il des sujets, des données ou des actions qui doivent toujours être redirigés vers un humain plutôt que traités automatiquement ?
 > 3. Quel est le pire détournement plausible, et ce document dit-il ce qui se passe si quelqu'un l'essaie ?
 
-*(À écrire)*
+L'application ne doit **jamais** :
+- **montrer au formateur les données personnelles des participants** (NIF, CIN, téléphone). Le formateur fait son cours ; le coordonnateur et l'administrateur informatique, eux, y ont accès *(à préciser : les autres rôles)* ;
+- **effacer une information sans laisser de trace** : toute modification et toute suppression est conservée, avec qui l'a faite, quoi et quand ;
+- **cacher l'historique** : l'historique des modifications d'une information reste visible ;
+- **laisser inscrire une personne qui n'a pas suivi la formation** sans que cela se voie *(à préciser : comment l'empêcher ou le repérer)*.
+
+**Ce qui passe toujours par un humain.** Toute modification ou suppression d'une information déjà enregistrée passe par l'administrateur informatique (§2).
 
 ## 8. Voix et persona *(Conditionnelle — à sauter s'il n'y a aucune composante conversationnelle ou de voix de marque)*
 
