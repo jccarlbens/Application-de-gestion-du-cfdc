@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:17:38Z
+updated: 2026-11-10T16:20:36Z
 ---
 
 # PRD.md — CFDC
@@ -251,7 +251,17 @@ L'application ne doit **jamais** :
 > 2. De quoi auriez-vous besoin d'être alerté rapidement si quelque chose commençait à mal tourner ?
 > 3. Qui regarde ces données, et à quelle fréquence ?
 
-*(À écrire)*
+**L'usage à suivre.**
+- **L'usage par la secrétaire** : saisit-elle vraiment tout dans l'application, ou le papier continue-t-il en parallèle ?
+- **Le nombre de formations** enregistrées et suivies dans l'application.
+
+**Les alertes, pour l'administrateur informatique.**
+- plusieurs connexions échouées sur un même badge (tentative d'intrusion) ;
+- l'application hors service ;
+- les codes de double authentification, par email ou par SMS, qui ne partent plus ;
+- de nombreuses suppressions en peu de temps.
+
+**Qui regarde, et quand.** L'administrateur informatique consulte ces informations **chaque semaine**. Les fréquences pour le coordonnateur et la direction du CFDC restent **à valider**.
 
 ## 11. Critères de succès
 
