@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T15:52:09Z
+updated: 2026-11-10T15:54:34Z
 ---
 
 # PRD.md — CFDC
@@ -93,10 +93,10 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 | Rôle | Ce qu'il cherche à accomplir | Aujourd'hui |
 |---|---|---|
 | Secrétaire | Tenir à jour les formations à venir et leurs participants | Sur papier |
-| Coordonnateur | Avoir une vue d'ensemble de l'unité | Sur papier |
-| Chef de service du CFDC | *(à préciser)* | Sur papier |
-| Formateur | *(à préciser)* | Sur papier |
-| Administrateur informatique | *(à préciser)* | — |
+| Coordonnateur | Avoir une vue d'ensemble de l'unité : le calendrier des sessions, les demandes en attente, le nombre de personnes formées par période, les taux de réussite | Sur papier |
+| Chef de service du CFDC | Suivre les formations, superviser les cours et les formateurs, organiser les horaires | Sur papier |
+| Formateur | Voir ses modules et accéder à leurs documents de cours | Sur papier |
+| Administrateur informatique | Jouer le rôle de **sentinelle** : gérer les comptes, valider les demandes de modification et de suppression, déposer les documents de cours | — |
 
 **La tâche indispensable.** Que l'application soit **simple à utiliser**. Si elle ne l'est pas, le personnel reviendra au papier, et le produit n'aura plus d'objet.
 
