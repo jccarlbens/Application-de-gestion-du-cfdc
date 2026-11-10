@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T15:54:34Z
+updated: 2026-11-10T15:56:16Z
 ---
 
 # PRD.md — CFDC
@@ -56,7 +56,7 @@ L'application joue deux rôles :
 - les **chefs de service du CFDC**, qui voient tout. Un chef de service extérieur au CFDC, par exemple celui du service qui demande une formation, **n'a pas accès** à l'application ;
 - les **formateurs**, qui consultent les documents de cours (fichiers PDF, PowerPoint ou Word déposés par l'administrateur informatique) ;
 - l'**administrateur informatique**, qui crée les comptes et effectue les modifications et les suppressions ;
-- toute autre **personne autorisée**, qui peut consulter les informations.
+- la **direction du CFDC**, qui consulte les informations.
 
 Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : ils sont enregistrés par la secrétaire (§1).
 
@@ -106,7 +106,27 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 > 2. Que peut voir ou faire chaque palier que celui du dessous ne peut pas ?
 > 3. Une frontière de palier relève-t-elle ici de la confiance et de la sécurité, ou simplement de la richesse fonctionnelle ?
 
-*(À écrire)*
+**La section s'applique** : l'application connaît six rôles (§2), avec des droits différents.
+
+| Action | Secrétaire | Coordonnateur | Chef de service du CFDC | Formateur | Admin informatique | Direction du CFDC |
+|---|---|---|---|---|---|---|
+| Enregistrer formations, sessions, participants, présences | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Saisir les notes et les commentaires d'évaluation | ✅ | ✅ | ✅ | ✅ ses sessions | ✅ | ❌ |
+| Enregistrer ou ajuster une demande de formation | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Planifier une session (date, période) | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
+| Organiser les horaires | ❌ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Tout consulter | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| Voir ses modules, leurs documents, ses participants et leurs notes | — | — | — | ✅ | — | — |
+| Déposer des documents de cours | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Demander une modification ou une suppression | ✅ | ✅ | ✅ | ✅ | — | ❌ |
+| Valider cette demande | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Créer des comptes | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
+
+**La saisie revient d'abord à la secrétaire.** Le coordonnateur, les chefs de service et l'administrateur informatique peuvent aussi saisir, mais c'est le rôle de la secrétaire.
+
+**La « personne autorisée »** du §2 est la **direction du CFDC**, qui consulte.
+
+**Nature des frontières.** Elles relèvent de la **confiance** : seul l'administrateur informatique, la sentinelle, modifie ou supprime une information déjà enregistrée.
 
 ## 6. Ce que le produit peut faire
 
