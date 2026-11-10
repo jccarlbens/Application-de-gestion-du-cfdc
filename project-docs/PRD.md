@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:26:16Z
+updated: 2026-11-10T16:30:28Z
 ---
 
 # PRD.md — CFDC
@@ -8,9 +8,7 @@ updated: 2026-11-10T16:26:16Z
 **Répond à :** que construisons-nous, pour qui, pourquoi ?
 **Dépend de :** rien — **c'est le premier document à remplir.** Le vocabulaire (`GLOSSARY.md`) se construit à partir de ce qui est décidé ici, et non l'inverse.
 
-> **Statut : structure de départ.** Répondez vous-même aux questions de réflexion avant de demander à un agent de rédiger. Les sections marquées **Conditionnelle** sont des suppositions quant à leur pertinence — confirmez-les explicitement plutôt que de les accepter ou de les sauter en silence.
->
-> **Essayez d'abord sans agent.** Ce document-ci en particulier mérite que vous y réfléchissiez avant d'ouvrir un agent — sur papier ou dans un brouillon. Un agent peut aider à formaliser une réponse que vous avez déjà ; s'il fournit la réponse à votre place, l'exercice ne construit pas la compétence qu'il vise : votre propre capacité à réfléchir et à planifier.
+> **Statut : V1 du PRD, remplie avec l'utilisateur section par section (2026-11-10).** Un seul point reste ouvert : la fréquence de suivi pour le coordonnateur et la direction du CFDC (§10). Toute modification ultérieure se note avec sa date et sa raison, sans effacer l'ancienne version.
 
 **En une ligne :** l'application CFDC retrace les formations que dispense l'Autorité Aéroportuaire Nationale (AAN) et aide à planifier leur calendrier.
 
@@ -297,7 +295,7 @@ L'application ne doit **jamais** :
 - une **interface trop difficile à utiliser** : le personnel reviendrait au papier ;
 - une **application hors service**.
 
-**« Pas encore parfait » ou « bloquant ».** *Proposé par l'agent à la demande de l'utilisateur, à valider.*
+**« Pas encore parfait » ou « bloquant ».**
 - **Tolérable au lancement :**
   - un export PDF à la mise en page imparfaite ;
   - un libellé maladroit ;
@@ -315,13 +313,20 @@ L'application ne doit **jamais** :
 > 2. Que répondriez-vous à quelqu'un qui demande « pourquoi ça ne fait pas X » pour chaque élément exclu ?
 > 3. Y a-t-il ici quelque chose qu'un lecteur novice supposerait probablement inclus ?
 
-*(À écrire)*
+La V1 ne comprend pas :
+- **aucun paiement** ;
+- **de comptes pour les participants** : la secrétaire les enregistre ;
+- **la génération des attestations et des certificats** : ils sont produits hors de l'application, qui note seulement leur remise et sa date ;
+- **de notifications**, sauf les codes de double authentification ;
+- **les convocations des participants**.
 
 ## 14. Documents liés
 
 > 1. De quels autres documents un nouveau lecteur a-t-il besoin, et dans quel ordre ?
 > 2. Existe-t-il une carte canonique unique de tous les documents du projet, ou cette liste risque-t-elle de devenir une seconde copie qui dérive ?
 
-*(À écrire)*
+**Ordre de lecture :** `PRD.md` → `NFR.md` → `SOLUTION_DESIGN.md` → `PLAN.md` → `GLOSSARY.md` → `PROJECT_WORKFLOW.md`.
+
+**La carte de tous les documents** est tenue à un seul endroit, `AGENTS.md` (§ Carte des dossiers et § Renvois), pour ne pas en faire une seconde copie qui dériverait.
 
 ---
