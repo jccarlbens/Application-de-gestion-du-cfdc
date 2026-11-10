@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:52:26Z
+updated: 2026-11-10T16:56:06Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -103,7 +103,28 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 > 2. Quel magasin est la source de vérité si deux magasins pouvaient se contredire ?
 > 3. Quel est le schéma ou le contrat, assez précisément pour que deux implémentations ne dérivent pas ?
 
-*(À écrire)*
+**Où vivent les données.**
+- **PostgreSQL** est la seule source de vérité pour toutes les fiches ci-dessous.
+- **Les documents de cours** sont des fichiers sur le disque du serveur ; la base ne garde que leur chemin et leurs métadonnées (ADR 4).
+
+**Les fiches.** Leurs noms de tables et de champs seront en anglais, au pluriel, en `snake_case` ; le détail des colonnes s'écrira avec les migrations.
+
+| Fiche | Contenu principal |
+|---|---|
+| **Utilisateur** | badge `A00-00` (unique), nom, email, téléphone, rôles (plusieurs possibles), canal de double authentification, actif ou désactivé, bloqué ou non |
+| **Formation** | intitulé, domaine, **importante ou non** (décidé par le coordonnateur pour la formation, et non pour une session) |
+| **Module** | formation, titre, formateur *(à préciser : le formateur a-t-il toujours un compte ?)* |
+| **Document de cours** | module, fichier (PDF, PowerPoint, Word), déposé par, date |
+| **Demande de formation** | service demandeur, date de réception, formation demandée, validée par le coordonnateur |
+| **Session** | formation, demande d'origine (facultative), date de début, date de fin, horaires. Une session dure **d'une heure à une semaine** |
+| **Participant** | nom, prénom, **NIF ou CIN** (au moins l'un des deux, obligatoire ; il sert à reconnaître la même personne d'une session à l'autre), fonction, service ou entreprise, téléphone, interne ou externe |
+| **Inscription** (un participant dans une session) | inscrit par, présence, note sur 100, commentaires, date de remise de l'attestation, date de remise du certificat |
+| **Demande de correction** | fiche visée, modification ou suppression, changement proposé, demandeur, décision de l'administrateur |
+| **Journal** | qui, quoi, quand, valeur avant, valeur après. Rien n'y est jamais effacé (`PRD.md` §7) |
+
+**Les listes de référence.**
+- **Domaines de formation :** une liste fixe, que l'utilisateur fournira.
+- **Services de l'AAN et entreprises externes :** une liste, que l'utilisateur fournira, avec une option « Autre ». En attendant, ils se saisissent en **texte libre**.
 
 ## 7. Flux d'authentification et d'autorisation *(Conditionnelle — à sauter s'il n'y a aucun contrôle d'accès)*
 
