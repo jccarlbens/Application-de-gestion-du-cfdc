@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:36:51Z
+updated: 2026-11-10T17:06:16Z
 ---
 
 # PRD.md — CFDC
@@ -49,7 +49,7 @@ L'application joue deux rôles :
 > 3. Quel public compte le plus si ses besoins entrent en conflit avec ceux d'un autre ?
 
 **Les publics.** L'application connaît ces rôles :
-- la **secrétaire**, qui enregistre les informations : formations, sessions, participants, présences, évaluations ;
+- la **secrétaire** (plusieurs personnes peuvent avoir ce rôle), qui enregistre les informations : formations, sessions, participants, présences, évaluations ;
 - le **coordonnateur**, qui supervise et planifie les sessions de formation, et qui voit tout ;
 - les **chefs de service du CFDC**, qui voient tout. Un chef de service extérieur au CFDC, par exemple celui du service qui demande une formation, **n'a pas accès** à l'application ;
 - les **formateurs**, qui voient leurs modules et les noms de leurs participants, et consultent les documents de cours (fichiers PDF, PowerPoint ou Word déposés par l'administrateur informatique) ;
@@ -319,7 +319,8 @@ La V1 ne comprend pas :
 - **la génération des attestations et des certificats** : ils sont produits hors de l'application, qui note seulement leur remise et sa date ;
 - **de notifications**, sauf les codes de double authentification ;
 - **les convocations des participants** ;
-- **d'application mobile** : la V1 est un **site web**, utilisable aussi sur téléphone ;
+- **d'application mobile** : la V1 est un **site web**, utilisable aussi sur téléphone connecté au réseau interne de l'AAN ;
+- **d'accès depuis internet** : l'application reste sur le réseau interne de l'AAN ;
 - **l'inscription des participants par les services demandeurs** eux-mêmes ;
 - **le suivi des salles et du matériel** de formation ;
 - **de lien avec un autre système de l'AAN** (ressources humaines, contrôle des badges…) ;

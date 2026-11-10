@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:59:11Z
+updated: 2026-11-10T17:06:16Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -53,7 +53,20 @@ updated: 2026-11-10T16:59:11Z
 > 1. En quelques phrases, comment les pièces principales s'articulent-elles de bout en bout ?
 > 2. Quel est le diagramme ou le flux unique qui expliquerait cela le plus vite à un nouvel ingénieur ?
 
-*(À écrire)*
+Le personnel du CFDC ouvre l'application dans son navigateur, sur le **réseau interne de l'AAN**. L'interface React appelle l'API FastAPI, qui vérifie la session et les droits, puis lit ou écrit dans PostgreSQL et, pour les documents de cours, sur le disque. Pour la double authentification et le mot de passe oublié, l'API envoie des emails (SMTP) et des SMS (Digicel, Natcom).
+
+```text
+Navigateur (Chrome / Edge, réseau interne AAN)
+        │  HTTPS
+        ▼
+   frontend  ── interface React, fichiers statiques
+        │  /api
+        ▼
+   backend   ── API FastAPI : session, droits, règles métier, journal
+     │      │                         │
+     ▼      ▼                         ▼
+ PostgreSQL  dossier des documents   SMTP (emails) · Digicel / Natcom (SMS)
+```
 
 ## 4. Carte des composants
 
@@ -61,7 +74,14 @@ updated: 2026-11-10T16:59:11Z
 > 2. Quels ports, quelles URL, quels points d'entrée chacun expose-t-il ?
 > 3. Y a-t-il ici un composant qui est en réalité deux composants déguisés en un seul ?
 
-*(À écrire)*
+| Composant | Ce qu'il possède | Point d'entrée |
+|---|---|---|
+| `frontend` | L'interface React, servie en fichiers statiques | `https://<serveur>/` |
+| `backend` | L'API FastAPI : sessions, droits, règles métier, journal, exports, envoi des codes | `https://<serveur>/api/v1/` |
+| `db` | La base PostgreSQL, source de vérité | interne aux conteneurs, jamais exposée |
+| volume `documents` | Les fichiers des documents de cours | lu et écrit par `backend` seulement |
+
+Les quatre tournent ensemble dans un même Docker Compose (ADR 3). Les adresses exactes dépendent des serveurs de l'AAN (§15, Q1).
 
 ## 5. Pile technique
 
@@ -113,7 +133,7 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 |---|---|
 | **Utilisateur** | badge `A00-00` (unique), nom, email, téléphone, rôles (plusieurs possibles), canal de double authentification, actif ou désactivé, bloqué ou non |
 | **Formation** | intitulé, domaine, **importante ou non** (décidé par le coordonnateur pour la formation, et non pour une session) |
-| **Module** | formation, titre, formateur *(à préciser : le formateur a-t-il toujours un compte ?)* |
+| **Module** | formation, titre, formateur (un **utilisateur** ayant le rôle formateur : les formateurs ont un compte limité à leurs modules, `PRD.md` §5) |
 | **Document de cours** | module, fichier (PDF, PowerPoint, Word), déposé par, date |
 | **Demande de formation** | service demandeur, date de réception, formation demandée, validée par le coordonnateur |
 | **Session** | formation, demande d'origine (facultative), date de début, date de fin, horaires. Une session dure **d'une heure à une semaine** |
@@ -178,14 +198,27 @@ Tous deux sont prévus sur les serveurs de l'AAN ; en attendant leur accès, un 
 > 1. Qu'est-ce que cette conception suppose vrai sans que cela ait été réellement vérifié ?
 > 2. Quelle hypothèse, si elle était fausse, imposerait une refonte plutôt qu'un correctif ?
 
-*(À écrire)*
+*Confirmées par l'utilisateur le 2026-11-10, sauf mention contraire.*
+1. Les serveurs de l'AAN sont **accessibles depuis les postes du CFDC**.
+2. L'application reste **sur le réseau interne de l'AAN** : elle n'est pas joignable depuis internet. Un téléphone ne peut l'utiliser que connecté à ce réseau.
+3. Les postes du CFDC ont **Chrome ou Edge à jour**, sous Windows 10.
+4. Chaque membre du personnel du CFDC a une **adresse email**.
+5. **Plusieurs personnes** peuvent avoir le rôle de secrétaire.
+6. *Non vérifiée :* le serveur peut **sortir vers internet** pour envoyer les emails et les SMS, même si l'application n'est pas joignable de l'extérieur. Si c'est faux, la double authentification doit passer par un serveur d'email interne de l'AAN (§15, Q3).
+
+**Celle qui imposerait une refonte :** la n° 2. Ouvrir l'application à internet changerait les exigences de sécurité.
 
 ## 13. Hors périmètre
 
 > 1. Qu'est-ce qui est architecturalement exclu de cette version, et pourquoi ?
 > 2. Y a-t-il ici une exclusion qu'un Workstream ultérieur devra revisiter ?
 
-*(À écrire)*
+- **Le mode hors ligne** : exclu de la V1 (`PRD.md` §13). Le choix d'une interface React le rend possible plus tard. **À revisiter.**
+- **Une application mobile** : exclue ; l'interface web s'adapte au téléphone.
+- **Les échanges avec d'autres systèmes de l'AAN** (ressources humaines, badges) : aucune API d'échange n'est prévue.
+- **Le temps réel** : tout fonctionne en requête et réponse (§8).
+- **Un stockage de fichiers dans le nuage** : rejeté (ADR 4).
+- **L'accès depuis internet** : l'application reste sur le réseau interne (§12).
 
 ## 14. Registres de décision d'architecture (ADR)
 
@@ -217,5 +250,6 @@ Tous deux sont prévus sur les serveurs de l'AAN ; en attendant leur accès, un 
 |---|---|---|---|
 | Q1 | Le service informatique de l'AAN accepte-t-il Docker sur ses serveurs ? Sous quel système (Windows ou Linux) ? Y a-t-il déjà une base de données ? | L'auteur, auprès du service informatique | Avant le premier déploiement |
 | Q2 | Quels fournisseurs de SMS exactement (Digicel, Natcom) et quel budget ? | L'AAN | Avant de construire la double authentification par SMS |
+| Q3 | Le serveur peut-il sortir vers internet pour envoyer emails et SMS ? Sinon, quel serveur d'email interne utiliser ? | L'auteur, auprès du service informatique | Avant de construire la double authentification |
 
 ---
