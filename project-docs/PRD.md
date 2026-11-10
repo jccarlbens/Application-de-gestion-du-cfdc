@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:20:36Z
+updated: 2026-11-10T16:24:11Z
 ---
 
 # PRD.md — CFDC
@@ -269,7 +269,15 @@ L'application ne doit **jamais** :
 > 2. Le succès se mesure-t-il à l'usage, à un résultat pour l'utilisateur, ou à votre propre jugement ?
 > 3. Quelle est la plus petite version du « succès » qui vaudrait quand même d'avoir été livrée ?
 
-*(À écrire)*
+**L'application réussit si :**
+1. **75 % des formations** sont gérées dans l'application au bout des **3 premiers mois** de service ;
+2. l'historique et les informations d'une formation se retrouvent en **2 minutes au plus**.
+
+**Qui juge.** La **direction du CFDC** et les **utilisateurs**.
+
+**Pas de version réduite.** Il n'y a pas de MVP : la V1 est une application **complète, viable et testable**, qui couvre toutes les capacités du §6.
+
+**Les anciennes formations sur papier** sont ressaisies dans l'application **au fur et à mesure**, pour qu'elles puissent elles aussi être retracées.
 
 ## 12. Critères d'échec et bloquants de mise en service
 
