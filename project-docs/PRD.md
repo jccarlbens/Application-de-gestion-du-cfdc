@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T15:47:06Z
+updated: 2026-11-10T15:48:43Z
 ---
 
 # PRD.md — CFDC
@@ -78,8 +78,8 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 3. **L'horaire.** Les chefs de service arrangent l'horaire.
 4. **Les participants.** Le service demandeur fournit la liste de ses participants ; la secrétaire les enregistre.
 5. **La présence.** Le jour de la formation, la présence est relevée par écrit, puis enregistrée dans l'application.
-6. **L'évaluation.** Les participants sont évalués, généralement par un examen ou des questions. Le résultat est enregistré sous forme d'une **note**, accompagnée de **commentaires**. Il existe une note minimale de réussite : **la moyenne**. *(à préciser : le barème, par exemple sur 20 ou sur 100)*
-7. **L'attestation et le certificat.** Les participants reçoivent une **attestation**. Un **certificat** est délivré en plus, sur demande ou pour les formations importantes. *(à préciser : si l'application génère ces documents, et ce qui fait qu'une formation est « importante »)*
+6. **L'évaluation.** Les participants sont évalués, généralement par un examen ou des questions. Le résultat est enregistré sous forme d'une **note**, accompagnée de **commentaires**. La note est **sur 100** ; la réussite demande au moins **la moyenne, soit 50/100**.
+7. **L'attestation et le certificat.** Tous les participants présents reçoivent une **attestation**, qu'ils aient ou non la moyenne. Un **certificat** est délivré en plus, sur demande ou pour une formation que le **coordonnateur** décide d'estimer importante. Attestations et certificats sont **produits en dehors de l'application**.
 
 **Où le parcours se brise aujourd'hui.** Aucune étape ne bloque en particulier. Le risque est réparti sur tout le parcours : ce sont les problèmes du papier décrits au §1, c'est-à-dire les pertes, le manque de fiabilité et la dépendance envers une personne.
 
