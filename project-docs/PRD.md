@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:14:54Z
+updated: 2026-11-10T16:17:38Z
 ---
 
 # PRD.md — CFDC
@@ -220,7 +220,7 @@ L'application ne doit **jamais** :
 > 2. Si oui, de qui est-ce la voix : celle d'une entreprise, d'un persona, la vôtre ?
 > 3. Quel ton sonnerait faux pour ce produit, même en étant factuellement exact ?
 
-*(À écrire)*
+**Non applicable.** L'application n'a ni composante conversationnelle ni voix de marque.
 
 ## 9. Modèle d'accès
 
@@ -228,7 +228,22 @@ L'application ne doit **jamais** :
 > 2. Qu'est-ce qui est stocké sur qui a l'accès, et qui peut le révoquer ?
 > 3. Y a-t-il une différence entre « connecté » et « assez de confiance pour tout voir » ?
 
-*(À écrire)*
+**Obtenir l'accès.** Il n'y a pas d'inscription libre. L'administrateur informatique ou le coordonnateur crée le compte d'un membre du personnel du CFDC (§2).
+
+**Se connecter.** L'utilisateur se connecte avec :
+- son numéro de badge AAN (format `A00-00`) ;
+- son mot de passe ;
+- un code de double authentification, reçu par email (par défaut) ou par SMS, selon son choix.
+
+**Mot de passe oublié.** L'utilisateur le réinitialise lui-même, par email.
+
+**Les rôles.** Une même personne peut avoir **plusieurs rôles**, par exemple chef de service et formateur. Seul l'**administrateur informatique** change les rôles.
+
+**Retirer l'accès.** Quand une personne quitte le CFDC ou change de poste, l'administrateur informatique **désactive** son compte. Le compte n'est pas supprimé : son historique reste.
+
+**Déconnexion automatique.** Après **15 minutes** d'inactivité, l'utilisateur est déconnecté.
+
+**Connecté ne veut pas dire tout voir.** Ce qu'un utilisateur voit dépend de son rôle (§5). Les données personnelles des participants restent réservées au coordonnateur et à l'administrateur informatique (§7).
 
 ## 10. Observabilité
 
