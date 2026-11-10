@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T18:27:04Z
+updated: 2026-11-10T15:27:45Z
 ---
 
 # PRD.md — CFDC
@@ -54,7 +54,7 @@ L'application joue deux rôles :
 - la **secrétaire**, qui enregistre les informations : formations, sessions, participants, présences, évaluations ;
 - le **coordonnateur**, qui supervise et planifie les sessions de formation, et qui voit tout ;
 - les **chefs de service**, qui voient tout ;
-- les **formateurs**, qui consultent les documents de cours ;
+- les **formateurs**, qui consultent les documents de cours (fichiers PDF, PowerPoint ou Word déposés par l'administrateur informatique) ;
 - l'**administrateur informatique**, qui crée les comptes et effectue les modifications et les suppressions ;
 - toute autre **personne autorisée**, qui peut consulter les informations.
 
@@ -62,7 +62,7 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 
 **Qui obtient l'accès.** Seules les personnes autorisées accèdent à l'application. Ce sont l'administrateur informatique et le coordonnateur qui donnent l'autorisation.
 
-**Qui peut modifier ou supprimer.** Une information déjà enregistrée ne se modifie ou ne se supprime que **par l'intermédiaire de l'administrateur informatique**, y compris quand la demande vient de la secrétaire, du coordonnateur ou d'un chef de service.
+**Qui peut modifier ou supprimer.** Une information déjà enregistrée ne se modifie ou ne se supprime que **par l'intermédiaire de l'administrateur informatique**, y compris quand la demande vient de la secrétaire, du coordonnateur ou d'un chef de service. La personne fait une **demande de modification ou de suppression dans l'application**, et l'administrateur informatique la valide.
 
 **En cas de conflit.** La **simplicité d'utilisation**, surtout pour la secrétaire qui saisit, passe avant le reste, par exemple avant le détail des bilans.
 
@@ -72,7 +72,14 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 > 2. Que faut-il qui soit vrai à chaque étape pour que ce scénario se produise réellement ?
 > 3. À quel endroit de ce parcours l'expérience se briserait-elle aujourd'hui si rien de plus n'était construit ?
 
-*(À écrire)*
+**Parcours d'une formation, de la demande à l'évaluation**
+1. **La demande.** Le service concerné envoie une requête administrative écrite à la coordination du CFDC. *(à préciser : la requête est-elle saisie dans l'application, ou seulement notée ?)*
+2. **La planification.** Le coordonnateur fixe la date et la période de la session.
+3. **L'horaire.** Les chefs de service arrangent l'horaire.
+4. **Les participants.** La liste des participants est fournie *(à préciser : par qui)* ; la secrétaire les enregistre.
+5. **La présence.** Le jour de la formation, la présence est relevée par écrit, puis enregistrée dans l'application.
+6. **L'évaluation.** Les participants sont évalués, généralement par un examen ou des questions ; le résultat est enregistré.
+7. **L'attestation.** *(à préciser)*
 
 
 ## 4. Tâches à accomplir (Jobs to Be Done)
