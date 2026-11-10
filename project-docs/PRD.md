@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:03:29Z
+updated: 2026-11-10T16:07:39Z
 ---
 
 # PRD.md — CFDC
@@ -73,7 +73,7 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 > 3. À quel endroit de ce parcours l'expérience se briserait-elle aujourd'hui si rien de plus n'était construit ?
 
 **Parcours d'une formation, de la demande à l'évaluation**
-1. **La demande.** Le service concerné envoie une requête administrative écrite à la coordination du CFDC. La requête est enregistrée dans l'application, où la secrétaire et le coordonnateur peuvent l'ajuster.
+1. **La demande.** Le service concerné envoie une requête administrative écrite à la coordination du CFDC. Le coordonnateur la reçoit, la **valide** et la fait enregistrer dans l'application, où la secrétaire et le coordonnateur peuvent l'ajuster.
 2. **La planification.** Le coordonnateur fixe la date et la période de la session.
 3. **L'horaire.** Les chefs de service du CFDC arrangent l'horaire.
 4. **Les participants.** Le service demandeur fournit la liste de ses participants ; la secrétaire les enregistre.
@@ -142,7 +142,7 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 
 | Capacité | Déclencheur | Résultat |
 |---|---|---|
-| Se connecter | L'utilisateur fournit son **numéro de badge AAN** (format `A00-00`) et son mot de passe, puis le code de **double authentification** reçu par email ou sur son téléphone | Il accède aux écrans de son rôle |
+| Se connecter | L'utilisateur fournit son **numéro de badge AAN** (format `A00-00`) et son mot de passe, puis le code de **double authentification** reçu par email ou par SMS, selon son choix ; l'email est le canal par défaut | Il accède aux écrans de son rôle |
 | Créer un compte | L'admin ou le coordonnateur renseigne une personne et son rôle | Un compte est créé ; il n'y a pas d'inscription libre |
 
 **Formations, modules et documents**
@@ -158,7 +158,7 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 
 | Capacité | Déclencheur | Résultat |
 |---|---|---|
-| Enregistrer une demande de formation | Un service a envoyé une requête écrite à la coordination | La demande est notée, en attente |
+| Enregistrer une demande de formation | Un service a envoyé une requête écrite à la coordination, et le coordonnateur l'a validée | La demande est enregistrée |
 | Ajuster une demande | La secrétaire ou le coordonnateur la modifie | La demande mise à jour |
 | Planifier une session | Le coordonnateur fixe la date et la période d'une formation, en réponse à une demande ou non | Une session apparaît au calendrier |
 | Organiser les horaires | Un chef de service du CFDC ou le coordonnateur arrange les horaires d'une session | Les horaires de la session |
@@ -192,12 +192,13 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 
 | Capacité | Déclencheur | Résultat |
 |---|---|---|
-| Recevoir une notification | *(à préciser : quels événements)* | *(à préciser : qui la reçoit, par quel canal)* |
+| Recevoir une notification | *(à préciser : quels événements)* | Une notification par **email ou SMS**, selon le choix de l'utilisateur ; l'email est le canal par défaut |
 
 **Ce que tout le monde supposera, mais qui n'est pas prévu.**
 - Les participants n'ont **pas de compte** : ils ne se connectent pas.
 - L'application **ne génère pas** les attestations ni les certificats : elle note seulement leur remise.
 - **Aucun paiement.**
+- Les participants **ne reçoivent aucune notification** : leur convocation reste hors de l'application pour l'instant.
 
 ## 7. Ce que le produit ne doit jamais faire
 
