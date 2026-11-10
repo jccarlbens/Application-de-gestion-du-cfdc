@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:45:15Z
+updated: 2026-11-10T16:48:02Z
 ---
 
 # NFR.md — CFDC
@@ -147,8 +147,8 @@ Repris de `PRD.md` §10, qui reste la source.
 | Risque | Plan |
 |---|---|
 | **Dépendance envers une seule personne** : l'administrateur informatique valide les corrections, débloque les comptes, fait les sauvegardes et maintient l'application. C'est le problème même que l'application doit supprimer (`PRD.md` §1) | Un **partenaire de travail** peut le remplacer ; la documentation du projet doit lui suffire pour reprendre |
-| **Accès aux serveurs de l'AAN** difficile ou lent à obtenir auprès du service informatique | *(à préciser)* |
-| **Coût des SMS** de double authentification | L'email est le canal par défaut ; le SMS reste un choix de l'utilisateur et un canal de secours *(à préciser : plafond ou budget)* |
+| **Accès aux serveurs de l'AAN** difficile ou lent à obtenir auprès du service informatique | Développer et faire tester sur un **hébergement temporaire**, puis migrer vers les serveurs de l'AAN (§ Portabilité) |
+| **Coût des SMS** de double authentification | L'email est le canal par défaut ; le SMS reste un choix de l'utilisateur et un canal de secours. L'AAN prévoit un **budget** pour les SMS *(montant à préciser)* |
 
 ## Dépendances
 
@@ -160,7 +160,7 @@ Repris de `PRD.md` §10, qui reste la source.
 |---|---|
 | **Serveurs de l'AAN**, gérés par le service informatique de l'AAN | L'application est hors service ; à rétablir en une heure au plus (§ Fiabilité) |
 | **Service d'envoi d'emails** (double authentification, mot de passe oublié) | Bascule sur le SMS, puis code de secours de l'administrateur (§ Fiabilité) |
-| **Fournisseur de SMS**, payé par l'AAN *(à préciser : lequel)* | Bascule sur l'email, puis code de secours de l'administrateur |
+| **Fournisseurs de SMS**, **Digicel et Natcom** selon le numéro de l'utilisateur, payés par l'AAN *(à confirmer)* | Bascule sur l'email, puis code de secours de l'administrateur |
 | **L'administrateur informatique**, mainteneur | Son partenaire de travail le remplace (§ Risques) |
 
 **Point de défaillance unique :** les serveurs de l'AAN. Les deux canaux de double authentification se secourent l'un l'autre.

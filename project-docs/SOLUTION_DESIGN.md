@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-10T16:48:02Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -17,7 +17,12 @@ updated: 2026-11-09T17:14:13Z
 > 1. De quoi ce document est-il responsable de décider, qu'aucun autre document ne décide ?
 > 2. Qu'est-ce qui est explicitement en dehors de l'autorité de ce document (par exemple, les décisions produit appartiennent au PRD) ?
 
-*(À écrire)*
+**Ce document décide** comment l'application CFDC est construite : ses Workstreams, ses composants, sa pile technique, son modèle de données, son authentification, son déploiement, et les décisions d'architecture (ADR) qui les justifient.
+
+**Il ne décide pas :**
+- **ce que fait le produit, pour qui, et ce qui est hors périmètre** : c'est `PRD.md` ;
+- **le niveau de qualité attendu** (performance, sécurité, sauvegardes…) : c'est `NFR.md`, que ce document doit respecter ;
+- **l'ordre de construction** : c'est `PLAN.md`.
 
 ## 2. Workstreams — définition canonique de `WS-NN`
 
@@ -32,7 +37,16 @@ updated: 2026-11-09T17:14:13Z
 > 2. Deux Workstreams pourraient-ils être travaillés par des personnes différentes en même temps sans se gêner ?
 > 3. Y a-t-il un Workstream caché à l'intérieur d'un autre qui mériterait son propre identifiant ?
 
-*(À écrire)*
+| Id | Workstream | Contenu | Capacités du PRD |
+|---|---|---|---|
+| WS-01 | Comptes et accès | Connexion par badge, double authentification, rôles, blocage après 5 échecs, déconnexion automatique, création et désactivation des comptes, mot de passe oublié | `PRD.md` §6 « Accès », §9 |
+| WS-02 | Formations et modules | Catalogue des formations, modules, formateurs, documents de cours | §6 « Formations, modules et documents » |
+| WS-03 | Demandes et planification | Demandes de formation, sessions, horaires, formations importantes | §6 « Demandes et planification » |
+| WS-04 | Participants et suivi | Participants, inscriptions, présences, évaluations, remise des attestations et des certificats | §6 « Participants, présences et évaluations » |
+| WS-05 | Corrections et traçabilité | Demandes de correction, validation par l'administrateur, historique des modifications, journal | §6 « Corrections », §7 |
+| WS-06 | Consultation | Vue d'ensemble de l'unité, recherche, export Excel et PDF | §6 « Consultation », §10 |
+
+*Validé par l'utilisateur le 2026-11-10.*
 
 ## 3. Vue d'ensemble du système
 
