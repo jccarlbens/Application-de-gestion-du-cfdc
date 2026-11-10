@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:38:55Z
+updated: 2026-11-10T16:39:05Z
 ---
 
 # NFR.md — CFDC
@@ -118,7 +118,10 @@ updated: 2026-11-10T16:38:55Z
 > 2. Qu'est-ce qui est journalisé aujourd'hui, par rapport à ce qui devrait l'être ?
 > 3. Qui surveille cela réellement ?
 
-*(À écrire)*
+Repris de `PRD.md` §10, qui reste la source.
+- **Alertes immédiates, pour l'administrateur informatique :** plusieurs connexions échouées sur un même badge, application hors service, codes de double authentification qui ne partent plus, nombreuses suppressions en peu de temps.
+- **Journalisé :** chaque connexion (réussie ou échouée), chaque modification et chaque suppression, avec qui, quoi et quand (`PRD.md` §7).
+- **Qui surveille :** l'administrateur informatique chaque semaine ; le coordonnateur et la direction du CFDC chaque mois, pour l'usage.
 
 ## Reprise après sinistre et sauvegardes
 
