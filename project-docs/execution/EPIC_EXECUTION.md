@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T17:13:09Z
+updated: 2026-11-10T17:32:09Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -27,7 +27,8 @@ Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de 
 
 **Affinage :** [epic-001-refinement.md](epic-001-setup-and-access/epic-001-refinement.md) — les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
 
+**Ordre de construction :** US-001 seule, d'abord ; puis US-002 ; ensuite, en parallèle, US-003 pour un membre, US-004 puis US-005 pour l'autre ; puis US-006 et US-007 en parallèle ; US-008 en dernier (Should).
+
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
-
-*Aucune user story créée : elles le seront une fois l'affinage confirmé.*
+| US-001 | Mise en place | 🔲 À faire | [US-001.md](epic-001-setup-and-access/US-001.md) |
