@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:36:51Z
+updated: 2026-11-10T16:38:55Z
 ---
 
 # NFR.md — CFDC
@@ -60,11 +60,11 @@ updated: 2026-11-10T16:36:51Z
 
 **Les mesures :**
 - **Connexion** par numéro de badge AAN, mot de passe et double authentification (email ou SMS).
-- **Mot de passe :** des règles habituelles de robustesse *(à préciser : longueur minimale)* ; **aucun changement obligatoire** à intervalle fixe.
+- **Mot de passe :** au moins **8 caractères**, dont au moins un chiffre ; **aucun changement obligatoire** à intervalle fixe.
 - **Blocage :** après **5 échecs** de connexion, le compte est bloqué ; seul l'**administrateur informatique** le débloque.
 - **Déconnexion automatique** après 15 minutes d'inactivité.
 - **Traçabilité :** chaque modification et chaque suppression garde qui, quoi et quand.
-- **Hébergement :** sur les **serveurs de l'AAN**.
+- **Hébergement :** sur les **serveurs de l'AAN**, gérés par le **service informatique de l'AAN**.
 
 ## Utilisabilité et accessibilité
 
@@ -72,7 +72,12 @@ updated: 2026-11-10T16:36:51Z
 > 2. Y a-t-il une norme d'accessibilité minimale visée ?
 > 3. Quelle est la tâche la plus simple qu'un utilisateur novice doit pouvoir accomplir sans aide ?
 
-*(À écrire)*
+**La simplicité d'utilisation est l'exigence première** (`PRD.md` §2 et §4) : une interface difficile ferait revenir le personnel au papier, et c'est un motif de retrait (`PRD.md` §12).
+
+- **Langue :** l'interface est en **français** seulement.
+- **Prise en main :** une **formation** des utilisateurs suffit ; pas d'aide à l'écran ni de guide exigés. Cette formation est une condition de mise en service (`PRD.md` §12).
+- **Test du novice :** un nouvel utilisateur sait **inscrire un participant à une session** sans aide.
+- **Norme d'accessibilité :** *(à préciser)*
 
 ## Compatibilité
 
@@ -80,7 +85,9 @@ updated: 2026-11-10T16:36:51Z
 > 2. Y a-t-il un environnement explicitement non pris en charge ?
 > 3. Faut-il interopérer avec un système existant ?
 
-*(À écrire)*
+- **Appareils :** les **ordinateurs Windows** du CFDC, des postes **pas très récents**. L'application est un site web, utilisable aussi sur téléphone (`PRD.md` §13), mais l'ordinateur est l'usage principal.
+- **Navigateurs :** *(à préciser)*
+- **Interopérabilité :** aucune. L'application n'est reliée à aucun autre système de l'AAN (`PRD.md` §13).
 
 ## Conformité et aspects juridiques
 
