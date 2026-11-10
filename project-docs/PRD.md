@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T15:27:45Z
+updated: 2026-11-10T15:45:23Z
 ---
 
 # PRD.md — CFDC
@@ -73,13 +73,15 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 > 3. À quel endroit de ce parcours l'expérience se briserait-elle aujourd'hui si rien de plus n'était construit ?
 
 **Parcours d'une formation, de la demande à l'évaluation**
-1. **La demande.** Le service concerné envoie une requête administrative écrite à la coordination du CFDC. *(à préciser : la requête est-elle saisie dans l'application, ou seulement notée ?)*
+1. **La demande.** Le service concerné envoie une requête administrative écrite à la coordination du CFDC. La requête est enregistrée dans l'application, où un utilisateur peut l'ajuster. *(à préciser : quel rôle)*
 2. **La planification.** Le coordonnateur fixe la date et la période de la session.
 3. **L'horaire.** Les chefs de service arrangent l'horaire.
-4. **Les participants.** La liste des participants est fournie *(à préciser : par qui)* ; la secrétaire les enregistre.
+4. **Les participants.** Le service demandeur fournit la liste de ses participants ; la secrétaire les enregistre.
 5. **La présence.** Le jour de la formation, la présence est relevée par écrit, puis enregistrée dans l'application.
-6. **L'évaluation.** Les participants sont évalués, généralement par un examen ou des questions ; le résultat est enregistré.
+6. **L'évaluation.** Les participants sont évalués, généralement par un examen ou des questions. Le résultat est enregistré sous forme d'une **note**, accompagnée de **commentaires**. *(à préciser : le barème)*
 7. **L'attestation.** *(à préciser)*
+
+**Où le parcours se brise aujourd'hui.** Aucune étape ne bloque en particulier. Le risque est réparti sur tout le parcours : ce sont les problèmes du papier décrits au §1, c'est-à-dire les pertes, le manque de fiabilité et la dépendance envers une personne.
 
 
 ## 4. Tâches à accomplir (Jobs to Be Done)
