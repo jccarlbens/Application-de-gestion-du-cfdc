@@ -1,11 +1,11 @@
 ---
 created: 2026-11-10T00:00:00Z
-updated: 2026-11-10T17:20:51Z
+updated: 2026-11-10T17:31:23Z
 ---
 
 # Affinage de l'Epic 001 — Mise en place et accès
 
-**Statut :** 🟡 Ouvert — en cours d'affinage avec l'utilisateur.
+**Statut :** 🟡 Ouvert — affinage confirmé le 2026-11-10 ; création des user stories en cours.
 **Workstreams :** WS-01 Comptes et accès ; WS-05 Corrections et traçabilité (le journal seulement).
 **Milestone GitHub :** « Epic 1 — Mise en place et accès »
 
@@ -27,8 +27,8 @@ Tout ce dont les Epics suivants ont besoin pour exister : le code de départ (ba
 | Id | Constat | Statut |
 |---|---|---|
 | E1-1 | Aucun code n'existe encore : il n'y a rien à lire dans le code source. Les constats viendront de la construction | Ouvert |
-| E1-2 | Le Milestone GitHub doit être créé à la main : l'agent n'a pas d'outil pour créer un Milestone dans cette session | Ouvert |
-| E1-3 | Un hébergement gratuit public pour le serveur de test contredit l'hypothèse « réseau interne seulement » (`SOLUTION_DESIGN.md` §12) si de vraies données personnelles y passent | Ouvert |
+| E1-2 | Le Milestone GitHub doit être créé à la main : l'agent n'a pas d'outil pour créer un Milestone dans cette session | Résolu : créé par l'utilisateur ; l'ajout automatique des issues au tableau n° 4 est activé |
+| E1-3 | Un hébergement gratuit public pour le serveur de test contredit l'hypothèse « réseau interne seulement » (`SOLUTION_DESIGN.md` §12) si de vraies données personnelles y passent | Résolu par Q4 : données fictives seulement |
 
 ## Questions ouvertes
 
@@ -37,7 +37,7 @@ Tout ce dont les Epics suivants ont besoin pour exister : le code de départ (ba
 | Q1 | Comment créer le **premier compte administrateur**, puisque personne ne peut s'inscrire seul ? | Une commande en ligne, lancée une fois à l'installation sur le serveur | ✅ Oui (2026-11-10) |
 | Q2 | Quels **tests** exiger ? | `pytest` (unitaires et intégration sur une vraie base PostgreSQL) et Vitest, lancés par GitHub Actions ; la fusion sur `main` exige qu'ils passent. Pas de seuil de couverture chiffré au départ | ✅ Oui |
 | Q3 | Quel **serveur d'email** pour le développement et le serveur de test ? | Un faux serveur SMTP qui capture les emails (Mailpit) dans Docker Compose ; le vrai serveur SMTP seulement en production | ✅ Oui |
-| Q4 | Où mettre le **serveur de test** tant que les serveurs de l'AAN ne sont pas accessibles ? | Sur le poste d'un membre de l'équipe avec Docker Compose, plutôt qu'un hébergement public, puisque l'application doit rester sur le réseau interne | 🟡 Oui, mais un **hébergement gratuit** est aussi envisagé — à trancher (voir E1-3) |
+| Q4 | Où mettre le **serveur de test** tant que les serveurs de l'AAN ne sont pas accessibles ? | Sur le poste d'un membre de l'équipe avec Docker Compose, plutôt qu'un hébergement public, puisque l'application doit rester sur le réseau interne | ✅ Un **hébergement gratuit**, mais **uniquement avec des données fictives** : aucun vrai participant, NIF ou CIN n'y entre ; les vraies données n'arrivent que sur les serveurs de l'AAN. Hébergeur à choisir dans US-001 |
 | Q5 | Protéger la branche `main` sur GitHub ? | Oui : GitHub Actions doit être vert et une relecture approuvée est exigée, conformément à `PROJECT_WORKFLOW.md` | ✅ Oui |
 | Q6 | Y a-t-il une **charte graphique** de l'AAN (logo, couleurs, polices) pour l'interface ? | Si oui, la fournir avant l'écran de connexion ; sinon, une interface sobre aux couleurs neutres | ✅ Pas de charte formelle : interface **bleu et blanc** |
 | Q7 | Que garde le **journal** pour chaque modification ? | La fiche visée, l'action, l'auteur, l'heure, et les valeurs avant et après en entier | ✅ Oui |
