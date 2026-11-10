@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T17:08:18Z
+updated: 2026-11-10T17:11:26Z
 ---
 
 # GLOSSARY.md — CFDC
@@ -8,7 +8,7 @@ updated: 2026-11-10T17:08:18Z
 **Répond à :** que veut dire ce terme ? — à consulter dès qu'un mot est ambigu, une fois rempli.
 **Dépend de :** rien pour la section « Workstream, Epic et Milestone » (générique, déjà présente) ; de `PRD.md`, et surtout de `PLAN.md`, pour tout le reste.
 
-> **Statut : structure de départ — le dernier document à finaliser, pas le premier.** Contre-intuitivement, ce n'est pas par là qu'on commence : sans savoir encore quel produit c'est, vous ne savez pas quel vocabulaire mérite une entrée. Le véritable ordre : `PRD.md` → `NFR.md` → `SOLUTION_DESIGN.md` → `PLAN.md` → **ici, en dernier**. Ce fichier peut commencer à se remplir dès qu'un premier brouillon de PRD existe (les premiers termes émergent), mais il ne se **finalise** qu'une fois `PLAN.md` terminé — c'est là qu'il y a assez de matière pour savoir vraiment quel produit c'est. Chaque section porte les questions de réflexion à se poser avant d'écrire — ne demandez pas à l'agent d'inventer les réponses.
+> **Statut : V1, rempli avec l'utilisateur le 2026-11-10.** Les termes du langage aéroportuaire, ainsi que les listes des domaines et des services, seront ajoutés plus tard. Ajoutez un terme **avant** de l'employer ailleurs.
 
 ---
 
@@ -86,6 +86,7 @@ updated: 2026-11-10T17:08:18Z
 | **Demande de correction** | Demande, faite dans l'application, de modifier ou de supprimer une information déjà enregistrée. Seul l'administrateur la valide. **À ne pas confondre avec une demande de formation** |
 | **Données personnelles** | Le NIF, le CIN et le téléphone d'un participant. Visibles seulement du coordonnateur et de l'administrateur après saisie |
 | **NIF / CIN** | Numéro d'identification fiscale / carte d'identification nationale. Au moins l'un des deux est obligatoire ; il sert à reconnaître une même personne d'une session à l'autre |
+| **Langage aéroportuaire** | *Termes à ajouter plus tard, fournis par l'utilisateur.* |
 | **Badge AAN** | Le numéro de badge du personnel, au format `A00-00`, qui sert d'identifiant de connexion |
 
 > **Questions à se poser :**

@@ -1,15 +1,15 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-10T17:11:26Z
 ---
 
 # AGENTS.md — CFDC
 
-> **Statut : provisoire.** Ce fichier est le résumé *dérivé* de tous les documents de `project-docs/` ; il se complète **en dernier**, une fois `PRD.md` → `PROJECT_WORKFLOW.md` remplis. Pour l'instant, il ne porte que ce qui est déjà vrai : la carte des dossiers et les conventions.
-
 ## Ce qu'est ce projet
 
-Application de gestion du centre de formation (CFDC) de l'AAN : formateurs, modules et participants (internes à l'AAN ou externes). Pas de paiement. *(Description complète : `project-docs/PRD.md`, à écrire.)*
+L'application CFDC retrace les formations que dispense l'**Autorité Aéroportuaire Nationale (AAN)** à travers son **Centre de Formation et de Développement des Compétences (CFDC)** : formations, modules, sessions, participants (internes à l'AAN ou externes), présences, notes sur 100 et remise des attestations. Elle aide aussi à planifier le calendrier des formations. Elle remplace une gestion sur papier. **Aucun paiement.** Elle est construite par deux personnes : `jccarlbens` (auteur et administrateur informatique) et `caleb17`.
+
+**Phase actuelle :** documents fondateurs remplis ; aucune ligne de code. Détail : `project-docs/PRD.md`.
 
 ## Carte des dossiers
 
@@ -34,6 +34,10 @@ project-docs/
 .claude/skills/             compétences : bootstrap-project-docs, epic, user-story, get-work-status…
 .githooks/                  estampille `updated:` à chaque commit
 ```
+
+## Pile technique
+
+Voir `project-docs/SOLUTION_DESIGN.md` §5 (pile), §11 (déploiement) et ses ADR. Ne la recopiez pas ici.
 
 ## Ordre de lecture pour une première session
 
@@ -77,3 +81,13 @@ project-docs/
 - **Dossiers historiques** (`reviews/`, `learnings/`) : fichiers `NN-nom.md`, numéro attribué une fois et jamais réattribué. Les exemples `learnings/01`–`03` viennent du kit ; les nôtres commencent à `04`.
 - **Frontmatter :** chaque fichier markdown porte `created` et `updated` en UTC ; `updated` est estampillé par `.githooks/pre-commit`, jamais à la main.
 - **Pas d'invention :** l'agent ne remplit jamais un document fondateur à la place de l'équipe ; il pose les questions, attend la réponse, puis rédige.
+- **Epics séquentiels.** Un seul Epic actif à la fois, dans l'ordre de `PLAN.md` ; les deux membres travaillent en parallèle sur des user stories différentes.
+- **Suivi sur GitHub.** User story = issue, Epic = Milestone, tableau Projects « CFDC » n° 4. L'agent ne déplace jamais une issue sur le tableau et ne marque jamais une user story comme terminée de lui-même. Détail : `project-docs/PROJECT_WORKFLOW.md`.
+- **Le serveur décide des droits.** Chaque action est vérifiée côté serveur selon le tableau de `PRD.md` §5 ; masquer un bouton ne suffit jamais.
+- **Rien ne s'efface sans trace.** Toute modification et toute suppression passe par le journal (qui, quoi, quand, avant, après) ; une information enregistrée ne se modifie ou ne se supprime que par une demande de correction validée par l'administrateur (`PRD.md` §7).
+- **Attention aux homonymes** : session de formation / session de connexion, demande de formation / demande de correction, chef de service du CFDC / chef du service demandeur (`GLOSSARY.md`).
+- **Base de données :** tables et champs en anglais, noms de tables au pluriel en `snake_case` ; horodatages en UTC (ISO-8601 avec `Z`), convertis en heure locale dans l'interface seulement.
+
+## Confidentialité
+
+Les **données personnelles des participants** (NIF, CIN, téléphone) ne sont visibles, une fois saisies, que du **coordonnateur** et de l'**administrateur informatique**. Le formateur ne voit que les noms de ses participants. L'application reste sur le réseau interne de l'AAN. Détail : `PRD.md` §5 et §7, `NFR.md` § Sécurité.

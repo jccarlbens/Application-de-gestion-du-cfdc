@@ -1,13 +1,15 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-10T17:11:26Z
 ---
 
 # CFDC — Application de gestion du centre de formation de l'AAN
 
-Application de gestion du centre de formation (CFDC) de l'AAN : les **formateurs**, les **modules** de formation et les **participants**, qu'ils soient **internes à l'AAN** ou **externes** (concessionnaires, etc.). L'application ne gère **aucun paiement**.
+**Équipe :** `jccarlbens`, `caleb17`. **Suivi :** tableau GitHub Projects « CFDC » n° 4.
 
-> **Statut : phase de cadrage.** Aucune ligne de code n'existe encore. Les documents de `project-docs/` sont des structures de départ, avec leurs questions de réflexion ; ils se remplissent dans l'ordre ci-dessous, avant d'écrire du code. Description complète du produit : `project-docs/PRD.md` (à écrire).
+Application de gestion du **Centre de Formation et de Développement des Compétences (CFDC)** de l'**Autorité Aéroportuaire Nationale (AAN)** : les **formations** et leurs **sessions**, les **formateurs**, les **modules** de formation et les **participants**, qu'ils soient **internes à l'AAN** ou **externes** (concessionnaires, etc.). L'application ne gère **aucun paiement**.
+
+> **Statut : documents fondateurs remplis (V1, 2026-11-10).** Aucune ligne de code n'existe encore. Prochaine étape : créer l'Epic 1 (`project-docs/PLAN.md` § Prochaines étapes immédiates). Description complète du produit : `project-docs/PRD.md`.
 
 Le dépôt suit la même organisation que le projet `fds-pay` : le **développement piloté par la spécification** (on documente le contexte *avant* d'écrire du code).
 

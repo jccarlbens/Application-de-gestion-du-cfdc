@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-10T17:11:26Z
 ---
 
 # PROJECT_WORKFLOW.md — CFDC
@@ -47,7 +47,32 @@ updated: 2026-11-09T17:14:13Z
 > 2. Par quels états le travail passe-t-il, et qui l'y fait passer ?
 > 3. Des champs personnalisés sont-ils réellement nécessaires, ou la ligne `Status` du format de user story suffit-elle déjà ?
 
-*(À écrire)*
+**Le travail est suivi sur GitHub**, dans le dépôt `jccarlbens/Application-de-gestion-du-cfdc` :
+- chaque **user story** est une issue ;
+- chaque **Epic** est un Milestone ;
+- l'ensemble s'affiche sur le tableau GitHub Projects **« CFDC »**, numéro **4** (`https://github.com/users/jccarlbens/projects/4`).
+
+Chaque user story a aussi son fichier, `project-docs/execution/epic-NNN-*/US-NNN.md`, et sa ligne dans `project-docs/execution/EPIC_EXECUTION.md`. L'issue sert à se répartir le travail ; le fichier porte le détail.
+
+**Les colonnes du tableau : Backlog → Ready → In progress → In review → Done.**
+- **Backlog :** la user story vient d'être créée.
+- **Ready :** ses dépendances sont terminées ; elle peut être prise.
+- **In progress :** un membre l'a prise ; il la déplace lui-même et s'assigne l'issue.
+- **In review :** sa pull request est ouverte et attend la relecture de l'autre membre.
+- **Done :** seulement après la définition du « terminé » (ci-dessous).
+- Les membres déplacent les issues ; **l'agent ne déplace jamais une issue** sur le tableau.
+- **Une pull request ne ferme pas d'issue** : son corps ne contient ni `Closes`, ni `Fixes`, ni `Resolves` suivi d'un numéro. L'équipe ferme l'issue elle-même, une fois la user story validée.
+- **Une pull request vise toujours `main`**, jamais la branche d'une autre pull request.
+
+**Le statut dans les fichiers :**
+
+| Colonne du tableau | Statut dans les fichiers |
+|---|---|
+| Backlog, Ready | 🔲 À faire |
+| In progress, In review | 🟡 En cours |
+| Done | ✅ Terminé |
+
+Les fichiers ne changent que deux fois : en entrant dans In progress, puis en arrivant dans Done. **Pas de champ personnalisé** : le champ `Status` du tableau suffit.
 
 > **Cette section est celle que les compétences `epic` et `user-story` consultent.** Ces deux-là sont écrites GitHub d'abord, pour le dépôt `jccarlbens/Application-de-gestion-du-cfdc` ; `CLAUDE.md` porte la décision et dit comment appliquer celle des deux voies que vous retenez. Répondez ici, puis élaguez `CLAUDE.md` en conséquence.
 
@@ -60,18 +85,18 @@ updated: 2026-11-09T17:14:13Z
 > 2. Par quelles étapes passe une user story, et à quel moment le code a-t-il le droit de commencer ?
 > 3. Qui travaille sur quoi en parallèle — une personne, une équipe ?
 
-*Point de départ, repris de la méthode — à confirmer ou ajuster :*
-
 **Pour chaque Epic, un à la fois** (`PLAN.md`)
 1. **Créer l'Epic** (compétence `epic`) : son dossier, sa section dans `EPIC_EXECUTION.md`, son Milestone.
 2. **Affiner l'Epic** : résoudre ses questions ouvertes et dresser la liste de ses user stories, dans `epic-NNN-refinement.md`.
-3. **Pour chaque user story :**
+3. **Pour chaque user story** — les deux membres en parallèle, une user story chacun :
    1. la **créer** (compétence `user-story`) : son fichier, son issue ;
-   2. l'**affiner** : lire le code existant et trancher les dernières questions, avant d'écrire du code ;
-   3. la **planifier** : l'agent propose un plan d'implémentation, relu et corrigé avant tout code. Le plan validé remplace la section `## Tâches` du fichier de la user story ;
-   4. créer une **branche**, implémenter, ajouter les tests ;
-   5. ouvrir une **pull request**, la faire relire, fusionner sur `main` ;
-   6. vérifier la **définition du « terminé »** (ci-dessous), puis passer la user story à ✅ Terminé.
+   2. la déplacer sur **In progress** et **s'assigner l'issue** ;
+   3. l'**affiner** : lire le code existant et trancher les dernières questions, avant d'écrire du code ;
+   4. la **planifier** : l'agent propose un plan d'implémentation, relu et corrigé avant tout code. Le plan validé remplace la section `## Tâches` du fichier de la user story ;
+   5. créer une **branche**, implémenter, ajouter les tests ;
+   6. ouvrir une **pull request**, la passer sur **In review**, la faire relire par l'autre membre, fusionner sur `main` ;
+   7. déployer sur le **serveur de test** ;
+   8. vérifier la **définition du « terminé »** (ci-dessous), puis passer la user story à ✅ Terminé.
 
    Si une croyance se révèle fausse en route, elle s'écrit **tout de suite** dans `project-docs/reviews/`.
 4. **Clôturer l'Epic** (compétence `epic`).
@@ -94,7 +119,14 @@ Voir `project-docs/templates/user-story.md` — copie du même format, ne le dup
 
 > 1. Quel est le seuil universel que chaque user story doit franchir avant d'être terminée, indépendamment de sa propre définition du « terminé » ?
 
-*(À écrire)*
+Une user story passe à **Terminé** seulement quand **tout** ce qui suit est vrai, en plus de ses propres critères :
+1. **Tests.** Elle ajoute les tests de ce qu'elle construit, et toute la suite (backend et frontend) passe dans GitHub Actions.
+2. **Relecture.** La pull request est **relue par l'autre membre** avant la fusion sur `main`.
+3. **Vérification à la main.** Le comportement est vérifié dans le navigateur.
+4. **Serveur de test.** Elle est déployée et vérifiée sur le serveur de test.
+5. **Documentation.** Les documents concernés sont à jour (tableau « Quel document mettre à jour, et quand »).
+
+L'essai par la secrétaire n'est pas exigé pour chaque user story.
 
 ---
 
@@ -118,4 +150,6 @@ git config core.hooksPath .githooks
 
 Une commande, une fois par clone. Elle active `.githooks/pre-commit`, qui estampille `updated:` en UTC sur chaque fichier markdown indexé. Sautez-la et les dates cessent de bouger en silence, ce qui est pire que de ne pas en avoir — une date présente et fausse se lit comme vraie.
 
-*(Le reste est à écrire une fois l'outil de suivi choisi.)*
+**Ensuite, pour le suivi sur GitHub**, chaque membre de l'équipe, une fois :
+1. Être collaborateur du dépôt `jccarlbens/Application-de-gestion-du-cfdc` et du tableau Projects « CFDC » (n° 4). Membres : `jccarlbens` et `caleb17`.
+2. `gh auth login`, puis `gh auth refresh -s project`, pour que les compétences puissent ajouter des issues au tableau.
