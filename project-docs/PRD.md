@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T15:59:21Z
+updated: 2026-11-10T16:03:29Z
 ---
 
 # PRD.md — CFDC
@@ -142,7 +142,7 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 
 | Capacité | Déclencheur | Résultat |
 |---|---|---|
-| Se connecter | L'utilisateur fournit ses identifiants *(à préciser)* | Il accède aux écrans de son rôle |
+| Se connecter | L'utilisateur fournit son **numéro de badge AAN** (format `A00-00`) et son mot de passe, puis le code de **double authentification** reçu par email ou sur son téléphone | Il accède aux écrans de son rôle |
 | Créer un compte | L'admin ou le coordonnateur renseigne une personne et son rôle | Un compte est créé ; il n'y a pas d'inscription libre |
 
 **Formations, modules et documents**
@@ -150,7 +150,7 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 | Capacité | Déclencheur | Résultat |
 |---|---|---|
 | Enregistrer une formation | Un utilisateur renseigne son intitulé et son domaine (sûreté, sécurité…) | La formation existe dans le catalogue |
-| Enregistrer un module | Un utilisateur l'ajoute à une formation et lui associe un formateur | Le module fait partie de la formation |
+| Enregistrer un module | Un utilisateur l'ajoute à une formation et lui associe **un seul formateur** | Le module fait partie de la formation |
 | Déposer un document de cours | L'admin joint un fichier PDF, PowerPoint ou Word à un module | Le document est consultable par les formateurs du module |
 | Consulter ses modules et leurs documents | Un formateur est connecté | La liste de ses modules et leurs documents |
 
@@ -169,8 +169,8 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 | Capacité | Déclencheur | Résultat |
 |---|---|---|
 | Enregistrer un participant | Le service demandeur a fourni sa liste ; la secrétaire saisit nom, prénom, NIF et/ou CIN, fonction, service ou entreprise, téléphone | Le participant existe, interne à l'AAN ou externe, et il est inscrit à la session |
-| Relever les présences | La présence a été relevée par écrit pendant la session | Les présences sont enregistrées |
-| Saisir une évaluation | L'examen ou les questions ont été corrigés | La note sur 100 et les commentaires du participant ; il réussit à partir de 50/100 |
+| Relever les présences | La présence a été relevée par écrit pendant la session | Les présences sont enregistrées, **une fois pour toute la formation** (et non par module) |
+| Saisir une évaluation | L'examen ou les questions ont été corrigés | La note sur 100 et les commentaires du participant, **une note par formation** (et non par module) ; il réussit à partir de 50/100 |
 | Noter la remise d'une attestation ou d'un certificat | Le document, produit hors de l'application, est remis | La remise et sa date sont enregistrées |
 
 **Corrections**
@@ -186,9 +186,18 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 |---|---|---|
 | Voir la vue d'ensemble de l'unité | Le coordonnateur, un chef de service ou la direction l'ouvre | Le calendrier des sessions, les demandes en attente, le nombre de personnes formées par période, les taux de réussite |
 | Rechercher | Un utilisateur indique un participant, une formation ou une période | Les résultats correspondants, dont l'historique de formation d'un participant |
-| Exporter | Un utilisateur choisit une liste ou un bilan | Un fichier *(à préciser : Excel, PDF, ou les deux)* |
+| Exporter | Un utilisateur choisit une liste ou un bilan | Un fichier **Excel** ou **PDF**, au choix |
 
-**Ce que tout le monde supposera, mais qui n'est pas prévu.** *(à préciser)*
+**Notifications**
+
+| Capacité | Déclencheur | Résultat |
+|---|---|---|
+| Recevoir une notification | *(à préciser : quels événements)* | *(à préciser : qui la reçoit, par quel canal)* |
+
+**Ce que tout le monde supposera, mais qui n'est pas prévu.**
+- Les participants n'ont **pas de compte** : ils ne se connectent pas.
+- L'application **ne génère pas** les attestations ni les certificats : elle note seulement leur remise.
+- **Aucun paiement.**
 
 ## 7. Ce que le produit ne doit jamais faire
 
