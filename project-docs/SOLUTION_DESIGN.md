@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:48:02Z
+updated: 2026-11-10T16:52:26Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -68,7 +68,34 @@ updated: 2026-11-10T16:48:02Z
 > 1. Quelle est la pile pour chaque partie majeure du système, et pourquoi ce choix précisément ?
 > 2. Y a-t-il une pièce de la pile qui est un espace réservé ou une supposition plutôt qu'une vraie décision à ce stade ?
 
-*(À écrire)*
+La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAINED.md` partie 5, avec quatre ajouts (ADR 1 à 4).
+
+**Backend**
+
+| Pièce | Choix |
+|---|---|
+| Langage, framework | **Python 3.12+**, **FastAPI**, architecture en couches `entities / dal / bll / api` |
+| Base de données | **PostgreSQL**, dès le départ (ADR 2) |
+| ORM, migrations | **SQLAlchemy 2.x**, **Alembic** |
+| Validation | **Pydantic v2** |
+| Export | **openpyxl** (Excel), **fpdf2** (PDF) |
+| Emails | **SMTP**, serveur configurable (double authentification, mot de passe oublié) |
+| SMS | un **adaptateur par opérateur**, **Digicel** et **Natcom**, derrière une même interface (ADR 4) |
+| Documents de cours | fichiers stockés sur le **disque du serveur**, dans un dossier sauvegardé avec la base (ADR 4) |
+| Dépendances, tests | **uv**, **pytest** |
+
+**Frontend**
+
+| Pièce | Choix |
+|---|---|
+| Langage, framework | **TypeScript**, **React**, **Vite**, organisé en **Feature-Sliced Design** |
+| Style | **Tailwind CSS** |
+| Routage, état | **React Router**, **TanStack Query**, **Zustand** |
+| Tests, architecture | **Vitest + Testing Library**, **Steiger** |
+
+**Emballage et déploiement :** **Docker Compose** (ADR 3).
+
+**Ce qui reste une supposition :** que le service informatique de l'AAN accepte Docker sur ses serveurs (§15, Q1).
 
 ## 6. Couche de données
 
@@ -90,7 +117,7 @@ updated: 2026-11-10T16:48:02Z
 > 1. Qu'est-ce qui doit se passer en temps réel, par rapport à ce qui peut rester en requête/réponse ?
 > 2. Quel est le repli si le canal temps réel tombe au milieu d'une interaction ?
 
-*(À écrire)*
+**Non applicable.** Rien ne se met à jour en direct : tout fonctionne en requête et réponse.
 
 ## 9-10. Boucle de mise à jour ou de retour automatisée *(Conditionnelle — à sauter si le contenu et le comportement ne changent que par édition manuelle)*
 
@@ -98,7 +125,7 @@ updated: 2026-11-10T16:48:02Z
 > 2. Qui relit un changement automatisé avant sa mise en service, si quelqu'un le fait ?
 > 3. Quelle est la pire chose qu'une boucle de mise à jour automatisée pourrait faire si on la laissait sans contrôle ?
 
-*(À écrire)*
+**Non applicable.** Rien ne change tout seul : toutes les informations sont saisies à la main.
 
 ## 11. Vue d'ensemble du déploiement
 
@@ -128,13 +155,26 @@ updated: 2026-11-10T16:48:02Z
 > 1. Qu'a-t-on décidé qui aurait plausiblement pu aller dans l'autre sens ?
 > 2. Pourquoi l'autre option a-t-elle été rejetée, assez précisément pour que personne ne la repropose sans le savoir ?
 
-*(À écrire — une entrée numérotée par décision)*
+### ADR 1 — Reprendre la pile de `fds-pay` (FastAPI + React)
+*2026-11-10.* **Décidé :** FastAPI et React + TypeScript en Feature-Sliced Design. **Pourquoi :** l'auteur connaît déjà cette pile, les compétences `scaffold-backend-service` et `scaffold-frontend-app` du dépôt la génèrent, et une interface React facilitera le mode hors ligne prévu plus tard. **Rejeté :** **Django**, qui fournit d'origine un écran d'administration et l'authentification, avec moins de code ; rejeté parce qu'il ferait perdre les générateurs du dépôt et l'acquis de `fds-pay`.
+
+### ADR 2 — PostgreSQL dès le départ
+*2026-11-10.* **Décidé :** PostgreSQL, sans passer par SQLite. **Pourquoi :** 10 utilisateurs qui écrivent en même temps, un historique de toutes les modifications, et des sauvegardes quotidiennes fiables (`pg_dump`). **Rejeté :** SQLite, que recommande `_ARCHITECTURE_EXPLAINED.md` pour commencer ; il gère mal les écritures simultanées.
+
+### ADR 3 — Docker Compose pour l'emballage
+*2026-11-10.* **Décidé :** l'application et sa base tournent dans des conteneurs Docker Compose. **Pourquoi :** on ignore encore si les serveurs de l'AAN sont sous Windows ou Linux, et l'application doit pouvoir changer de serveur sans réécriture (`NFR.md` § Portabilité), y compris depuis l'hébergement temporaire de secours. **Rejeté :** une installation directe sur le serveur, qui lierait l'application à un système précis. **Dépend de :** l'accord du service informatique (§15, Q1).
+
+### ADR 4 — Fournisseurs derrière une interface, fichiers sur disque
+*2026-11-10.* **Décidé :** l'envoi des SMS passe par un adaptateur par opérateur (Digicel, Natcom) ; l'envoi des emails par SMTP configurable ; les documents de cours sont des fichiers sur le disque du serveur, dans un volume sauvegardé avec la base. **Pourquoi :** rien ne doit être codé en dur pour un fournisseur (`NFR.md` § Portabilité), et les serveurs de l'AAN suffisent pour stocker les documents. **Rejeté :** un stockage de fichiers dans le nuage, inutile pour ce volume et contraire à l'hébergement sur les serveurs de l'AAN.
 
 ## 15. Questions ouvertes
 
 > 1. Qu'est-ce qui est véritablement non résolu à l'instant, sans bloquer le démarrage, mais sans être oublié non plus ?
 > 2. Qui ou quoi résoudrait chaque question ouverte, et quand ?
 
-*(À écrire)*
+| # | Question | Qui la résout | Quand |
+|---|---|---|---|
+| Q1 | Le service informatique de l'AAN accepte-t-il Docker sur ses serveurs ? Sous quel système (Windows ou Linux) ? Y a-t-il déjà une base de données ? | L'auteur, auprès du service informatique | Avant le premier déploiement |
+| Q2 | Quels fournisseurs de SMS exactement (Digicel, Natcom) et quel budget ? | L'AAN | Avant de construire la double authentification par SMS |
 
 ---
