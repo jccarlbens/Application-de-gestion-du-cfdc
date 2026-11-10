@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T15:48:43Z
+updated: 2026-11-10T15:52:09Z
 ---
 
 # PRD.md — CFDC
@@ -35,7 +35,7 @@ L'application joue deux rôles :
 - une **base de données** des formations, à disposition des formateurs, des coordonnateurs et des chefs de service ;
 - un **outil de planification** : programmer les sessions de formation et noter les formations demandées, afin d'affiner le calendrier.
 
-**Pour qui.** Les formateurs, les coordonnateurs et les chefs de service de l'AAN. Les participants, qu'ils soient internes à l'AAN ou externes (concessionnaires, etc.), n'utilisent pas l'application pour l'instant : ils sont enregistrés à la main par le personnel du CFDC.
+**Pour qui.** Le personnel du CFDC : les formateurs, les coordonnateurs et les chefs de service du CFDC. Les participants, qu'ils soient internes à l'AAN ou externes (concessionnaires, etc.), n'utilisent pas l'application pour l'instant : ils sont enregistrés à la main par le personnel du CFDC.
 
 **Le problème résolu.** Aujourd'hui, tout est géré sur papier. Cela pose trois problèmes :
 - **les pertes** : un document égaré efface l'historique de formation ;
@@ -53,7 +53,7 @@ L'application joue deux rôles :
 **Les publics.** L'application connaît ces rôles :
 - la **secrétaire**, qui enregistre les informations : formations, sessions, participants, présences, évaluations ;
 - le **coordonnateur**, qui supervise et planifie les sessions de formation, et qui voit tout ;
-- les **chefs de service**, qui voient tout ;
+- les **chefs de service du CFDC**, qui voient tout. Un chef de service extérieur au CFDC, par exemple celui du service qui demande une formation, **n'a pas accès** à l'application ;
 - les **formateurs**, qui consultent les documents de cours (fichiers PDF, PowerPoint ou Word déposés par l'administrateur informatique) ;
 - l'**administrateur informatique**, qui crée les comptes et effectue les modifications et les suppressions ;
 - toute autre **personne autorisée**, qui peut consulter les informations.
@@ -75,11 +75,11 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 **Parcours d'une formation, de la demande à l'évaluation**
 1. **La demande.** Le service concerné envoie une requête administrative écrite à la coordination du CFDC. La requête est enregistrée dans l'application, où la secrétaire et le coordonnateur peuvent l'ajuster.
 2. **La planification.** Le coordonnateur fixe la date et la période de la session.
-3. **L'horaire.** Les chefs de service arrangent l'horaire.
+3. **L'horaire.** Les chefs de service du CFDC arrangent l'horaire.
 4. **Les participants.** Le service demandeur fournit la liste de ses participants ; la secrétaire les enregistre.
 5. **La présence.** Le jour de la formation, la présence est relevée par écrit, puis enregistrée dans l'application.
 6. **L'évaluation.** Les participants sont évalués, généralement par un examen ou des questions. Le résultat est enregistré sous forme d'une **note**, accompagnée de **commentaires**. La note est **sur 100** ; la réussite demande au moins **la moyenne, soit 50/100**.
-7. **L'attestation et le certificat.** Tous les participants présents reçoivent une **attestation**, qu'ils aient ou non la moyenne. Un **certificat** est délivré en plus, sur demande ou pour une formation que le **coordonnateur** décide d'estimer importante. Attestations et certificats sont **produits en dehors de l'application**.
+7. **L'attestation et le certificat.** Tous les participants présents reçoivent une **attestation**, qu'ils aient ou non la moyenne. Un **certificat** est délivré en plus, sur demande ou pour une formation que le **coordonnateur** décide d'estimer importante. Attestations et certificats sont **produits en dehors de l'application** ; l'application note leur **remise** et sa **date**.
 
 **Où le parcours se brise aujourd'hui.** Aucune étape ne bloque en particulier. Le risque est réparti sur tout le parcours : ce sont les problèmes du papier décrits au §1, c'est-à-dire les pertes, le manque de fiabilité et la dépendance envers une personne.
 
@@ -90,7 +90,15 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 > 2. Pour chaque tâche, que fait l'utilisateur aujourd'hui sans ce produit ?
 > 3. Quelle tâche, si elle reste non résolue, rend le produit entier sans objet ?
 
-*(À écrire)*
+| Rôle | Ce qu'il cherche à accomplir | Aujourd'hui |
+|---|---|---|
+| Secrétaire | Tenir à jour les formations à venir et leurs participants | Sur papier |
+| Coordonnateur | Avoir une vue d'ensemble de l'unité | Sur papier |
+| Chef de service du CFDC | *(à préciser)* | Sur papier |
+| Formateur | *(à préciser)* | Sur papier |
+| Administrateur informatique | *(à préciser)* | — |
+
+**La tâche indispensable.** Que l'application soit **simple à utiliser**. Si elle ne l'est pas, le personnel reviendra au papier, et le produit n'aura plus d'objet.
 
 ## 5. Expérience produit par paliers *(Conditionnelle — à sauter s'il n'y a qu'un seul palier d'accès ou de capacité)*
 
