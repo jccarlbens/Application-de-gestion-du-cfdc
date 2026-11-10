@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:39:05Z
+updated: 2026-11-10T16:42:29Z
 ---
 
 # NFR.md — CFDC
@@ -77,7 +77,7 @@ updated: 2026-11-10T16:39:05Z
 - **Langue :** l'interface est en **français** seulement.
 - **Prise en main :** une **formation** des utilisateurs suffit ; pas d'aide à l'écran ni de guide exigés. Cette formation est une condition de mise en service (`PRD.md` §12).
 - **Test du novice :** un nouvel utilisateur sait **inscrire un participant à une session** sans aide.
-- **Norme d'accessibilité :** *(à préciser)*
+- **Accessibilité :** pas de norme visée ; un texte **lisible** et bien contrasté suffit.
 
 ## Compatibilité
 
@@ -86,7 +86,7 @@ updated: 2026-11-10T16:39:05Z
 > 3. Faut-il interopérer avec un système existant ?
 
 - **Appareils :** les **ordinateurs Windows** du CFDC, des postes **pas très récents**. L'application est un site web, utilisable aussi sur téléphone (`PRD.md` §13), mais l'ordinateur est l'usage principal.
-- **Navigateurs :** *(à préciser)*
+- **Système et navigateurs :** **Windows 10**, avec **Google Chrome** et **Microsoft Edge**. Les autres navigateurs ne sont pas pris en charge.
 - **Interopérabilité :** aucune. L'application n'est reliée à aucun autre système de l'AAN (`PRD.md` §13).
 
 ## Conformité et aspects juridiques
@@ -95,7 +95,9 @@ updated: 2026-11-10T16:39:05Z
 > 2. Quel consentement ou quelle information est légalement exigé avant de collecter des données ?
 > 3. Qui est responsable si cela tourne mal ?
 
-*(À écrire)*
+- **Réglementation :** aucune loi ni règle particulière de l'AAN ou de l'aviation civile ne s'applique aux données ou à la conservation des dossiers de formation, à la connaissance de l'équipe.
+- **Information des participants :** les participants sont **informés** que leurs données personnelles (NIF, CIN, téléphone) sont enregistrées. *(à préciser : comment)*
+- **Responsable des données :** la **coordination du CFDC**.
 
 ## Maintenabilité
 
@@ -103,7 +105,9 @@ updated: 2026-11-10T16:39:05Z
 > 2. Quel est le plan pour maintenir la documentation en phase avec le code ?
 > 3. Y a-t-il une suite de tests, et que couvre-t-elle réellement ?
 
-*(À écrire)*
+- **Qui maintient :** l'**administrateur informatique**, qui est aussi l'auteur du projet.
+- **Documentation :** elle suit le code selon `PROJECT_WORKFLOW.md` (§ Quel document mettre à jour, et quand).
+- **Tests :** l'application doit être **testable** (`PRD.md` §11). *(à préciser dans `SOLUTION_DESIGN.md` et `PROJECT_WORKFLOW.md` : quels tests, et quand ils tournent)*
 
 ## Portabilité
 
@@ -129,7 +133,10 @@ Repris de `PRD.md` §10, qui reste la source.
 > 2. À quelle fréquence les données sont-elles sauvegardées, et une restauration a-t-elle déjà été réellement testée ?
 > 3. Quelle perte de données (RPO) et quelle indisponibilité (RTO) sont acceptables ?
 
-*(À écrire)*
+- **Sauvegarde :** **chaque jour**, sous la responsabilité de l'**administrateur informatique**. Une sauvegarde en place est une condition de mise en service (`PRD.md` §12).
+- **Perte de données acceptable (RPO) :** **deux journées** de saisie au plus.
+- **Indisponibilité acceptable (RTO) :** **une heure** au plus (§ Fiabilité).
+- **Restauration :** *(à préciser : test de restauration avant la mise en service, et à quelle fréquence ensuite)*
 
 ## Risques et mesures d'atténuation
 
