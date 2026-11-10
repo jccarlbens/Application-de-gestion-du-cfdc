@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T15:56:16Z
+updated: 2026-11-10T15:59:21Z
 ---
 
 # PRD.md — CFDC
@@ -134,7 +134,61 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 > 2. Pour chaque capacité, qu'est-ce qui la déclenche, et quelle en est la sortie réelle ?
 > 3. Y a-t-il une capacité que tout le monde supposera existante mais qui n'est en fait pas prévue ? Énoncez-la explicitement comme hors périmètre dès maintenant.
 
-*(À écrire)*
+**Organisation des formations.** Une **formation** (par exemple « conduite sur le tarmac ») contient plusieurs **modules** ; un module est un cours dispensé par un formateur. Une même formation peut être donnée **plusieurs fois par an**, chaque fois sous forme d'une **session**.
+
+Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
+
+**Accès**
+
+| Capacité | Déclencheur | Résultat |
+|---|---|---|
+| Se connecter | L'utilisateur fournit ses identifiants *(à préciser)* | Il accède aux écrans de son rôle |
+| Créer un compte | L'admin ou le coordonnateur renseigne une personne et son rôle | Un compte est créé ; il n'y a pas d'inscription libre |
+
+**Formations, modules et documents**
+
+| Capacité | Déclencheur | Résultat |
+|---|---|---|
+| Enregistrer une formation | Un utilisateur renseigne son intitulé et son domaine (sûreté, sécurité…) | La formation existe dans le catalogue |
+| Enregistrer un module | Un utilisateur l'ajoute à une formation et lui associe un formateur | Le module fait partie de la formation |
+| Déposer un document de cours | L'admin joint un fichier PDF, PowerPoint ou Word à un module | Le document est consultable par les formateurs du module |
+| Consulter ses modules et leurs documents | Un formateur est connecté | La liste de ses modules et leurs documents |
+
+**Demandes et planification**
+
+| Capacité | Déclencheur | Résultat |
+|---|---|---|
+| Enregistrer une demande de formation | Un service a envoyé une requête écrite à la coordination | La demande est notée, en attente |
+| Ajuster une demande | La secrétaire ou le coordonnateur la modifie | La demande mise à jour |
+| Planifier une session | Le coordonnateur fixe la date et la période d'une formation, en réponse à une demande ou non | Une session apparaît au calendrier |
+| Organiser les horaires | Un chef de service du CFDC ou le coordonnateur arrange les horaires d'une session | Les horaires de la session |
+| Marquer une formation comme importante | Le coordonnateur le décide | Ses participants peuvent recevoir un certificat |
+
+**Participants, présences et évaluations**
+
+| Capacité | Déclencheur | Résultat |
+|---|---|---|
+| Enregistrer un participant | Le service demandeur a fourni sa liste ; la secrétaire saisit nom, prénom, NIF et/ou CIN, fonction, service ou entreprise, téléphone | Le participant existe, interne à l'AAN ou externe, et il est inscrit à la session |
+| Relever les présences | La présence a été relevée par écrit pendant la session | Les présences sont enregistrées |
+| Saisir une évaluation | L'examen ou les questions ont été corrigés | La note sur 100 et les commentaires du participant ; il réussit à partir de 50/100 |
+| Noter la remise d'une attestation ou d'un certificat | Le document, produit hors de l'application, est remis | La remise et sa date sont enregistrées |
+
+**Corrections**
+
+| Capacité | Déclencheur | Résultat |
+|---|---|---|
+| Demander une modification ou une suppression | Un utilisateur repère une erreur dans une information déjà enregistrée | Une demande en attente pour l'admin |
+| Valider ou refuser une demande de correction | L'admin examine la demande | L'information est corrigée ou supprimée, ou la demande est refusée |
+
+**Consultation**
+
+| Capacité | Déclencheur | Résultat |
+|---|---|---|
+| Voir la vue d'ensemble de l'unité | Le coordonnateur, un chef de service ou la direction l'ouvre | Le calendrier des sessions, les demandes en attente, le nombre de personnes formées par période, les taux de réussite |
+| Rechercher | Un utilisateur indique un participant, une formation ou une période | Les résultats correspondants, dont l'historique de formation d'un participant |
+| Exporter | Un utilisateur choisit une liste ou un bilan | Un fichier *(à préciser : Excel, PDF, ou les deux)* |
+
+**Ce que tout le monde supposera, mais qui n'est pas prévu.** *(à préciser)*
 
 ## 7. Ce que le produit ne doit jamais faire
 
