@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:56:06Z
+updated: 2026-11-10T16:59:11Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -118,7 +118,7 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 | **Demande de formation** | service demandeur, date de réception, formation demandée, validée par le coordonnateur |
 | **Session** | formation, demande d'origine (facultative), date de début, date de fin, horaires. Une session dure **d'une heure à une semaine** |
 | **Participant** | nom, prénom, **NIF ou CIN** (au moins l'un des deux, obligatoire ; il sert à reconnaître la même personne d'une session à l'autre), fonction, service ou entreprise, téléphone, interne ou externe |
-| **Inscription** (un participant dans une session) | inscrit par, présence, note sur 100, commentaires, date de remise de l'attestation, date de remise du certificat |
+| **Inscription** (un participant dans une session) | inscrit par, présence (**un seul** présent ou absent pour toute la session, même si elle dure plusieurs jours), note sur 100, commentaires, date de remise de l'attestation, date de remise du certificat |
 | **Demande de correction** | fiche visée, modification ou suppression, changement proposé, demandeur, décision de l'administrateur |
 | **Journal** | qui, quoi, quand, valeur avant, valeur après. Rien n'y est jamais effacé (`PRD.md` §7) |
 
@@ -131,7 +131,14 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 > 1. Étape par étape, comment passe-t-on d'anonyme à authentifié, puis à autorisé pour une action précise ?
 > 2. Qu'est-ce qui est émis (un jeton, une session, une clé), et que prouve-t-il réellement ?
 
-*(À écrire)*
+**De l'anonyme à l'autorisé, étape par étape :**
+1. L'utilisateur saisit son **numéro de badge** et son **mot de passe**. Après **5 échecs**, le compte est bloqué jusqu'à ce que l'administrateur le débloque.
+2. Le serveur envoie un **code de double authentification** par le canal choisi (email par défaut, ou SMS). Le code vaut **5 minutes** et ne sert **qu'une fois**. Si le canal échoue, le serveur bascule sur l'autre ; en dernier recours, l'administrateur donne un code de secours.
+3. Une fois le code vérifié, le serveur ouvre une **session côté serveur**, dont l'identifiant est remis dans un **cookie protégé** (`HttpOnly`, `Secure`, `SameSite`) qu'aucun script du navigateur ne peut lire.
+4. La session expire après **15 minutes sans activité** ; chaque action la prolonge.
+5. **À chaque action**, le serveur vérifie que l'un des rôles de l'utilisateur l'autorise (`PRD.md` §5). L'interface masque ce qui n'est pas permis, mais c'est le serveur qui décide.
+
+**Ce que prouve la session :** que cette personne a présenté son badge, son mot de passe et un code reçu sur son email ou son téléphone il y a moins de 15 minutes d'inactivité. Désactiver ou bloquer un compte ferme ses sessions **immédiatement** (ADR 5).
 
 ## 8. Architecture temps réel ou interactive *(Conditionnelle — à sauter si rien n'est en direct ni en flux)*
 
@@ -154,7 +161,17 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 > 2. Quel est le chemin entre un changement local et sa mise en service ?
 > 3. Y a-t-il une étape de CI/CD, et qu'est-ce qu'elle conditionne réellement ?
 
-*(À écrire)*
+**Deux environnements**, chacun lancé par Docker Compose (ADR 3) :
+- un serveur de **test**, où la secrétaire et les autres utilisateurs essaient les nouveautés ;
+- un serveur de **production**, en service.
+
+Tous deux sont prévus sur les serveurs de l'AAN ; en attendant leur accès, un hébergement temporaire sert de secours (`NFR.md` § Risques).
+
+**Du changement à la mise en service :**
+1. Une branche, une **pull request** sur GitHub.
+2. **GitHub Actions** exécute les tests du backend et du frontend, et le contrôle d'architecture ; la fusion sur `main` exige qu'ils passent.
+3. L'administrateur déploie **à la main** sur le serveur de test (`docker compose`), puisque les serveurs de l'AAN ne sont pas joignables depuis GitHub.
+4. Une fois l'essai validé, il déploie la même version en production.
 
 ## 12. Hypothèses
 
@@ -187,6 +204,9 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 
 ### ADR 4 — Fournisseurs derrière une interface, fichiers sur disque
 *2026-11-10.* **Décidé :** l'envoi des SMS passe par un adaptateur par opérateur (Digicel, Natcom) ; l'envoi des emails par SMTP configurable ; les documents de cours sont des fichiers sur le disque du serveur, dans un volume sauvegardé avec la base. **Pourquoi :** rien ne doit être codé en dur pour un fournisseur (`NFR.md` § Portabilité), et les serveurs de l'AAN suffisent pour stocker les documents. **Rejeté :** un stockage de fichiers dans le nuage, inutile pour ce volume et contraire à l'hébergement sur les serveurs de l'AAN.
+
+### ADR 5 — Sessions côté serveur plutôt que jetons JWT
+*2026-11-10.* **Décidé :** une session gardée par le serveur, identifiée par un cookie protégé, expirant après 15 minutes d'inactivité. **Pourquoi :** pour une application interne d'une dizaine d'utilisateurs, c'est plus simple, et fermer une session (compte désactivé ou bloqué) prend effet tout de suite. **Rejeté :** les jetons JWT de `fds-pay`, qu'on ne peut pas révoquer avant leur expiration sans ajouter une liste de révocation.
 
 ## 15. Questions ouvertes
 
