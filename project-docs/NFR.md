@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:42:29Z
+updated: 2026-11-10T16:45:15Z
 ---
 
 # NFR.md — CFDC
@@ -96,7 +96,7 @@ updated: 2026-11-10T16:42:29Z
 > 3. Qui est responsable si cela tourne mal ?
 
 - **Réglementation :** aucune loi ni règle particulière de l'AAN ou de l'aviation civile ne s'applique aux données ou à la conservation des dossiers de formation, à la connaissance de l'équipe.
-- **Information des participants :** les participants sont **informés** que leurs données personnelles (NIF, CIN, téléphone) sont enregistrées. *(à préciser : comment)*
+- **Information des participants :** les participants sont **informés** que leurs données personnelles (NIF, CIN, téléphone) sont enregistrées ; ils en sont informés **oralement**.
 - **Responsable des données :** la **coordination du CFDC**.
 
 ## Maintenabilité
@@ -105,7 +105,7 @@ updated: 2026-11-10T16:42:29Z
 > 2. Quel est le plan pour maintenir la documentation en phase avec le code ?
 > 3. Y a-t-il une suite de tests, et que couvre-t-elle réellement ?
 
-- **Qui maintient :** l'**administrateur informatique**, qui est aussi l'auteur du projet.
+- **Qui maintient :** l'**administrateur informatique**, qui est aussi l'auteur du projet, avec un **partenaire de travail** qui peut le remplacer.
 - **Documentation :** elle suit le code selon `PROJECT_WORKFLOW.md` (§ Quel document mettre à jour, et quand).
 - **Tests :** l'application doit être **testable** (`PRD.md` §11). *(à préciser dans `SOLUTION_DESIGN.md` et `PROJECT_WORKFLOW.md` : quels tests, et quand ils tournent)*
 
@@ -114,7 +114,7 @@ updated: 2026-11-10T16:42:29Z
 > 1. Ceci pourrait-il déménager chez un autre hébergeur sans réécriture complète ?
 > 2. Y a-t-il quelque chose de codé en dur pour un fournisseur unique qui ne devrait pas l'être ?
 
-*(À écrire)*
+L'application doit pouvoir **changer de serveur sans réécriture** : vers un autre serveur de l'AAN, ou chez un hébergeur externe. Rien ne doit être codé en dur pour un serveur ou un fournisseur précis (adresses, fournisseur d'emails, fournisseur de SMS) ; tout cela passe par la configuration.
 
 ## Observabilité et supervision
 
@@ -136,7 +136,7 @@ Repris de `PRD.md` §10, qui reste la source.
 - **Sauvegarde :** **chaque jour**, sous la responsabilité de l'**administrateur informatique**. Une sauvegarde en place est une condition de mise en service (`PRD.md` §12).
 - **Perte de données acceptable (RPO) :** **deux journées** de saisie au plus.
 - **Indisponibilité acceptable (RTO) :** **une heure** au plus (§ Fiabilité).
-- **Restauration :** *(à préciser : test de restauration avant la mise en service, et à quelle fréquence ensuite)*
+- **Restauration :** une restauration est testée **avant la mise en service**, puis **une fois par mois**.
 
 ## Risques et mesures d'atténuation
 
@@ -144,7 +144,11 @@ Repris de `PRD.md` §10, qui reste la source.
 > 2. Pour chaque risque, quel est le plan s'il se produit malgré tout ?
 > 3. De quel risque, s'il se produisait, serait-il le plus difficile de se relever ?
 
-*(À écrire)*
+| Risque | Plan |
+|---|---|
+| **Dépendance envers une seule personne** : l'administrateur informatique valide les corrections, débloque les comptes, fait les sauvegardes et maintient l'application. C'est le problème même que l'application doit supprimer (`PRD.md` §1) | Un **partenaire de travail** peut le remplacer ; la documentation du projet doit lui suffire pour reprendre |
+| **Accès aux serveurs de l'AAN** difficile ou lent à obtenir auprès du service informatique | *(à préciser)* |
+| **Coût des SMS** de double authentification | L'email est le canal par défaut ; le SMS reste un choix de l'utilisateur et un canal de secours *(à préciser : plafond ou budget)* |
 
 ## Dépendances
 
@@ -152,6 +156,13 @@ Repris de `PRD.md` §10, qui reste la source.
 > 2. Que se passe-t-il si l'un devient indisponible ou change son API ?
 > 3. Y a-t-il parmi eux un point de défaillance unique ?
 
-*(À écrire)*
+| Dépendance | Si elle devient indisponible |
+|---|---|
+| **Serveurs de l'AAN**, gérés par le service informatique de l'AAN | L'application est hors service ; à rétablir en une heure au plus (§ Fiabilité) |
+| **Service d'envoi d'emails** (double authentification, mot de passe oublié) | Bascule sur le SMS, puis code de secours de l'administrateur (§ Fiabilité) |
+| **Fournisseur de SMS**, payé par l'AAN *(à préciser : lequel)* | Bascule sur l'email, puis code de secours de l'administrateur |
+| **L'administrateur informatique**, mainteneur | Son partenaire de travail le remplace (§ Risques) |
+
+**Point de défaillance unique :** les serveurs de l'AAN. Les deux canaux de double authentification se secourent l'un l'autre.
 
 ---
