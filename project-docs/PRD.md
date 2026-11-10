@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:24:11Z
+updated: 2026-11-10T16:26:16Z
 ---
 
 # PRD.md — CFDC
@@ -270,7 +270,7 @@ L'application ne doit **jamais** :
 > 3. Quelle est la plus petite version du « succès » qui vaudrait quand même d'avoir été livrée ?
 
 **L'application réussit si :**
-1. **75 % des formations** sont gérées dans l'application au bout des **3 premiers mois** de service ;
+1. **75 % des formations données pendant les 3 premiers mois** de service y sont enregistrées (par exemple, au moins 3 sessions sur 4) ;
 2. l'historique et les informations d'une formation se retrouvent en **2 minutes au plus**.
 
 **Qui juge.** La **direction du CFDC** et les **utilisateurs**.
@@ -285,7 +285,29 @@ L'application ne doit **jamais** :
 > 2. Qu'est-ce qui vous ferait le retirer après le lancement ?
 > 3. Y a-t-il ici une différence entre « pas encore parfait » et « réellement bloquant » ?
 
-*(À écrire)*
+**Conditions de mise en service, toutes non négociables :**
+- la double authentification fonctionne ;
+- les données personnelles des participants sont protégées comme le prévoit le §7 ;
+- les utilisateurs ont été formés à l'application ;
+- une sauvegarde des données est en place ;
+- la direction du CFDC a validé l'application.
+
+**Ce qui ferait retirer l'application après son lancement :**
+- une **fuite de données** ;
+- une **interface trop difficile à utiliser** : le personnel reviendrait au papier ;
+- une **application hors service**.
+
+**« Pas encore parfait » ou « bloquant ».** *Proposé par l'agent à la demande de l'utilisateur, à valider.*
+- **Tolérable au lancement :**
+  - un export PDF à la mise en page imparfaite ;
+  - un libellé maladroit ;
+  - un indicateur secondaire absent de la vue d'ensemble.
+- **Bloquant :**
+  - toute fuite de données personnelles ;
+  - une modification ou une suppression qui ne laisse pas de trace ;
+  - une double authentification en panne, qui empêche de se connecter ;
+  - une recherche qui dépasse 2 minutes ;
+  - une saisie si compliquée que la secrétaire garde le papier.
 
 ## 13. Hors périmètre — V1
 
