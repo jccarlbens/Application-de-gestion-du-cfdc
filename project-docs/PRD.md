@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:33:47Z
+updated: 2026-11-10T16:36:51Z
 ---
 
 # PRD.md — CFDC
@@ -322,7 +322,8 @@ La V1 ne comprend pas :
 - **d'application mobile** : la V1 est un **site web**, utilisable aussi sur téléphone ;
 - **l'inscription des participants par les services demandeurs** eux-mêmes ;
 - **le suivi des salles et du matériel** de formation ;
-- **de lien avec un autre système de l'AAN** (ressources humaines, contrôle des badges…).
+- **de lien avec un autre système de l'AAN** (ressources humaines, contrôle des badges…) ;
+- **de mode hors ligne** : sans connexion internet, il faut attendre son retour pour saisir. C'est une amélioration envisagée pour plus tard.
 
 ## 14. Documents liés
 

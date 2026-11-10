@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:33:47Z
+updated: 2026-11-10T16:36:51Z
 ---
 
 # NFR.md — CFDC
@@ -33,8 +33,10 @@ updated: 2026-11-10T16:33:47Z
 
 - **Disponibilité :** l'application est accessible **24 h/24, 7 j/7**.
 - **Panne tolérée :** au plus **une heure** avant que ce soit grave. Une application hors service est un motif de retrait (`PRD.md` §12).
-- **Coupure d'internet :** pouvoir continuer à saisir **hors ligne**, puis envoyer les saisies au retour de la connexion, serait intéressant. *(à décider : exigence de la V1, ou amélioration ultérieure)*
-- **Si l'envoi des codes de double authentification tombe** (email ou SMS) : *(à préciser)*
+- **Coupure d'internet :** pouvoir continuer à saisir **hors ligne**, puis envoyer les saisies au retour de la connexion, serait intéressant, mais c'est une **amélioration ultérieure**, hors de la V1.
+- **Si l'envoi des codes de double authentification tombe :**
+  - l'utilisateur **bascule sur l'autre canal** (SMS si l'email ne passe pas, et inversement) ;
+  - en dernier recours, l'**administrateur informatique** peut lui donner un **code de secours**.
 
 ## Capacité de montée en charge
 
@@ -42,7 +44,7 @@ updated: 2026-11-10T16:33:47Z
 > 2. Quelle ressource s'épuise la première ?
 > 3. La montée en charge est-elle ici un risque réel à court terme, ou une hypothèse pour la V1 ?
 
-*(À écrire)*
+**Pas de montée en charge prévue.** L'application sert le personnel du CFDC, une dizaine de personnes, et aucune extension à d'autres directions ou aéroports de l'AAN n'est envisagée. La montée en charge n'est pas un risque pour la V1.
 
 ## Sécurité
 
@@ -50,7 +52,19 @@ updated: 2026-11-10T16:33:47Z
 > 2. Qui ne doit jamais pouvoir y accéder ?
 > 3. Quel est le pire scénario de compromission, et est-il survivable ?
 
-*(À écrire)*
+**Ce que le système détient de plus sensible :** les données personnelles des participants (NIF, CIN, téléphone) et leurs évaluations.
+
+**Qui ne doit jamais y accéder :** toute personne extérieure au CFDC, y compris un chef de service d'un autre service de l'AAN. Au sein du CFDC, les données personnelles ne sont visibles que du coordonnateur et de l'administrateur informatique, une fois saisies (`PRD.md` §7).
+
+**Le pire scénario :** une fuite de données personnelles. C'est un motif de retrait de l'application (`PRD.md` §12).
+
+**Les mesures :**
+- **Connexion** par numéro de badge AAN, mot de passe et double authentification (email ou SMS).
+- **Mot de passe :** des règles habituelles de robustesse *(à préciser : longueur minimale)* ; **aucun changement obligatoire** à intervalle fixe.
+- **Blocage :** après **5 échecs** de connexion, le compte est bloqué ; seul l'**administrateur informatique** le débloque.
+- **Déconnexion automatique** après 15 minutes d'inactivité.
+- **Traçabilité :** chaque modification et chaque suppression garde qui, quoi et quand.
+- **Hébergement :** sur les **serveurs de l'AAN**.
 
 ## Utilisabilité et accessibilité
 
