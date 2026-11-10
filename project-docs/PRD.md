@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:12:30Z
+updated: 2026-11-10T16:14:54Z
 ---
 
 # PRD.md — CFDC
@@ -54,7 +54,7 @@ L'application joue deux rôles :
 - la **secrétaire**, qui enregistre les informations : formations, sessions, participants, présences, évaluations ;
 - le **coordonnateur**, qui supervise et planifie les sessions de formation, et qui voit tout ;
 - les **chefs de service du CFDC**, qui voient tout. Un chef de service extérieur au CFDC, par exemple celui du service qui demande une formation, **n'a pas accès** à l'application ;
-- les **formateurs**, qui consultent les documents de cours (fichiers PDF, PowerPoint ou Word déposés par l'administrateur informatique) ;
+- les **formateurs**, qui voient leurs modules et les noms de leurs participants, et consultent les documents de cours (fichiers PDF, PowerPoint ou Word déposés par l'administrateur informatique) ;
 - l'**administrateur informatique**, qui crée les comptes et effectue les modifications et les suppressions ;
 - la **direction du CFDC**, qui consulte les informations.
 
@@ -111,12 +111,14 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 | Action | Secrétaire | Coordonnateur | Chef de service du CFDC | Formateur | Admin informatique | Direction du CFDC |
 |---|---|---|---|---|---|---|
 | Enregistrer formations, sessions, participants, présences | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
-| Saisir les notes et les commentaires d'évaluation | ✅ | ✅ | ✅ | ✅ ses sessions | ✅ | ❌ |
+| Saisir les notes et les commentaires d'évaluation | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | Enregistrer ou ajuster une demande de formation | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | Planifier une session (date, période) | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
 | Organiser les horaires | ❌ | ✅ | ✅ | ❌ | ✅ | ❌ |
-| Tout consulter | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
-| Voir ses modules, leurs documents, ses participants et leurs notes | — | — | — | ✅ | — | — |
+| Tout consulter, sauf les données personnelles des participants | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| Voir les données personnelles des participants (NIF, CIN, téléphone) une fois saisies | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
+| Ajouter un participant à une session terminée | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Voir ses modules, leurs documents et les **noms** de ses participants | — | — | — | ✅ | — | — |
 | Déposer des documents de cours | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
 | Demander une modification ou une suppression | ✅ | ✅ | ✅ | ✅ | — | ❌ |
 | Valider cette demande | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
@@ -203,10 +205,12 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 > 3. Quel est le pire détournement plausible, et ce document dit-il ce qui se passe si quelqu'un l'essaie ?
 
 L'application ne doit **jamais** :
-- **montrer au formateur les données personnelles des participants** (NIF, CIN, téléphone). Le formateur fait son cours ; le coordonnateur et l'administrateur informatique, eux, y ont accès *(à préciser : les autres rôles)* ;
+- **montrer au formateur les données personnelles des participants** (NIF, CIN, téléphone). Le formateur fait son cours et ne voit que les noms de ses participants. Une fois ces données saisies, **seuls le coordonnateur et l'administrateur informatique** peuvent les voir ; la secrétaire les saisit mais ne les revoit pas ;
 - **effacer une information sans laisser de trace** : toute modification et toute suppression est conservée, avec qui l'a faite, quoi et quand ;
 - **cacher l'historique** : l'historique des modifications d'une information reste visible ;
-- **laisser inscrire une personne qui n'a pas suivi la formation** sans que cela se voie *(à préciser : comment l'empêcher ou le repérer)*.
+- **laisser inscrire une personne qui n'a pas suivi la formation** sans que cela se voie. Deux garde-fous :
+  - une fois la session terminée, **seul l'administrateur informatique** peut encore y ajouter un participant ;
+  - chaque inscription garde **le nom de la personne qui l'a faite**, et le coordonnateur peut le vérifier.
 
 **Ce qui passe toujours par un humain.** Toute modification ou suppression d'une information déjà enregistrée passe par l'administrateur informatique (§2).
 
