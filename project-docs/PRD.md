@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:30:28Z
+updated: 2026-11-10T16:33:47Z
 ---
 
 # PRD.md — CFDC
@@ -8,7 +8,7 @@ updated: 2026-11-10T16:30:28Z
 **Répond à :** que construisons-nous, pour qui, pourquoi ?
 **Dépend de :** rien — **c'est le premier document à remplir.** Le vocabulaire (`GLOSSARY.md`) se construit à partir de ce qui est décidé ici, et non l'inverse.
 
-> **Statut : V1 du PRD, remplie avec l'utilisateur section par section (2026-11-10).** Un seul point reste ouvert : la fréquence de suivi pour le coordonnateur et la direction du CFDC (§10). Toute modification ultérieure se note avec sa date et sa raison, sans effacer l'ancienne version.
+> **Statut : V1 du PRD, remplie avec l'utilisateur section par section (2026-11-10).** Toute modification ultérieure se note avec sa date et sa raison, sans effacer l'ancienne version.
 
 **En une ligne :** l'application CFDC retrace les formations que dispense l'Autorité Aéroportuaire Nationale (AAN) et aide à planifier leur calendrier.
 
@@ -259,7 +259,7 @@ L'application ne doit **jamais** :
 - les codes de double authentification, par email ou par SMS, qui ne partent plus ;
 - de nombreuses suppressions en peu de temps.
 
-**Qui regarde, et quand.** L'administrateur informatique consulte ces informations **chaque semaine**. Les fréquences pour le coordonnateur et la direction du CFDC restent **à valider**.
+**Qui regarde, et quand.** L'administrateur informatique consulte ces informations **chaque semaine**. Le coordonnateur et la direction du CFDC les consultent **chaque mois**.
 
 ## 11. Critères de succès
 
@@ -318,7 +318,11 @@ La V1 ne comprend pas :
 - **de comptes pour les participants** : la secrétaire les enregistre ;
 - **la génération des attestations et des certificats** : ils sont produits hors de l'application, qui note seulement leur remise et sa date ;
 - **de notifications**, sauf les codes de double authentification ;
-- **les convocations des participants**.
+- **les convocations des participants** ;
+- **d'application mobile** : la V1 est un **site web**, utilisable aussi sur téléphone ;
+- **l'inscription des participants par les services demandeurs** eux-mêmes ;
+- **le suivi des salles et du matériel** de formation ;
+- **de lien avec un autre système de l'AAN** (ressources humaines, contrôle des badges…).
 
 ## 14. Documents liés
 

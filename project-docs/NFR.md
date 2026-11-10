@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T17:14:13Z
+updated: 2026-11-10T16:33:47Z
 ---
 
 # NFR.md — CFDC
@@ -20,7 +20,10 @@ updated: 2026-11-09T17:14:13Z
 > 2. Y a-t-il un moment de charge de pointe connu ?
 > 3. Que mesure-t-on réellement — le temps de chargement d'une page, la latence d'une API, autre chose ?
 
-*(À écrire)*
+- **Seuil de l'inacceptable :** ouvrir une page ou enregistrer une saisie ne prend **jamais plus de 5 secondes**.
+- **Recherche :** l'historique et les informations d'une formation se retrouvent en **2 minutes au plus**, gestes de l'utilisateur compris (`PRD.md` §11).
+- **Pointes de charge :** elles dépendent des demandes de formation, par exemple une formation importante avec beaucoup de participants à saisir d'un coup.
+- **Utilisateurs simultanés :** **10** au maximum.
 
 ## Fiabilité et disponibilité
 
@@ -28,7 +31,10 @@ updated: 2026-11-09T17:14:13Z
 > 2. Une indisponibilité est-elle acceptable, et quand ?
 > 3. Quel est le plan si une dépendance dont ceci dépend tombe ?
 
-*(À écrire)*
+- **Disponibilité :** l'application est accessible **24 h/24, 7 j/7**.
+- **Panne tolérée :** au plus **une heure** avant que ce soit grave. Une application hors service est un motif de retrait (`PRD.md` §12).
+- **Coupure d'internet :** pouvoir continuer à saisir **hors ligne**, puis envoyer les saisies au retour de la connexion, serait intéressant. *(à décider : exigence de la V1, ou amélioration ultérieure)*
+- **Si l'envoi des codes de double authentification tombe** (email ou SMS) : *(à préciser)*
 
 ## Capacité de montée en charge
 
