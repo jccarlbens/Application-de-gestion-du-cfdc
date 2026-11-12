@@ -1,0 +1,73 @@
+name: CI
+
+# Une pull request vers main ne fusionne que si ces trois jobs sont verts
+# (PROJECT_WORKFLOW.md, définition du « terminé » ; affinage de l'Epic 1, Q5).
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cfdc
+          POSTGRES_PASSWORD: cfdc
+          POSTGRES_DB: cfdc_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U cfdc"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://cfdc:cfdc@localhost:5432/cfdc_test
+      ENVIRONMENT: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - name: Migrations
+        run: uv run alembic upgrade head
+      - name: Tests (unitaires et intégration)
+        run: uv run pytest
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.nvmrc
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: Lint du code (oxlint)
+        run: npm run lint
+      - name: Lint de l'architecture (Steiger)
+        run: npm run lint:arch
+      - name: Compilation (TypeScript et Vite)
+        run: npm run build
+      - name: Tests
+        run: npm test
+
+  # Les images construites ici sont celles que Render et les serveurs de l'AAN
+  # construiront : une image cassée se voit avant la fusion, pas au déploiement.
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Image du backend
+        run: docker build -t cfdc-backend backend
+      - name: Image du frontend
+        run: docker build -t cfdc-frontend frontend

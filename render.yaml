@@ -1,0 +1,33 @@
+# Serveur de TEST du CFDC sur Render, plan gratuit (affinage de US-001).
+# DONNÉES FICTIVES SEULEMENT : aucun vrai participant, NIF ou CIN n'y entre.
+# La base PostgreSQL est sur Neon (la base gratuite de Render expire après 30 jours).
+# Les mêmes Dockerfile servent à Docker Compose et aux serveurs de l'AAN (ADR 3).
+services:
+  - type: web
+    name: cfdc-backend
+    runtime: docker
+    plan: free
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/v1/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: DATABASE_URL
+        sync: false # secret : l'adresse fournie par Neon, saisie dans le tableau de bord de Render
+      - key: ENVIRONMENT
+        value: test
+      - key: LOG_LEVEL
+        value: INFO
+
+  - type: web
+    name: cfdc-frontend
+    runtime: docker
+    plan: free
+    dockerContext: ./frontend
+    dockerfilePath: ./frontend/Dockerfile
+    autoDeployTrigger: commit
+    envVars:
+      # L'adresse publique du backend ci-dessus. Si Render lui a donné une autre
+      # adresse (nom déjà pris), corrigez-la ici et dans le tableau de bord.
+      - key: BACKEND_URL
+        value: https://cfdc-backend.onrender.com
