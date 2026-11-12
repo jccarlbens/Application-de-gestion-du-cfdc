@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-09T18:27:04Z
+updated: 2026-11-12T15:36:53Z
 ---
 
 @AGENTS.md
@@ -18,6 +18,10 @@ updated: 2026-11-09T18:27:04Z
 ### Toujours demander
 
 **L'utilisateur veut qu'on lui demande toujours des précisions.** Dès qu'un point est ambigu ou non décidé, posez la question au lieu de supposer, et ne rédigez une section qu'après sa réponse.
+
+### Commits
+
+**À partir du 2026-11-12, tous les commits sont attribués à l'utilisateur** : auteur `jccarlbens` (adresse `noreply` GitHub), **sans** ligne `Co-Authored-By` ni lien de session Claude. Avant de committer dans un nouveau clone, vérifiez `git config user.name` et `git config user.email`.
 
 ### Langue
 
