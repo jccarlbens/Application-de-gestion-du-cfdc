@@ -1,0 +1,51 @@
+# Lance toute l'application en local : `docker compose up --build`,
+# puis http://localhost:8080 (l'interface) et http://localhost:8025 (Mailpit).
+# Les mêmes conteneurs serviront sur les serveurs de l'AAN (ADR 3).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cfdc}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cfdc}
+      POSTGRES_DB: ${POSTGRES_DB:-cfdc}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cfdc} -d ${POSTGRES_DB:-cfdc}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-cfdc}:${POSTGRES_PASSWORD:-cfdc}@db:5432/${POSTGRES_DB:-cfdc}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      # Les documents de cours (Epic 2) ; sauvegardés avec la base.
+      - documents:/data/documents
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    environment:
+      BACKEND_URL: http://backend:8000
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+
+  # Faux serveur d'email : capture tout, n'envoie rien. Interface sur :8025.
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "8025:8025"
+
+volumes:
+  db-data:
+  documents:
