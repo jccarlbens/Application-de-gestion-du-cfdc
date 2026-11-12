@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T17:11:26Z
+updated: 2026-11-12T15:53:34Z
 ---
 
 # AGENTS.md — CFDC
@@ -9,7 +9,7 @@ updated: 2026-11-10T17:11:26Z
 
 L'application CFDC retrace les formations que dispense l'**Autorité Aéroportuaire Nationale (AAN)** à travers son **Centre de Formation et de Développement des Compétences (CFDC)** : formations, modules, sessions, participants (internes à l'AAN ou externes), présences, notes sur 100 et remise des attestations. Elle aide aussi à planifier le calendrier des formations. Elle remplace une gestion sur papier. **Aucun paiement.** Elle est construite par deux personnes : `jccarlbens` (auteur et administrateur informatique) et `caleb17`.
 
-**Phase actuelle :** documents fondateurs remplis ; aucune ligne de code. Détail : `project-docs/PRD.md`.
+**Phase actuelle :** Epic 1 (mise en place et accès) ; le socle technique est posé par US-001. Statut : `project-docs/execution/EPIC_EXECUTION.md`.
 
 ## Carte des dossiers
 
@@ -33,6 +33,11 @@ project-docs/
   templates/                modèle de user story
 .claude/skills/             compétences : bootstrap-project-docs, epic, user-story, get-work-status…
 .githooks/                  estampille `updated:` à chaque commit
+backend/                    API FastAPI en couches : app/{entities,dal,bll,api/v1}, alembic/, tests/{unit,integration} ; voir backend/README.md
+frontend/                   React en Feature-Sliced Design : src/{app,pages,shared}, tests/{pure,rendered}, nginx/ ; voir frontend/README.md
+docker-compose.yml          toute l'application en local (db, backend, frontend, mailpit)
+render.yaml                 serveur de test sur Render (données fictives seulement)
+.github/workflows/ci.yml    tests et contrôles à chaque pull request
 ```
 
 ## Pile technique
