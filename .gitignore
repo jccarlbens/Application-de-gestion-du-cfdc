@@ -29,4 +29,3 @@ database/*.db-journal
 .coverage
 coverage.json
 frontend/coverage/
-.neon
