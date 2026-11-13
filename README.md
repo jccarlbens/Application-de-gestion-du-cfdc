@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-12T15:53:12Z
+updated: 2026-11-13T17:19:57Z
 ---
 
 # CFDC — Application de gestion du centre de formation de l'AAN
@@ -48,6 +48,8 @@ Ensuite, chaque fusion sur `main` redéploie les deux services. Le serveur de te
 Sur GitHub : *Settings* → *Branches* → *Add branch ruleset* (ou *Add rule*) pour `main` :
 - *Require a pull request before merging*, avec **1 approbation** ;
 - *Require status checks to pass*, avec les jobs **`backend`**, **`frontend`** et **`images`** du workflow CI.
+
+**Vérifiez que les trois noms apparaissent bien** sous *Require status checks to pass* : la case cochée seule ne suffit pas. Sans eux, une pull request à la CI rouge reste fusionnable dès qu'elle est approuvée (constaté sur la pull request n° 9).
 
 ## Mise en route, une fois par clone
 
