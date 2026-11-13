@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-13T17:24:33Z
+updated: 2026-11-13T18:16:17Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -21,7 +21,7 @@ updated: 2026-11-13T17:24:33Z
 **Dossier :** `epic-001-setup-and-access/`
 **Workstreams :** WS-01 Comptes et accès, WS-05 Corrections et traçabilité (le journal seulement)
 **Milestone GitHub :** « Epic 1 — Mise en place et accès »
-**Statut :** 🟡 En cours — US-001 en construction
+**Statut :** 🟡 En cours — US-001 en revue (pull request n° 9), US-002 en construction
 
 Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de test) et l'accès sécurisé du personnel du CFDC : comptes, rôles, connexion par badge, double authentification, blocage, déconnexion automatique, mot de passe oublié, et le journal des modifications.
 
@@ -32,7 +32,7 @@ Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de 
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
 | US-001 | Mise en place | 🟡 En cours | [US-001.md](epic-001-setup-and-access/US-001.md) |
-| US-002 | Comptes utilisateurs | 🔲 À faire | [US-002.md](epic-001-setup-and-access/US-002.md) |
+| US-002 | Comptes utilisateurs | 🟡 En cours | [US-002.md](epic-001-setup-and-access/US-002.md) |
 | US-003 | Journal des modifications | 🔲 À faire | [US-003.md](epic-001-setup-and-access/US-003.md) |
 | US-004 | Connexion et session | 🔲 À faire | [US-004.md](epic-001-setup-and-access/US-004.md) |
 | US-005 | Double authentification par email | 🔲 À faire | [US-005.md](epic-001-setup-and-access/US-005.md) |

@@ -24,12 +24,18 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-cfdc}:${POSTGRES_PASSWORD:-cfdc}@db:5432/${POSTGRES_DB:-cfdc}
       ENVIRONMENT: ${ENVIRONMENT:-development}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      # Emails (US-002) : capturés par Mailpit, jamais envoyés.
+      SMTP_HOST: mailpit
+      SMTP_PORT: "1025"
+      APP_BASE_URL: http://localhost:8080
     volumes:
       # Les documents de cours (Epic 2) ; sauvegardés avec la base.
       - documents:/data/documents
     depends_on:
       db:
         condition: service_healthy
+      mailpit:
+        condition: service_started
 
   frontend:
     build: ./frontend
