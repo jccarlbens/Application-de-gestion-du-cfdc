@@ -48,6 +48,15 @@ describe('SetPasswordPage', () => {
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
+  it("efface le message d'erreur dès qu'on corrige un champ", async () => {
+    renderAt('/mot-de-passe?jeton=abc123')
+    await fill('court')
+    expect(screen.getByRole('alert')).toBeInTheDocument()
+
+    await userEvent.setup().type(screen.getByLabelText('Mot de passe'), 'x')
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
   it('affiche le message du serveur quand le lien a expiré', async () => {
     const expired = new Response(JSON.stringify({ detail: "Ce lien n'est plus valable : il a expiré ou a déjà servi." }), {
       status: 410,

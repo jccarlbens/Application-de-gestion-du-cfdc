@@ -28,6 +28,15 @@ export function SetPasswordPage() {
   const [formError, setFormError] = useState<string | null>(null)
   const mutation = useMutation({ mutationFn: () => setPasswordWithLink(token, password) })
 
+  // Dès qu'on corrige un champ, l'ancien message d'erreur disparaît.
+  function edit(setter: (value: string) => void) {
+    return (value: string) => {
+      setter(value)
+      setFormError(null)
+      mutation.reset()
+    }
+  }
+
   if (!token) {
     return (
       <Layout>
@@ -71,7 +80,7 @@ export function SetPasswordPage() {
             autoComplete="new-password"
             className={inputClass}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => edit(setPassword)(e.target.value)}
           />
         </label>
         <label className="block text-sm font-medium text-brand-900">
@@ -81,7 +90,7 @@ export function SetPasswordPage() {
             autoComplete="new-password"
             className={inputClass}
             value={confirmation}
-            onChange={(e) => setConfirmation(e.target.value)}
+            onChange={(e) => edit(setConfirmation)(e.target.value)}
           />
         </label>
         {error && (
