@@ -10,6 +10,7 @@ from app.dal.database import Base, _sqlalchemy_url
 # Importez ici chaque module dal pour son effet de bord : enregistrer la
 # classe mappée par l'ORM sur Base.metadata, par exemple :
 # from app.dal import dal_<nom>  # noqa: F401
+from app.dal import dal_user  # noqa: F401
 #
 # Le reste de ce fichier est le squelette d'Alembic lui-même, déjà pointé vers
 # app.core.config.settings et app.dal.database.Base. Ses commentaires restent

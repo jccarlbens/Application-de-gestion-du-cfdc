@@ -1,6 +1,6 @@
 ---
 created: 2026-11-10T00:00:00Z
-updated: 2026-11-10T17:31:23Z
+updated: 2026-11-13T17:24:33Z
 ---
 
 # Affinage de l'Epic 001 — Mise en place et accès
@@ -56,5 +56,6 @@ Tout ce dont les Epics suivants ont besoin pour exister : le code de départ (ba
 | 6 | US-006 Mot de passe oublié | Réinitialisation par email | US-004 |
 | 7 | US-007 Droits et navigation par rôle | Vérification des droits côté serveur, écran d'accueil et menus selon le ou les rôles | US-004 |
 | 8 | US-008 Double authentification par SMS *(Should)* | Digicel et Natcom, choix du canal, bascule automatique sur l'autre canal | US-005 ; `SOLUTION_DESIGN.md` §15 Q2 |
+| 9 | US-009 Écran de gestion des comptes | Sorti de US-002 à son affinage (2026-11-13) : liste, création, rôles, désactivation | US-002, US-007 |
 
-**Ordre de construction à deux :** US-001 d'abord, seule. Puis US-002. Ensuite, en parallèle, US-003 pour un membre, et US-004 puis US-005 pour l'autre. Puis US-006 et US-007 en parallèle. US-008 en dernier, dès que les fournisseurs SMS sont connus.
+**Ordre de construction à deux :** US-001 d'abord, seule. Puis US-002. Ensuite, en parallèle, US-003 pour un membre, et US-004 puis US-005 pour l'autre. Puis US-006 et US-007 en parallèle. Puis US-009. US-008 en dernier, dès que les fournisseurs SMS sont connus.
