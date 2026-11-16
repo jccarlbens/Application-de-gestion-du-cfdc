@@ -18,6 +18,23 @@ services:
         value: test
       - key: LOG_LEVEL
         value: INFO
+      # Les liens envoyés par email mènent à l'interface du serveur de test.
+      - key: APP_BASE_URL
+        value: https://cfdc-frontend.onrender.com
+      # Emails par Brevo (US-002, décision 10). Les identifiants SMTP sont
+      # saisis dans le tableau de bord de Render, jamais ici.
+      - key: SMTP_HOST
+        value: smtp-relay.brevo.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_STARTTLS
+        value: "true"
+      - key: SMTP_USERNAME
+        sync: false # l'identifiant SMTP de Brevo
+      - key: SMTP_PASSWORD
+        sync: false # secret : la clé SMTP de Brevo
+      - key: EMAIL_SENDER
+        sync: false # une adresse d'expéditeur vérifiée dans Brevo, par exemple « CFDC <adresse@…> »
 
   - type: web
     name: cfdc-frontend
