@@ -36,9 +36,21 @@ def setup(session_factory):
     return bll, DalAudit(session_factory), email, session_factory
 
 
+@pytest.fixture(autouse=True)
+def _baseline(session_factory):
+    """Le journal ne se vide jamais, même entre deux tests : chaque test ne
+    regarde que les entrées écrites après son début."""
+    global _BASELINE
+    with session_factory() as session:
+        _BASELINE = session.scalar(text("SELECT coalesce(max(id), 0) FROM audit_log"))
+
+
+_BASELINE = 0
+
+
 def _rows(session_factory) -> list[dict]:
     with session_factory() as session:
-        result = session.execute(text("SELECT * FROM audit_log ORDER BY id"))
+        result = session.execute(text("SELECT * FROM audit_log WHERE id > :b ORDER BY id"), {"b": _BASELINE})
         return [dict(row._mapping) for row in result]
 
 
