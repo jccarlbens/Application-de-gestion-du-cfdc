@@ -6,9 +6,19 @@ export class ApiError extends Error {
   readonly status: number
 
   constructor(status: number, message?: string) {
-    super(message ?? `La requête a échoué (statut ${status}).`)
+    super(message ?? genericMessage(status))
     this.status = status
   }
+}
+
+// Sans explication du serveur. 502, 503 et 504 viennent du relais ou de
+// l'hébergeur, pas de notre code : sur le serveur de test, le backend se
+// réveille ou redémarre (vu sur US-002, le 2026-11-16).
+export function genericMessage(status: number): string {
+  if (status === 502 || status === 503 || status === 504) {
+    return 'Le serveur est momentanément indisponible. Réessayez dans une minute.'
+  }
+  return `La requête a échoué (statut ${status}).`
 }
 
 async function readError(response: Response): Promise<ApiError> {
