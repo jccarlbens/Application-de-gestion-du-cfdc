@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T17:06:16Z
+updated: 2026-11-16T21:23:22Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -140,7 +140,7 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 | **Participant** | nom, prénom, **NIF ou CIN** (au moins l'un des deux, obligatoire ; il sert à reconnaître la même personne d'une session à l'autre), fonction, service ou entreprise, téléphone, interne ou externe |
 | **Inscription** (un participant dans une session) | inscrit par, présence (**un seul** présent ou absent pour toute la session, même si elle dure plusieurs jours), note sur 100, commentaires, date de remise de l'attestation, date de remise du certificat |
 | **Demande de correction** | fiche visée, modification ou suppression, changement proposé, demandeur, décision de l'administrateur |
-| **Journal** | qui, quoi, quand, valeur avant, valeur après. Rien n'y est jamais effacé (`PRD.md` §7) |
+| **Journal** (`audit_log`) | heure, auteur (utilisateur ou libellé : « Ligne de commande (administrateur) », « Titulaire du compte (lien de mot de passe) »), fiche visée, table, action, valeurs avant et après en JSON. Écrit automatiquement dans la même transaction que la modification ; la base refuse de le modifier ou de le supprimer (ADR 6). Secrets jamais recopiés ; données personnelles masquées à la lecture (`PRD.md` §7) |
 
 **Les listes de référence.**
 - **Domaines de formation :** une liste fixe, que l'utilisateur fournira.
@@ -240,6 +240,9 @@ Tous deux sont prévus sur les serveurs de l'AAN ; en attendant leur accès, un 
 
 ### ADR 5 — Sessions côté serveur plutôt que jetons JWT
 *2026-11-10.* **Décidé :** une session gardée par le serveur, identifiée par un cookie protégé, expirant après 15 minutes d'inactivité. **Pourquoi :** pour une application interne d'une dizaine d'utilisateurs, c'est plus simple, et fermer une session (compte désactivé ou bloqué) prend effet tout de suite. **Rejeté :** les jetons JWT de `fds-pay`, qu'on ne peut pas révoquer avant leur expiration sans ajouter une liste de révocation.
+
+### ADR 6 — Un journal automatique, et protégé par la base
+*2026-11-16, US-003.* **Décidé :** chaque enregistrement en base (événement `before_flush` de SQLAlchemy) ajoute ses entrées à `audit_log` dans la même transaction ; chaque table se déclare journalisée ou exemptée, et un test échoue sinon ; un déclencheur PostgreSQL refuse toute modification, suppression ou remise à zéro du journal. **Pourquoi :** « rien ne s'efface sans trace » (`PRD.md` §7) doit tenir pour toutes les tables des Epics à venir, sans dépendre de la mémoire de chacun, et même en dehors de l'application. **Rejeté :** un appel explicite au journal dans chaque fonction d'écriture (facile à oublier) ; des déclencheurs PostgreSQL pour tout le journal (ils ne connaissent pas l'auteur connecté, et se testent mal). **Limite connue :** les modifications « en bloc » de SQLAlchemy échappent au mécanisme ; elles sont proscrites (`backend/README.md` § Journal).
 
 ## 15. Questions ouvertes
 
