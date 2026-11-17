@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:33:40Z
+updated: 2026-11-17T17:39:45Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -53,7 +53,7 @@ Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de 
 
 Le catalogue des formations, leurs modules et leurs formateurs, et les documents de cours (`PRD.md` §6 « Formations, modules et documents »). **Objectif :** le CFDC a son catalogue de formations dans l'application, et chaque formateur y retrouve ses modules et ses documents. Comportement et implémentation, une fois livrés : `functional-specs/ws-func-02-*.md` et `technical-specs/ws-tech-02-*.md`.
 
-**Affinage :** `epic-002-trainings-and-modules/epic-002-refinement.md`, à écrire — les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
+**Affinage :** [epic-002-refinement.md](epic-002-trainings-and-modules/epic-002-refinement.md) — en cours ; les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
 
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
