@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:29:48Z
+updated: 2026-11-17T17:33:40Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -41,6 +41,22 @@ Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de 
 | US-009 | Écran de gestion des comptes | ✅ Terminé | [US-009.md](epic-001-setup-and-access/US-009.md) |
 
 *Changé le 2026-11-17, à la clôture :* US-005, US-006 et US-008 sont passées à l'**Epic 7 — Sécurité avant la mise en service**, avec leurs fichiers et leurs issues.
+
+---
+
+## Epic 2 — Formations et modules
+
+**Dossier :** `epic-002-trainings-and-modules/`
+**Workstream :** WS-02 Formations et modules
+**Milestone GitHub :** « Epic 2 — Formations et modules »
+**Statut :** 🟡 En cours — créé le 2026-11-17 ; affinage à faire, aucune user story encore
+
+Le catalogue des formations, leurs modules et leurs formateurs, et les documents de cours (`PRD.md` §6 « Formations, modules et documents »). **Objectif :** le CFDC a son catalogue de formations dans l'application, et chaque formateur y retrouve ses modules et ses documents. Comportement et implémentation, une fois livrés : `functional-specs/ws-func-02-*.md` et `technical-specs/ws-tech-02-*.md`.
+
+**Affinage :** `epic-002-trainings-and-modules/epic-002-refinement.md`, à écrire — les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
+
+| User story | Titre | Statut | Spec |
+|---|---|---|---|
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:29:48Z
+updated: 2026-11-17T17:33:40Z
 ---
 
 # AGENTS.md — CFDC
@@ -9,7 +9,7 @@ updated: 2026-11-17T17:29:48Z
 
 L'application CFDC retrace les formations que dispense l'**Autorité Aéroportuaire Nationale (AAN)** à travers son **Centre de Formation et de Développement des Compétences (CFDC)** : formations, modules, sessions, participants (internes à l'AAN ou externes), présences, notes sur 100 et remise des attestations. Elle aide aussi à planifier le calendrier des formations. Elle remplace une gestion sur papier. **Aucun paiement.** Elle est construite par deux personnes : `jccarlbens` (auteur et administrateur informatique) et `caleb17`.
 
-**Phase actuelle :** Epic 1 (mise en place et accès) clos le 2026-11-17 ; prochain : Epic 2 (formations et modules). La double authentification et le mot de passe oublié sont reportés à l'Epic 7, **à terminer avant toute mise en service**. Statut : `project-docs/execution/EPIC_EXECUTION.md`.
+**Phase actuelle :** Epic 1 (mise en place et accès) clos le 2026-11-17 ; Epic 2 (formations et modules) en cours, affinage à faire. La double authentification et le mot de passe oublié sont reportés à l'Epic 7, **à terminer avant toute mise en service**. Statut : `project-docs/execution/EPIC_EXECUTION.md`.
 
 ## Carte des dossiers
 

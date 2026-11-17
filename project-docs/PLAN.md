@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:29:48Z
+updated: 2026-11-17T17:33:40Z
 ---
 
 # PLAN.md — CFDC
@@ -26,7 +26,7 @@ updated: 2026-11-17T17:29:48Z
 | Ordre | Epic | Workstreams | Priorité | Statut |
 |---|---|---|---|---|
 | 1 | `epic-001-setup-and-access` — Epic 1 — Mise en place et accès | WS-01, WS-05 (journal) | Must | ✅ Terminé — clos le 2026-11-17, voir `execution/EPIC_EXECUTION.md` |
-| 2 | `epic-002-trainings-and-modules` | WS-02 | Must | ⏳ Pas démarré |
+| 2 | `epic-002-trainings-and-modules` — Epic 2 — Formations et modules | WS-02 | Must | 🟡 En cours — créé le 2026-11-17, affinage à faire |
 | 3 | `epic-003-requests-and-sessions` | WS-03 | Must | ⏳ Pas démarré |
 | 4 | `epic-004-participants-and-tracking` | WS-04 | Must | ⏳ Pas démarré |
 | 5 | `epic-005-corrections` | WS-05 | Must | ⏳ Pas démarré |
@@ -78,7 +78,7 @@ Il n'y a pas de MVP (`PRD.md` §11) : **toutes les capacités du PRD sont Must**
 ### `epic-001-setup-and-access` — Must — ✅ clos le 2026-11-17
 A posé le socle (Docker Compose, GitHub Actions, serveur de test sur Render et Neon) et livré les comptes, la connexion par badge et mot de passe, le blocage, la déconnexion automatique, les droits et menus par rôle, l'écran des comptes et le **journal des modifications**. La double authentification et le mot de passe oublié sont passés à l'Epic 7. Bilan : `execution/epic-001-setup-and-access/epic-001-closeout.md` ; comportement : `functional-specs/ws-func-01-accounts-and-access.md` et `ws-func-05-traceability.md`.
 
-### `epic-002-trainings-and-modules` — Must
+### `epic-002-trainings-and-modules` — Must — 🟡 en cours
 Livre le catalogue des formations, leurs modules et formateurs, et les documents de cours. **Objectif :** le CFDC a son catalogue de formations dans l'application, et chaque formateur y retrouve ses modules et ses documents.
 
 ### `epic-003-requests-and-sessions` — Must
@@ -101,7 +101,7 @@ Livre la double authentification par email (US-005), le mot de passe oublié (US
 > 1. Quelle est la toute prochaine action concrète — et non une reformulation de la feuille de route entière ?
 > 2. Cette section risque-t-elle de devenir vite obsolète — le statut au quotidien devrait-il plutôt vivre dans un suivi dédié (`project-docs/execution/EPIC_EXECUTION.md`) ?
 
-1. Créer l'Epic 2 (`epic-002-trainings-and-modules` ; titre du Milestone à confirmer) avec la compétence `epic`, puis l'affiner : catalogue des formations, modules et formateurs, documents de cours.
+1. Affiner l'Epic 2 (« Epic 2 — Formations et modules », créé le 2026-11-17) avec la compétence `epic` : catalogue des formations, modules et formateurs, documents de cours ; puis écrire ses user stories.
 2. Poser au service informatique de l'AAN les questions Q1 et Q3 de `SOLUTION_DESIGN.md` §15 (Docker, système des serveurs, sortie vers internet) : leurs réponses conditionnent l'Epic 7 et la mise en service.
 3. Ne pas mettre en service avant la fin de l'Epic 7 (double authentification par email et mot de passe oublié).
 
