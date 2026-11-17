@@ -12,6 +12,7 @@ from app.core.exceptions import ForbiddenError, UserNotFoundError
 from app.entities.ent_audit import MASKED, AuditAction, EntAuditEntry
 from app.entities.ent_user import Role
 from app.main import app
+from tests.unit.api_routes import api_routes
 from tests.unit.fakes import actor
 
 USER_ID = str(uuid.uuid4())
@@ -96,9 +97,6 @@ def test_the_history_route_refuses_a_trainer(client) -> None:
 
 
 def test_no_route_writes_to_the_journal() -> None:
-    writes = [
-        route.path
-        for route in app.routes
-        if getattr(route, "path", "").startswith("/api/v1/history") and set(route.methods) - {"GET", "HEAD"}
-    ]
-    assert writes == []
+    history = [r for r in api_routes() if r.path.startswith("/api/v1/history")]
+    assert history, "aucune route d'historique trouvée : le test ne vérifierait rien"
+    assert all(r.methods <= {"GET", "HEAD"} for r in history)

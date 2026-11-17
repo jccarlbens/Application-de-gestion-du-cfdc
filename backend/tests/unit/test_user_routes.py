@@ -73,8 +73,9 @@ def test_admin_creates_lists_and_manages_an_account(client, email) -> None:
 def test_secretary_is_forbidden_with_a_french_message(client) -> None:
     _as(Role.SECRETARY)
     response = client.post("/api/v1/users", json=ACCOUNT)
+    # Refusée par la route elle-même, avant la BLL (US-007).
     assert response.status_code == 403
-    assert "créent des comptes" in response.json()["detail"]
+    assert response.json() == {"detail": "Votre rôle ne permet pas cette action."}
 
 
 def test_coordinator_cannot_grant_the_admin_role(client) -> None:

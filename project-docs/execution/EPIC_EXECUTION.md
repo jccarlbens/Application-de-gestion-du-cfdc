@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T16:07:42Z
+updated: 2026-11-17T16:14:07Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -21,7 +21,7 @@ updated: 2026-11-17T16:07:42Z
 **Dossier :** `epic-001-setup-and-access/`
 **Workstreams :** WS-01 Comptes et accès, WS-05 Corrections et traçabilité (le journal seulement)
 **Milestone GitHub :** « Epic 1 — Mise en place et accès »
-**Statut :** 🟡 En cours — US-007 en affinage ; US-005 et US-006 reportées après US-007
+**Statut :** 🟡 En cours — US-007 en construction ; US-005 et US-006 reportées après US-007
 
 Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de test) et l'accès sécurisé du personnel du CFDC : comptes, rôles, connexion par badge, double authentification, blocage, déconnexion automatique, mot de passe oublié, et le journal des modifications.
 
@@ -36,9 +36,9 @@ Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de 
 | US-001 | Mise en place | 🟡 En cours | [US-001.md](epic-001-setup-and-access/US-001.md) |
 | US-002 | Comptes utilisateurs | 🟡 En cours | [US-002.md](epic-001-setup-and-access/US-002.md) |
 | US-003 | Journal des modifications | 🟡 En cours | [US-003.md](epic-001-setup-and-access/US-003.md) |
-| US-004 | Connexion et session | 🟡 En cours | [US-004.md](epic-001-setup-and-access/US-004.md) |
+| US-004 | Connexion et session | 🟡 En cours — vérifiée, en attente de validation | [US-004.md](epic-001-setup-and-access/US-004.md) |
 | US-005 | Double authentification par email | 🔲 À faire | [US-005.md](epic-001-setup-and-access/US-005.md) |
 | US-006 | Mot de passe oublié | 🔲 À faire | [US-006.md](epic-001-setup-and-access/US-006.md) |
-| US-007 | Droits et navigation par rôle | 🔲 À faire | [US-007.md](epic-001-setup-and-access/US-007.md) |
+| US-007 | Droits et navigation par rôle | 🟡 En cours | [US-007.md](epic-001-setup-and-access/US-007.md) |
 | US-008 | Double authentification par SMS *(Should)* | 🔲 À faire | [US-008.md](epic-001-setup-and-access/US-008.md) |
 | US-009 | Écran de gestion des comptes | 🔲 À faire | [US-009.md](epic-001-setup-and-access/US-009.md) |
