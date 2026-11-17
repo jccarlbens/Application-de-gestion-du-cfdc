@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T15:50:13Z
+updated: 2026-11-17T17:29:48Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -131,7 +131,7 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 
 | Fiche | Contenu principal |
 |---|---|
-| **Utilisateur** | badge `A00-00` (unique), nom, email, téléphone, rôles (plusieurs possibles), canal de double authentification, actif ou désactivé, bloqué ou non |
+| **Utilisateur** (`users`, `user_roles`) | numéro de badge (une lettre majuscule, deux chiffres, un tiret, deux chiffres : `[A-Z]\d{2}-\d{2}`, unique), prénom et nom séparés, email (obligatoire, unique), téléphone (facultatif), rôles (un ou plusieurs, une ligne par rôle dans `user_roles`), canal de double authentification, actif ou désactivé, bloqué ou non, mot de passe haché en **Argon2id** (vide tant que la personne ne l'a pas choisi). Tables d'accès associées : `password_tokens` (liens de mot de passe, empreinte seulement), `login_attempts` (tentatives de connexion), `auth_sessions` (sessions de connexion). Détail : `technical-specs/ws-tech-01-accounts-and-access.md` |
 | **Formation** | intitulé, domaine, **importante ou non** (décidé par le coordonnateur pour la formation, et non pour une session) |
 | **Module** | formation, titre, formateur (un **utilisateur** ayant le rôle formateur : les formateurs ont un compte limité à leurs modules, `PRD.md` §5) |
 | **Document de cours** | module, fichier (PDF, PowerPoint, Word), déposé par, date |
@@ -153,7 +153,7 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 
 **De l'anonyme à l'autorisé, étape par étape :**
 1. L'utilisateur saisit son **numéro de badge** et son **mot de passe**. Chaque tentative est notée dans `login_attempts`, sans le mot de passe. Après **5 échecs consécutifs**, le compte est bloqué jusqu'à ce que l'administrateur le débloque.
-2. Le serveur envoie un **code de double authentification** par le canal choisi (email par défaut, ou SMS). Le code vaut **5 minutes** et ne sert **qu'une fois**. Si le canal échoue, le serveur bascule sur l'autre ; en dernier recours, l'administrateur donne un code de secours.
+2. Le serveur envoie un **code de double authentification** par le canal choisi (email par défaut, ou SMS). Le code vaut **5 minutes** et ne sert **qu'une fois**. Si le canal échoue, le serveur bascule sur l'autre ; en dernier recours, l'administrateur donne un code de secours. **Pas encore construite :** aujourd'hui, la session s'ouvre directement après le mot de passe ; cette étape arrive avec l'Epic 7 (US-005, US-008), **avant la mise en service**.
 3. Une fois le code vérifié, le serveur ouvre une **session côté serveur** (table `auth_sessions`, empreinte du jeton seulement ; cookie `cfdc_session`), dont l'identifiant est remis dans un **cookie protégé** (`HttpOnly`, `Secure`, `SameSite`) qu'aucun script du navigateur ne peut lire.
 4. La session expire après **15 minutes sans activité** ; chaque action la prolonge.
 5. **À chaque action**, le serveur vérifie que l'un des rôles de l'utilisateur l'autorise (`PRD.md` §5). L'interface masque ce qui n'est pas permis, mais c'est le serveur qui décide.
@@ -185,12 +185,12 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 - un serveur de **test**, où la secrétaire et les autres utilisateurs essaient les nouveautés ;
 - un serveur de **production**, en service.
 
-Tous deux sont prévus sur les serveurs de l'AAN ; en attendant leur accès, un hébergement temporaire sert de secours (`NFR.md` § Risques).
+Tous deux sont prévus sur les serveurs de l'AAN. **En attendant leur accès, le serveur de test tourne sur Render** (interface et API, deux services Docker gratuits, `render.yaml`), **avec la base sur Neon**, et ne reçoit **que des données fictives** (`NFR.md` § Risques). Il se redéploie **automatiquement à chaque fusion sur `main`**. Les emails y partent par Brevo (SMTP) ; en local, par Mailpit.
 
 **Du changement à la mise en service :**
 1. Une branche, une **pull request** sur GitHub.
 2. **GitHub Actions** exécute les tests du backend et du frontend, et le contrôle d'architecture ; la fusion sur `main` exige qu'ils passent.
-3. L'administrateur déploie **à la main** sur le serveur de test (`docker compose`), puisque les serveurs de l'AAN ne sont pas joignables depuis GitHub.
+3. Sur les serveurs de l'AAN, l'administrateur déploiera **à la main** (`docker compose`), puisqu'ils ne sont pas joignables depuis GitHub. Le serveur de test actuel, sur Render, se redéploie tout seul après la fusion.
 4. Une fois l'essai validé, il déploie la même version en production.
 
 ## 12. Hypothèses

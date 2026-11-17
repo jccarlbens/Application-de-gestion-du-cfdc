@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T16:18:17Z
+updated: 2026-11-17T17:29:48Z
 ---
 
 # AGENTS.md — CFDC
@@ -9,7 +9,7 @@ updated: 2026-11-17T16:18:17Z
 
 L'application CFDC retrace les formations que dispense l'**Autorité Aéroportuaire Nationale (AAN)** à travers son **Centre de Formation et de Développement des Compétences (CFDC)** : formations, modules, sessions, participants (internes à l'AAN ou externes), présences, notes sur 100 et remise des attestations. Elle aide aussi à planifier le calendrier des formations. Elle remplace une gestion sur papier. **Aucun paiement.** Elle est construite par deux personnes : `jccarlbens` (auteur et administrateur informatique) et `caleb17`.
 
-**Phase actuelle :** Epic 1 (mise en place et accès) ; le socle technique est posé par US-001. Statut : `project-docs/execution/EPIC_EXECUTION.md`.
+**Phase actuelle :** Epic 1 (mise en place et accès) clos le 2026-11-17 ; prochain : Epic 2 (formations et modules). La double authentification et le mot de passe oublié sont reportés à l'Epic 7, **à terminer avant toute mise en service**. Statut : `project-docs/execution/EPIC_EXECUTION.md`.
 
 ## Carte des dossiers
 
@@ -88,7 +88,7 @@ Voir `project-docs/SOLUTION_DESIGN.md` §5 (pile), §11 (déploiement) et ses AD
 - **Pas d'invention :** l'agent ne remplit jamais un document fondateur à la place de l'équipe ; il pose les questions, attend la réponse, puis rédige.
 - **Epics séquentiels.** Un seul Epic actif à la fois, dans l'ordre de `PLAN.md` ; les deux membres travaillent en parallèle sur des user stories différentes.
 - **Suivi sur GitHub.** User story = issue, Epic = Milestone, tableau Projects « CFDC » n° 4. L'agent ne déplace jamais une issue sur le tableau et ne marque jamais une user story comme terminée de lui-même. Détail : `project-docs/PROJECT_WORKFLOW.md`.
-- **Le serveur décide des droits.** Chaque route de l'API est **soit publique, soit protégée** par `require_roles(...)` (un test échoue sinon) ; les règles plus fines restent dans la BLL ; masquer un bouton ou un menu ne suffit jamais. Les menus de l'interface suivent le tableau de `execution/epic-001-setup-and-access/US-007.md`.
+- **Le serveur décide des droits.** Chaque route de l'API est **soit publique, soit protégée** par `require_roles(...)` (un test échoue sinon) ; les règles plus fines restent dans la BLL ; masquer un bouton ou un menu ne suffit jamais. Les menus de l'interface suivent le tableau de `functional-specs/ws-func-01-accounts-and-access.md`.
 - **Chaque table est journalisée ou exemptée** (`EXEMPT_TABLES`, avec sa raison) ; un test échoue sinon (US-003).
 - **Rien ne s'efface sans trace.** Toute modification et toute suppression passe par le journal (qui, quoi, quand, avant, après) ; une information enregistrée ne se modifie ou ne se supprime que par une demande de correction validée par l'administrateur (`PRD.md` §7).
 - **Attention aux homonymes** : session de formation / session de connexion, demande de formation / demande de correction, chef de service du CFDC / chef du service demandeur (`GLOSSARY.md`).
