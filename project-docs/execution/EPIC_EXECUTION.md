@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T15:47:25Z
+updated: 2026-11-17T16:07:42Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -21,13 +21,15 @@ updated: 2026-11-17T15:47:25Z
 **Dossier :** `epic-001-setup-and-access/`
 **Workstreams :** WS-01 Comptes et accès, WS-05 Corrections et traçabilité (le journal seulement)
 **Milestone GitHub :** « Epic 1 — Mise en place et accès »
-**Statut :** 🟡 En cours — US-004 en construction
+**Statut :** 🟡 En cours — US-007 en affinage ; US-005 et US-006 reportées après US-007
 
 Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de test) et l'accès sécurisé du personnel du CFDC : comptes, rôles, connexion par badge, double authentification, blocage, déconnexion automatique, mot de passe oublié, et le journal des modifications.
 
 **Affinage :** [epic-001-refinement.md](epic-001-setup-and-access/epic-001-refinement.md) — les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
 
 **Ordre de construction :** US-001 seule, d'abord ; puis US-002 ; ensuite, en parallèle, US-003 pour un membre, US-004 puis US-005 pour l'autre ; puis US-006 et US-007 en parallèle ; puis US-009 (écran des comptes, sorti de US-002 le 2026-11-13) ; US-008 en dernier (Should).
+
+*Changé le 2026-11-17, à la demande de l'administrateur :* **US-005** (double authentification par email) et **US-006** (mot de passe oublié) passent **après US-007**. Elles restent **obligatoires avant la mise en service** (`PLAN.md`, Must ; `PRD.md` §12) : reportées, pas abandonnées.
 
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
