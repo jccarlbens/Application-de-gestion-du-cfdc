@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:21:13Z
+updated: 2026-11-17T17:22:47Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -21,7 +21,7 @@ updated: 2026-11-17T17:21:13Z
 **Dossier :** `epic-001-setup-and-access/`
 **Workstreams :** WS-01 Comptes et accès, WS-05 Corrections et traçabilité (le journal seulement)
 **Milestone GitHub :** « Epic 1 — Mise en place et accès »
-**Statut :** 🟡 En cours — US-002, US-003, US-004, US-007 et US-009 terminées (2026-11-17) ; restent US-001 (à valider), US-005, US-006 et US-008
+**Statut :** 🟡 En cours — US-001, US-002, US-003, US-004, US-007 et US-009 terminées (2026-11-17) ; restent US-005, US-006 et US-008
 
 Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de test) et l'accès sécurisé du personnel du CFDC : comptes, rôles, connexion par badge, double authentification, blocage, déconnexion automatique, mot de passe oublié, et le journal des modifications.
 
@@ -33,7 +33,7 @@ Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de 
 
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
-| US-001 | Mise en place | 🟡 En cours | [US-001.md](epic-001-setup-and-access/US-001.md) |
+| US-001 | Mise en place | ✅ Terminé | [US-001.md](epic-001-setup-and-access/US-001.md) |
 | US-002 | Comptes utilisateurs | ✅ Terminé | [US-002.md](epic-001-setup-and-access/US-002.md) |
 | US-003 | Journal des modifications | ✅ Terminé | [US-003.md](epic-001-setup-and-access/US-003.md) |
 | US-004 | Connexion et session | ✅ Terminé | [US-004.md](epic-001-setup-and-access/US-004.md) |
