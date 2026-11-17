@@ -63,8 +63,15 @@ def test_a_failed_email_leaves_no_account(session_factory) -> None:
 
 
 def test_roles_and_activation_change_and_the_last_admin_is_protected(setup) -> None:
-    bll, dal, *_ = setup
-    admin = bll.create_first_admin(_account(badge="A01-01", email="admin@example.test", roles=()))
+    bll, dal, _, _, session_factory = setup
+    # La base locale peut déjà avoir des administrateurs : dans ce test (annulé
+    # à la fin), ils sont mis hors jeu, pour que celui-ci soit bien le dernier.
+    with session_factory() as session:
+        session.execute(
+            text("UPDATE users SET is_active = false WHERE id IN (SELECT user_id FROM user_roles WHERE role = 'it_admin')")
+        )
+        session.commit()
+    admin = bll.create_user(None, _account(badge="A01-01", email="admin@example.test", roles=("it_admin",)))
     acting = EntActor(user_id=admin.id, roles=admin.roles)
 
     with pytest.raises(LastAdminError):

@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-17T15:50:13Z
+updated: 2026-11-17T16:18:17Z
 ---
 
 # backend — API de l'application CFDC
@@ -99,3 +99,15 @@ Chaque création, modification et suppression d'une ligne s'inscrit dans la tabl
 - Au **5e échec consécutif**, le compte est bloqué ; le journal l'inscrit avec l'auteur « Blocage automatique (5 échecs) ». Une connexion réussie ou un déblocage remettent le compte à zéro.
 - Un numéro de badge inconnu et un mauvais mot de passe donnent le même message, « Numéro de badge ou mot de passe incorrect. », et le même temps de réponse. Un compte bloqué ou désactivé n'est signalé comme tel qu'à qui a donné le bon mot de passe.
 - Les sessions (`auth_sessions`) ne gardent que l'empreinte du jeton ; désactiver ou bloquer un compte ferme ses sessions dans la même transaction.
+
+## Droits : protéger une nouvelle route
+
+Chaque route de l'API est **soit publique, soit protégée** (US-007) ; `tests/unit/test_route_permissions.py` échoue sinon.
+
+- **Protégée** : l'acteur vient de `require_roles(...)`, qui refuse les autres rôles en `403 Votre rôle ne permet pas cette action.` avant tout traitement :
+  ```python
+  actor: EntActor = Depends(require_roles(Role.IT_ADMIN, Role.COORDINATOR))
+  ```
+  `require_roles(*ANY_ROLE)` : il suffit d'être connecté.
+- **Publique**, exprès : `dependencies=[Depends(public_route)]` sur le décorateur, et la route ajoutée à `PUBLIC` dans le test.
+- **Les règles plus fines** (le coordonnateur ne crée pas d'administrateur, le dernier administrateur est protégé) restent dans la BLL.
