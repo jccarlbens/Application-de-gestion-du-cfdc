@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T17:06:16Z
+updated: 2026-11-17T17:29:48Z
 ---
 
 # PRD.md — CFDC
@@ -188,7 +188,7 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 | Rechercher | Un utilisateur indique un participant, une formation ou une période | Les résultats correspondants, dont l'historique de formation d'un participant |
 | Exporter | Un utilisateur choisit une liste ou un bilan | Un fichier **Excel** ou **PDF**, au choix |
 
-**Notifications.** L'application n'envoie des emails ou des SMS que pour la **double authentification**. Il n'y a pas d'autre notification dans la V1 : l'information circule de vive voix, comme aujourd'hui.
+**Notifications.** L'application n'envoie des emails ou des SMS que pour l'**accès** : le lien pour choisir son premier mot de passe à la création d'un compte, le mot de passe oublié et la double authentification. Il n'y a pas d'autre notification dans la V1 : l'information circule de vive voix, comme aujourd'hui.
 
 **Ce que tout le monde supposera, mais qui n'est pas prévu.**
 - Les participants n'ont **pas de compte** : ils ne se connectent pas.

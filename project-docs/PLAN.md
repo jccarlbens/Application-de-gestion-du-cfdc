@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-12T15:46:47Z
+updated: 2026-11-17T17:29:48Z
 ---
 
 # PLAN.md — CFDC
@@ -25,12 +25,15 @@ updated: 2026-11-12T15:46:47Z
 
 | Ordre | Epic | Workstreams | Priorité | Statut |
 |---|---|---|---|---|
-| 1 | `epic-001-setup-and-access` — Epic 1 — Mise en place et accès | WS-01, WS-05 (journal) | Must | 🟡 En cours |
+| 1 | `epic-001-setup-and-access` — Epic 1 — Mise en place et accès | WS-01, WS-05 (journal) | Must | ✅ Terminé — clos le 2026-11-17, voir `execution/EPIC_EXECUTION.md` |
 | 2 | `epic-002-trainings-and-modules` | WS-02 | Must | ⏳ Pas démarré |
 | 3 | `epic-003-requests-and-sessions` | WS-03 | Must | ⏳ Pas démarré |
 | 4 | `epic-004-participants-and-tracking` | WS-04 | Must | ⏳ Pas démarré |
 | 5 | `epic-005-corrections` | WS-05 | Must | ⏳ Pas démarré |
 | 6 | `epic-006-overview-search-export` | WS-06 | Must | ⏳ Pas démarré |
+| 7 | `epic-007-pre-production-security` — Epic 7 — Sécurité avant la mise en service | WS-01 | Must (US-008 : Should) | ⏳ Pas démarré |
+
+**L'Epic 7 a été ajouté le 2026-11-17, à la clôture de l'Epic 1.** La double authentification par email (US-005), le mot de passe oublié (US-006) et le SMS (US-008) y sont reportés pour avancer sur le métier. Il vient en dernier, mais **il doit être terminé avant la mise en service** : sur le serveur de test, avec des données fictives seulement, la connexion par badge et mot de passe suffit.
 
 **Pourquoi cet ordre.** Chaque Epic s'appuie sur le précédent : on ne planifie pas de session sans formation, on n'inscrit pas de participant sans session, et la vue d'ensemble n'a de sens qu'une fois les données saisies. **Le journal des modifications est construit dès l'Epic 1** : chaque modification doit laisser une trace (`PRD.md` §7), et un journal ajouté à la fin laisserait échapper tout ce qui a été construit avant.
 
@@ -72,8 +75,8 @@ Il n'y a pas de MVP (`PRD.md` §11) : **toutes les capacités du PRD sont Must**
 > 2. Quel ou quels Workstreams touche-t-il principalement ?
 > 3. Quel est l'objectif en une phrase qu'une partie prenante pourrait répéter correctement ?
 
-### `epic-001-setup-and-access` — Must
-Met en place le socle : dépôt de code, Docker Compose, GitHub Actions, serveur de test. Livre les comptes, la connexion par badge et mot de passe, la double authentification (email ; SMS en Should), les rôles, le blocage, la déconnexion automatique, et le **journal des modifications**. **Objectif :** le personnel du CFDC peut se connecter en sécurité, et toute action laisse une trace.
+### `epic-001-setup-and-access` — Must — ✅ clos le 2026-11-17
+A posé le socle (Docker Compose, GitHub Actions, serveur de test sur Render et Neon) et livré les comptes, la connexion par badge et mot de passe, le blocage, la déconnexion automatique, les droits et menus par rôle, l'écran des comptes et le **journal des modifications**. La double authentification et le mot de passe oublié sont passés à l'Epic 7. Bilan : `execution/epic-001-setup-and-access/epic-001-closeout.md` ; comportement : `functional-specs/ws-func-01-accounts-and-access.md` et `ws-func-05-traceability.md`.
 
 ### `epic-002-trainings-and-modules` — Must
 Livre le catalogue des formations, leurs modules et formateurs, et les documents de cours. **Objectif :** le CFDC a son catalogue de formations dans l'application, et chaque formateur y retrouve ses modules et ses documents.
@@ -90,13 +93,16 @@ Livre les demandes de correction et leur validation par l'administrateur, avec l
 ### `epic-006-overview-search-export` — Must
 Livre la vue d'ensemble de l'unité, la recherche et l'export Excel et PDF. **Objectif :** retrouver l'historique d'une formation ou d'un participant en moins de 2 minutes, et sortir un bilan pour la direction.
 
+### `epic-007-pre-production-security` — Must (US-008 : Should)
+Livre la double authentification par email (US-005), le mot de passe oublié (US-006) et, si le budget et les opérateurs le permettent, la double authentification par SMS (US-008). Ces trois user stories viennent de l'Epic 1. **Objectif :** l'accès est assez sûr pour recevoir les vraies données de l'AAN ; rien ne passe en production avant.
+
 ## Prochaines étapes immédiates
 
 > 1. Quelle est la toute prochaine action concrète — et non une reformulation de la feuille de route entière ?
 > 2. Cette section risque-t-elle de devenir vite obsolète — le statut au quotidien devrait-il plutôt vivre dans un suivi dédié (`project-docs/execution/EPIC_EXECUTION.md`) ?
 
-1. Finaliser `GLOSSARY.md`, puis `PROJECT_WORKFLOW.md`, puis `AGENTS.md` et `CLAUDE.md`.
-2. Poser au service informatique de l'AAN les questions Q1 et Q3 de `SOLUTION_DESIGN.md` §15 (Docker, système des serveurs, sortie vers internet).
-3. Créer l'Epic 1 avec la compétence `epic` (Milestone sur le tableau GitHub « CFDC » n° 4), l'affiner, puis écrire sa première user story.
+1. Créer l'Epic 2 (`epic-002-trainings-and-modules` ; titre du Milestone à confirmer) avec la compétence `epic`, puis l'affiner : catalogue des formations, modules et formateurs, documents de cours.
+2. Poser au service informatique de l'AAN les questions Q1 et Q3 de `SOLUTION_DESIGN.md` §15 (Docker, système des serveurs, sortie vers internet) : leurs réponses conditionnent l'Epic 7 et la mise en service.
+3. Ne pas mettre en service avant la fin de l'Epic 7 (double authentification par email et mot de passe oublié).
 
 ---
