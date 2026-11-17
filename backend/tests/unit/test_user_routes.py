@@ -110,3 +110,25 @@ def test_the_password_link_works_without_being_connected(client, email) -> None:
     reused = client.post("/api/v1/password/setup", json={"token": token, "password": "formation2026"})
     assert reused.status_code == 410
     assert "plus valable" in reused.json()["detail"]
+
+
+@pytest.mark.parametrize("role", [Role.IT_ADMIN, Role.COORDINATOR])
+def test_one_account_is_read_by_its_badge_number(client, role) -> None:
+    _as(Role.IT_ADMIN)
+    client.post("/api/v1/users", json=ACCOUNT)
+    _as(role)
+    response = client.get("/api/v1/users/by-badge/b07-42")
+    assert response.status_code == 200
+    assert response.json()["badge"] == "B07-42"
+
+
+def test_an_unknown_badge_number_is_404_in_french(client) -> None:
+    _as(Role.IT_ADMIN)
+    response = client.get("/api/v1/users/by-badge/Z99-99")
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Aucun compte n'a ce numéro de badge."}
+
+
+def test_a_trainer_cannot_read_an_account(client) -> None:
+    _as(Role.TRAINER)
+    assert client.get("/api/v1/users/by-badge/B07-42").status_code == 403

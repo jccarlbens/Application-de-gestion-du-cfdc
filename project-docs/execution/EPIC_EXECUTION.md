@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T16:14:07Z
+updated: 2026-11-17T16:45:28Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -21,7 +21,7 @@ updated: 2026-11-17T16:14:07Z
 **Dossier :** `epic-001-setup-and-access/`
 **Workstreams :** WS-01 Comptes et accès, WS-05 Corrections et traçabilité (le journal seulement)
 **Milestone GitHub :** « Epic 1 — Mise en place et accès »
-**Statut :** 🟡 En cours — US-007 en construction ; US-005 et US-006 reportées après US-007
+**Statut :** 🟡 En cours — US-009 en construction ; US-005 et US-006 reportées après US-007
 
 Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de test) et l'accès sécurisé du personnel du CFDC : comptes, rôles, connexion par badge, double authentification, blocage, déconnexion automatique, mot de passe oublié, et le journal des modifications.
 
@@ -41,4 +41,4 @@ Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de 
 | US-006 | Mot de passe oublié | 🔲 À faire | [US-006.md](epic-001-setup-and-access/US-006.md) |
 | US-007 | Droits et navigation par rôle | 🟡 En cours | [US-007.md](epic-001-setup-and-access/US-007.md) |
 | US-008 | Double authentification par SMS *(Should)* | 🔲 À faire | [US-008.md](epic-001-setup-and-access/US-008.md) |
-| US-009 | Écran de gestion des comptes | 🔲 À faire | [US-009.md](epic-001-setup-and-access/US-009.md) |
+| US-009 | Écran de gestion des comptes | 🟡 En cours | [US-009.md](epic-001-setup-and-access/US-009.md) |

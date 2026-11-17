@@ -171,6 +171,12 @@ class BllUser:
         with acting_as(audit_actor(actor)):
             return self._dal.unblock(user_id, self._clock())
 
+    def get_by_badge(self, actor: EntActor, badge: str) -> EntUser:
+        """Un compte, pour sa page (US-009) : ceux qui voient la liste des comptes."""
+        if not actor.roles & {Role.IT_ADMIN, Role.COORDINATOR}:
+            raise ForbiddenError("Seuls l'administrateur informatique et le coordonnateur voient les comptes.")
+        return self.find_by_badge(badge)
+
     def find_by_badge(self, badge: str) -> EntUser:
         return self._dal.get_user_by_badge(badge.strip().upper())
 

@@ -54,6 +54,7 @@ def test_every_route_is_public_or_protected(route: ApiRoute) -> None:
 def test_admin_only_routes_are_admin_only() -> None:
     expected = {
         "/api/v1/users": {Role.IT_ADMIN, Role.COORDINATOR},
+        "/api/v1/users/by-badge/{badge}": {Role.IT_ADMIN, Role.COORDINATOR},
         "/api/v1/users/{user_id}/roles": {Role.IT_ADMIN},
         "/api/v1/users/{user_id}/deactivate": {Role.IT_ADMIN},
         "/api/v1/users/{user_id}/reactivate": {Role.IT_ADMIN},
