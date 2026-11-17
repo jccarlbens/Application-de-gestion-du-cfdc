@@ -16,7 +16,9 @@ from sqlalchemy.orm import Mapped, Session, mapped_column, relationship, session
 
 from app.core.exceptions import DuplicateBadgeError, DuplicateEmailError, UserNotFoundError
 from app.dal.dal_audit import AuditPolicy
+from app.dal.dal_auth import close_user_sessions
 from app.dal.database import Base, SessionLocal
+from app.entities.ent_auth import EntLoginRecord
 from app.entities.ent_user import EntNewUser, EntUser, Role, TwoFactorChannel
 
 
@@ -34,6 +36,9 @@ class UserModel(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     is_blocked: Mapped[bool] = mapped_column(Boolean, default=False)
     password_hash: Mapped[str | None] = mapped_column(String(255))
+    # Les échecs de connexion se comptent après cette date : un déblocage la
+    # remet à maintenant (US-004).
+    failures_counted_since: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     roles: Mapped[list["UserRoleModel"]] = relationship(
@@ -180,14 +185,56 @@ class DalUser:
             session.refresh(model)
             return _to_entity(model)
 
-    def set_active(self, user_id: uuid.UUID, is_active: bool) -> EntUser:
+    def set_active(self, user_id: uuid.UUID, is_active: bool, now: datetime) -> EntUser:
+        """Désactiver un compte ferme aussi ses sessions, dans la même
+        transaction : l'effet est immédiat (US-004)."""
         with self._sessions() as session:
             model = session.get(UserModel, user_id)
             if model is None:
                 raise UserNotFoundError("Ce compte n'existe pas.")
             model.is_active = is_active
+            if not is_active:
+                close_user_sessions(session, user_id, now)
             session.commit()
             session.refresh(model)
+            return _to_entity(model)
+
+    def get_login_record(self, badge: str) -> EntLoginRecord | None:
+        with self._sessions() as session:
+            model = session.scalars(select(UserModel).where(UserModel.badge == badge)).one_or_none()
+            if model is None:
+                return None
+            return EntLoginRecord(
+                user=_to_entity(model),
+                password_hash=model.password_hash,
+                failures_counted_since=model.failures_counted_since,
+            )
+
+    def block(self, user_id: uuid.UUID, now: datetime) -> None:
+        """Bloque le compte et ferme ses sessions, dans la même transaction."""
+        with self._sessions() as session:
+            model = session.get(UserModel, user_id)
+            model.is_blocked = True
+            close_user_sessions(session, user_id, now)
+            session.commit()
+
+    def unblock(self, user_id: uuid.UUID, now: datetime) -> EntUser:
+        """Débloque le compte ; ses échecs passés ne comptent plus."""
+        with self._sessions() as session:
+            model = session.get(UserModel, user_id)
+            if model is None:
+                raise UserNotFoundError("Ce compte n'existe pas.")
+            model.is_blocked = False
+            model.failures_counted_since = now
+            session.commit()
+            session.refresh(model)
+            return _to_entity(model)
+
+    def get_user_by_badge(self, badge: str) -> EntUser:
+        with self._sessions() as session:
+            model = session.scalars(select(UserModel).where(UserModel.badge == badge)).one_or_none()
+            if model is None:
+                raise UserNotFoundError("Aucun compte n'a ce numéro de badge.")
             return _to_entity(model)
 
     def use_password_token(self, token_hash: str, password_hash: str, now: datetime) -> bool:

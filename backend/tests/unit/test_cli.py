@@ -37,3 +37,20 @@ def test_a_bad_badge_fails_with_a_french_message(capsys) -> None:
     assert main(args, bll=bll) == EXIT_FAILED
     assert "A00-00" in capsys.readouterr().err
     assert dal.users == {}
+
+
+def test_unblock_user_by_badge(capsys) -> None:
+    bll, dal, _ = _bll()
+    main(["create-admin", *ADMIN_ARGS], bll=bll)
+    user = next(iter(dal.users.values()))
+    dal.block(user.id, None)
+
+    assert main(["unblock-user", "--badge", "a01-01"], bll=bll) == EXIT_OK
+    assert dal.users[user.id].is_blocked is False
+    assert "Compte débloqué : A01-01" in capsys.readouterr().out
+
+
+def test_unblock_user_with_an_unknown_badge(capsys) -> None:
+    bll, *_ = _bll()
+    assert main(["unblock-user", "--badge", "Z99-99"], bll=bll) == EXIT_FAILED
+    assert "Aucun compte n'a ce numéro de badge." in capsys.readouterr().err

@@ -2,15 +2,18 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from app.core.exceptions import (
+    AccountUnavailableError,
     AppError,
     DuplicateBadgeError,
     DuplicateEmailError,
     EmailDeliveryError,
     ForbiddenError,
+    InvalidCredentialsError,
     InvalidInputError,
     InvalidPasswordLinkError,
     LastAdminError,
     NotAuthenticatedError,
+    SessionExpiredError,
     UserNotFoundError,
     WeakPasswordError,
 )
@@ -20,6 +23,9 @@ from app.core.exceptions import (
 # l'exception est affiché tel quel à l'utilisateur : il est en français.
 _STATUS = {
     NotAuthenticatedError: 401,
+    SessionExpiredError: 401,
+    InvalidCredentialsError: 401,
+    AccountUnavailableError: 403,
     ForbiddenError: 403,
     UserNotFoundError: 404,
     DuplicateBadgeError: 409,

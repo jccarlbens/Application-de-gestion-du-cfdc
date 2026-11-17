@@ -8,6 +8,7 @@ from uuid import UUID
 COMMAND_LINE_LABEL = "Ligne de commande (administrateur)"
 PASSWORD_LINK_LABEL = "Titulaire du compte (lien de mot de passe)"
 SIGNED_IN_LABEL = "Utilisateur connecté"
+AUTO_BLOCK_LABEL = "Blocage automatique (5 échecs)"
 
 # Ce qui remplace la valeur d'un champ secret ou masqué dans le journal.
 SECRET_SET = "[secret]"

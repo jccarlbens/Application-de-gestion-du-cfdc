@@ -27,5 +27,13 @@ class Settings(BaseSettings):
     # Durée de validité du lien pour choisir son mot de passe (US-002, décision 11).
     password_link_hours: int = 48
 
+    # Connexion (US-004). La session se ferme après 15 minutes sans activité
+    # (PRD.md §9) ; le compte se bloque au 5e échec consécutif (NFR.md).
+    session_idle_minutes: int = 15
+    max_failed_logins: int = 5
+    # Le cookie ne voyage qu'en HTTPS. Seuls les tests automatiques, en http,
+    # le désactivent ; jamais un serveur.
+    session_cookie_secure: bool = True
+
 
 settings = Settings()

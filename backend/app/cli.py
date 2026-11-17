@@ -5,7 +5,9 @@ depuis son poste avec l'adresse de la base (US-002).
     uv run python -m app.cli create-user  --badge B07-42 --first-name P --last-name N --email E \\
         --role secretary [--role trainer …] [--phone T]
 
-Chacune envoie à la personne un lien pour choisir son mot de passe. La base
+    uv run python -m app.cli unblock-user --badge B07-42
+
+Les deux premières envoient à la personne un lien pour choisir son mot de passe. La base
 visée est celle de `DATABASE_URL` ; la procédure est dans backend/README.md.
 """
 
@@ -43,6 +45,8 @@ def _parser() -> argparse.ArgumentParser:
                 choices=[role.value for role in Role],
                 help="Rôle du compte ; répétez l'option pour en donner plusieurs.",
             )
+    unblock = commands.add_parser("unblock-user", help="Débloque un compte bloqué après 5 échecs de connexion.")
+    unblock.add_argument("--badge", required=True, help="Numéro de badge du compte à débloquer.")
     return parser
 
 
@@ -50,6 +54,14 @@ def main(argv: list[str] | None = None, bll: BllUser | None = None) -> int:
     args = _parser().parse_args(argv)
     configure_logging(settings.log_level, settings.environment)
     bll = bll or BllUser()
+    if args.command == "unblock-user":
+        try:
+            user = bll.unblock(None, bll.find_by_badge(args.badge).id)
+        except AppError as error:
+            print(f"Échec : {error}", file=sys.stderr)
+            return EXIT_FAILED
+        print(f"Compte débloqué : {user.badge} ({user.first_name} {user.last_name}).")
+        return EXIT_OK
     roles = args.role if args.command == "create-user" else [Role.IT_ADMIN.value]
     account = AccountInput(args.badge, args.first_name, args.last_name, args.email, args.phone, roles)
     try:

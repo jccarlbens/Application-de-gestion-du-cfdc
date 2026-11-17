@@ -65,3 +65,15 @@ class WeakPasswordError(AppError):
 
 class EmailDeliveryError(AppError):
     """Le serveur d'email a refusé ou n'a pas répondu."""
+
+
+class InvalidCredentialsError(AppError):
+    """Numéro de badge ou mot de passe incorrect, sans dire lequel."""
+
+
+class AccountUnavailableError(AppError):
+    """Le mot de passe est bon, mais le compte est bloqué ou désactivé."""
+
+
+class SessionExpiredError(AppError):
+    """Le cookie de session est là, mais la session est expirée ou fermée."""

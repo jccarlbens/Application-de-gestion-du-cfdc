@@ -121,7 +121,7 @@ def test_a_change_without_a_declared_author_is_refused(setup) -> None:
     bll, _, _, session_factory = setup
     user = bll.create_user(None, _account())
     with pytest.raises(MissingAuditActorError):
-        DalUser(session_factory).set_active(user.id, False)
+        DalUser(session_factory).set_active(user.id, False, NOW)
     assert DalUser(session_factory).get_user(user.id).is_active is True
 
 

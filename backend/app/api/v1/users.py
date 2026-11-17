@@ -60,3 +60,12 @@ def reactivate(
     bll: BllUser = Depends(get_bll_user),
 ) -> UserResponse:
     return UserResponse.from_entity(bll.set_active(actor, user_id, is_active=True))
+
+
+@router.post("/{user_id}/unblock", response_model=UserResponse)
+def unblock(
+    user_id: UUID,
+    actor: EntActor = Depends(get_current_actor),
+    bll: BllUser = Depends(get_bll_user),
+) -> UserResponse:
+    return UserResponse.from_entity(bll.unblock(actor, user_id))

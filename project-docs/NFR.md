@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T16:48:02Z
+updated: 2026-11-17T15:50:13Z
 ---
 
 # NFR.md — CFDC
@@ -148,6 +148,7 @@ Repris de `PRD.md` §10, qui reste la source.
 |---|---|
 | **Dépendance envers une seule personne** : l'administrateur informatique valide les corrections, débloque les comptes, fait les sauvegardes et maintient l'application. C'est le problème même que l'application doit supprimer (`PRD.md` §1) | Un **partenaire de travail** peut le remplacer ; la documentation du projet doit lui suffire pour reprendre |
 | **Accès aux serveurs de l'AAN** difficile ou lent à obtenir auprès du service informatique | Développer et faire tester sur un **hébergement temporaire**, puis migrer vers les serveurs de l'AAN (§ Portabilité) |
+| **Essais de nombreux numéros de badge** sur le serveur de test, public sur internet : le blocage après 5 échecs protège chaque compte, mais pas contre l'essai de beaucoup de comptes différents | **Risque accepté** pour la V1 (US-004, décision 5B) : aucune limite par adresse IP. Le serveur de test ne contient que des données fictives ; les serveurs de l'AAN seront sur le réseau interne. À revoir si l'application devait un jour être joignable depuis internet |
 | **Coût des SMS** de double authentification | L'email est le canal par défaut ; le SMS reste un choix de l'utilisateur et un canal de secours. L'AAN prévoit un **budget** pour les SMS *(montant à préciser)* |
 
 ## Dépendances

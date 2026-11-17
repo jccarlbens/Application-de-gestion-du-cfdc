@@ -40,6 +40,8 @@ EXEMPT_TABLES = {
     "audit_log": "le journal lui-même",
     "password_tokens": "des liens secrets à usage unique ; le mot de passe choisi est journalisé sur le compte",
     "alembic_version": "la version du schéma, tenue par Alembic",
+    "login_attempts": "les tentatives de connexion : un journal à part, qui ne se modifie pas (US-004)",
+    "auth_sessions": "les sessions de connexion, prolongées à chaque requête ; jetons secrets (US-004)",
 }
 
 

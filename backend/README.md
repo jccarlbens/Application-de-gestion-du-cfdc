@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-16T21:23:22Z
+updated: 2026-11-17T15:50:13Z
 ---
 
 # backend — API de l'application CFDC
@@ -37,6 +37,9 @@ Copiez `.env.example` en `.env`.
 | `SMTP_STARTTLS` | Chiffrer la connexion (`true` pour Brevo) | `false` |
 | `EMAIL_SENDER` | Expéditeur des emails | `CFDC <no-reply@cfdc.local>` |
 | `PASSWORD_LINK_HOURS` | Validité du lien pour choisir son mot de passe | `48` |
+| `SESSION_IDLE_MINUTES` | Fermeture de la session après ce temps sans activité | `15` |
+| `MAX_FAILED_LOGINS` | Échecs de connexion consécutifs avant blocage du compte | `5` |
+| `SESSION_COOKIE_SECURE` | Le cookie de session ne voyage qu'en HTTPS. **Ne jamais mettre `false` sur un serveur** : seuls les tests automatiques, en http, le font | `true` |
 
 ## Points d'entrée
 
@@ -49,8 +52,12 @@ Copiez `.env.example` en `.env`.
 | `POST /api/v1/users/{id}/deactivate`, `/reactivate` | Désactive ou réactive un compte (administrateur) |
 | `POST /api/v1/password/setup` | Choisit son mot de passe avec le jeton du lien, sans connexion |
 | `GET /api/v1/history/users/{id}` | L'historique d'un compte, dans l'ordre (administrateur, coordonnateur) |
+| `POST /api/v1/auth/login` | Connexion par numéro de badge et mot de passe ; pose le cookie de session `cfdc_session` |
+| `POST /api/v1/auth/logout` | Ferme la session et efface le cookie |
+| `GET /api/v1/auth/me` | La personne connectée |
+| `POST /api/v1/users/{id}/unblock` | Débloque un compte (administrateur) |
 
-Tant que la connexion (US-004) n'existe pas, les routes de `/users` répondent `401 Vous n'êtes pas connecté.`
+Sans cookie de session, les routes protégées répondent `401 Vous n'êtes pas connecté.` ; avec une session expirée ou fermée, `401 Votre session a expiré, reconnectez-vous.`
 | `GET /docs` | Documentation interactive de l'API |
 
 ## Comptes : les commandes
@@ -66,6 +73,7 @@ uv run python -m app.cli create-user --badge B07-42 --first-name Marie --last-na
 ```
 
 - `create-admin` crée le **premier** administrateur et refuse de servir une seconde fois.
+- `unblock-user --badge B07-42` débloque un compte bloqué après 5 échecs de connexion (en attendant l'écran de US-009).
 - `create-user` accepte un ou plusieurs `--role` parmi `secretary`, `coordinator`, `service_head`, `trainer`, `it_admin`, `direction`.
 
 **Sur le serveur de test**, le plan gratuit de Render n'a pas de terminal : lancez la commande **depuis votre poste**, avec l'adresse de la base Neon et les réglages Brevo, pour que l'email parte vraiment et que le lien mène au serveur de test :
@@ -84,3 +92,10 @@ Chaque création, modification et suppression d'une ligne s'inscrit dans la tabl
 - **Toute écriture déclare son auteur** avec `acting_as(...)`, dans la BLL. Sans auteur, l'enregistrement est refusé (`MissingAuditActorError`).
 - **Les modifications « en bloc »** (`update(...)`, `delete(...)` de SQLAlchemy) ne sont **pas** vues par le journal : modifiez les objets un par un.
 - **La base refuse** de modifier, supprimer ou vider `audit_log`, même en SQL à la main (déclencheur PostgreSQL).
+
+## Connexion
+
+- Chaque tentative est notée dans `login_attempts` (numéro de badge saisi, compte, réussite, motif), **jamais avec le mot de passe**.
+- Au **5e échec consécutif**, le compte est bloqué ; le journal l'inscrit avec l'auteur « Blocage automatique (5 échecs) ». Une connexion réussie ou un déblocage remettent le compte à zéro.
+- Un numéro de badge inconnu et un mauvais mot de passe donnent le même message, « Numéro de badge ou mot de passe incorrect. », et le même temps de réponse. Un compte bloqué ou désactivé n'est signalé comme tel qu'à qui a donné le bon mot de passe.
+- Les sessions (`auth_sessions`) ne gardent que l'empreinte du jeton ; désactiver ou bloquer un compte ferme ses sessions dans la même transaction.

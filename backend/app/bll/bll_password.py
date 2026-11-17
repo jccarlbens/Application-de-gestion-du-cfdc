@@ -27,3 +27,12 @@ def verify_password(password_hash: str, password: str) -> bool:
         return _HASHER.verify(password_hash, password)
     except VerificationError:
         return False
+
+
+# Une empreinte calculée une fois, pour faire le même travail qu'une vraie
+# vérification quand le compte n'existe pas (US-004).
+_DUMMY_HASH = _HASHER.hash("cfdc-compte-inexistant-0")
+
+
+def burn_verification_time(password: str) -> None:
+    verify_password(_DUMMY_HASH, password)
