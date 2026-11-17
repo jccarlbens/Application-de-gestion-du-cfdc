@@ -13,6 +13,8 @@ HAS_DATABASE = bool(os.environ.get("DATABASE_URL"))
 # app.core.config exige DATABASE_URL dès l'import. Les tests unitaires n'ouvrent
 # jamais de connexion : une adresse factice leur suffit.
 os.environ.setdefault("DATABASE_URL", "postgresql://unused:unused@127.0.0.1:1/unused")
+# Le client de test parle en http : le cookie de session doit pouvoir y voyager.
+os.environ.setdefault("SESSION_COOKIE_SECURE", "false")
 
 
 def pytest_collection_modifyitems(config, items):

@@ -161,7 +161,18 @@ class BllUser:
         if not is_active and user.is_active and Role.IT_ADMIN in user.roles:
             self._refuse_if_last_admin()
         with acting_as(audit_actor(actor)):
-            return self._dal.set_active(user_id, is_active)
+            return self._dal.set_active(user_id, is_active, self._clock())
+
+    def unblock(self, actor: EntActor | None, user_id: UUID) -> EntUser:
+        """Débloque un compte (US-004) : l'administrateur, ou la commande
+        `unblock-user` quand `actor` est None."""
+        if actor is not None:
+            self._require_admin(actor)
+        with acting_as(audit_actor(actor)):
+            return self._dal.unblock(user_id, self._clock())
+
+    def find_by_badge(self, badge: str) -> EntUser:
+        return self._dal.get_user_by_badge(badge.strip().upper())
 
     def _require_admin(self, actor: EntActor) -> None:
         if Role.IT_ADMIN not in actor.roles:
