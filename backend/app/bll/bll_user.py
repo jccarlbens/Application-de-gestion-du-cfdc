@@ -15,8 +15,15 @@ from app.core.exceptions import (
     InvalidPasswordLinkError,
     LastAdminError,
 )
+from app.dal.dal_audit import acting_as
 from app.dal.dal_email import DalEmail
 from app.dal.dal_user import DalUser
+from app.entities.ent_audit import (
+    COMMAND_LINE_LABEL,
+    PASSWORD_LINK_LABEL,
+    SIGNED_IN_LABEL,
+    EntAuditActor,
+)
 from app.entities.ent_user import EntActor, EntNewUser, EntUser, Role
 
 # Une lettre majuscule, deux chiffres, un tiret, deux chiffres (US-002, décision 2B).
@@ -42,6 +49,14 @@ class AccountInput:
     roles: Iterable[str]
 
 
+def audit_actor(actor: EntActor | None) -> EntAuditActor:
+    """L'auteur inscrit au journal (US-003) : l'utilisateur connecté, ou la
+    ligne de commande quand `actor` est None."""
+    if actor is None:
+        return EntAuditActor(user_id=None, label=COMMAND_LINE_LABEL)
+    return EntAuditActor(user_id=actor.user_id, label=SIGNED_IN_LABEL)
+
+
 def _hash_token(token: str) -> str:
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
@@ -64,7 +79,8 @@ class BllUser:
         if self._dal.admin_exists():
             raise AdminAlreadyExistsError("Un administrateur existe déjà : utilisez create-user.")
         with_admin_role = replace(account, roles=[*account.roles, Role.IT_ADMIN.value])
-        return self._save_and_send_link(self._validate(with_admin_role))
+        with acting_as(audit_actor(None)):
+            return self._save_and_send_link(self._validate(with_admin_role))
 
     def create_user(self, actor: EntActor | None, account: AccountInput) -> EntUser:
         """`actor` à None : la commande `create-user`, à qui l'on fait confiance."""
@@ -75,7 +91,8 @@ class BllUser:
                 raise ForbiddenError("Seuls l'administrateur informatique et le coordonnateur créent des comptes.")
             if not new_user.roles <= grantable:
                 raise ForbiddenError("Seul l'administrateur informatique peut donner le rôle d'administrateur.")
-        return self._save_and_send_link(new_user)
+        with acting_as(audit_actor(actor)):
+            return self._save_and_send_link(new_user)
 
     def _validate(self, account: AccountInput) -> EntNewUser:
         badge = account.badge.strip().upper()
@@ -135,14 +152,16 @@ class BllUser:
         user = self._dal.get_user(user_id)
         if Role.IT_ADMIN in user.roles and Role.IT_ADMIN not in new_roles and user.is_active:
             self._refuse_if_last_admin()
-        return self._dal.set_roles(user_id, new_roles)
+        with acting_as(audit_actor(actor)):
+            return self._dal.set_roles(user_id, new_roles)
 
     def set_active(self, actor: EntActor, user_id: UUID, is_active: bool) -> EntUser:
         self._require_admin(actor)
         user = self._dal.get_user(user_id)
         if not is_active and user.is_active and Role.IT_ADMIN in user.roles:
             self._refuse_if_last_admin()
-        return self._dal.set_active(user_id, is_active)
+        with acting_as(audit_actor(actor)):
+            return self._dal.set_active(user_id, is_active)
 
     def _require_admin(self, actor: EntActor) -> None:
         if Role.IT_ADMIN not in actor.roles:
@@ -156,7 +175,9 @@ class BllUser:
 
     def set_password_with_link(self, token: str, password: str) -> None:
         check_strength(password)
-        if not self._dal.use_password_token(_hash_token(token), hash_password(password), self._clock()):
+        with acting_as(EntAuditActor(user_id=None, label=PASSWORD_LINK_LABEL)):
+            used = self._dal.use_password_token(_hash_token(token), hash_password(password), self._clock())
+        if not used:
             raise InvalidPasswordLinkError(
                 "Ce lien n'est plus valable : il a expiré ou a déjà servi."
             )

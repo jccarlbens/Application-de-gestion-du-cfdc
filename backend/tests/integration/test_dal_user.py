@@ -42,7 +42,7 @@ def test_an_account_and_its_roles_are_stored(setup) -> None:
     assert stored.roles == {Role.SECRETARY, Role.TRAINER}
     assert stored.is_active and not stored.is_blocked and not stored.has_password
     assert stored.created_at.tzinfo is not None
-    assert [u.badge for u in dal.list_users()] == ["B07-42"]
+    assert "B07-42" in [u.badge for u in dal.list_users()]
 
 
 def test_the_database_refuses_duplicate_badges_and_emails(setup) -> None:
@@ -59,7 +59,7 @@ def test_a_failed_email_leaves_no_account(session_factory) -> None:
     bll = BllUser(dal=dal, email=FakeEmail(fails=True), clock=lambda: NOW)
     with pytest.raises(EmailDeliveryError):
         bll.create_user(None, _account())
-    assert dal.list_users() == []
+    assert "B07-42" not in [u.badge for u in dal.list_users()]
 
 
 def test_roles_and_activation_change_and_the_last_admin_is_protected(setup) -> None:
@@ -101,8 +101,10 @@ def test_the_link_stores_an_argon2id_hash_only_once_and_expires(setup) -> None:
 
 def test_only_a_hash_of_the_link_is_stored(setup) -> None:
     bll, _, email, _, session_factory = setup
-    bll.create_user(None, _account())
+    user = bll.create_user(None, _account())
     token = re.search(r"jeton=([\w-]+)", email.sent[0]["body"]).group(1)
     with session_factory() as session:
-        stored = session.execute(text("SELECT token_hash FROM password_tokens")).scalar_one()
+        stored = session.execute(
+            text("SELECT token_hash FROM password_tokens WHERE user_id = :u"), {"u": user.id}
+        ).scalar_one()
     assert stored != token and len(stored) == 64

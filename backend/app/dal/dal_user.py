@@ -10,18 +10,19 @@ from sqlalchemy import (
     UniqueConstraint,
     func,
     select,
-    update,
 )
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Mapped, Session, mapped_column, relationship, sessionmaker
 
 from app.core.exceptions import DuplicateBadgeError, DuplicateEmailError, UserNotFoundError
+from app.dal.dal_audit import AuditPolicy
 from app.dal.database import Base, SessionLocal
 from app.entities.ent_user import EntNewUser, EntUser, Role, TwoFactorChannel
 
 
 class UserModel(Base):
     __tablename__ = "users"
+    __audit__ = AuditPolicy(subject=lambda user: ("users", user.id), secret=frozenset({"password_hash"}))
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     badge: Mapped[str] = mapped_column(String(6), unique=True)
@@ -43,6 +44,8 @@ class UserModel(Base):
 class UserRoleModel(Base):
     __tablename__ = "user_roles"
     __table_args__ = (UniqueConstraint("user_id", "role"),)
+    # Un rôle se journalise sous son compte : l'historique d'un compte montre ses rôles.
+    __audit__ = AuditPolicy(subject=lambda role: ("users", role.user_id or role.user.id))
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), index=True)
@@ -159,11 +162,20 @@ class DalUser:
             ) > 0
 
     def set_roles(self, user_id: uuid.UUID, roles: frozenset[Role]) -> EntUser:
+        """Retire et ajoute les rôles un par un, pour que le journal voie chaque
+        rôle retiré (une suppression) et chaque rôle ajouté (une création)."""
         with self._sessions() as session:
             model = session.get(UserModel, user_id)
             if model is None:
                 raise UserNotFoundError("Ce compte n'existe pas.")
-            model.roles = [UserRoleModel(role=role.value) for role in sorted(roles)]
+            wanted = {role.value for role in roles}
+            current = {r.role: r for r in model.roles}
+            for name, role_model in current.items():
+                if name not in wanted:
+                    model.roles.remove(role_model)
+                    session.delete(role_model)
+            for name in sorted(wanted - current.keys()):
+                model.roles.append(UserRoleModel(role=name, user=model))
             session.commit()
             session.refresh(model)
             return _to_entity(model)
@@ -180,22 +192,25 @@ class DalUser:
 
     def use_password_token(self, token_hash: str, password_hash: str, now: datetime) -> bool:
         """Enregistre le mot de passe si le lien est valable, et le consomme.
-        Renvoie False si le lien est inconnu, expiré ou déjà utilisé."""
+        Renvoie False si le lien est inconnu, expiré ou déjà utilisé.
+
+        Une mise à jour ordinaire, et non « en bloc » : le journal ne voit que
+        les modifications faites par les objets (US-003). Le verrou de ligne
+        empêche deux utilisations simultanées du même lien."""
         with self._sessions() as session:
-            used = session.execute(
-                update(PasswordTokenModel)
+            token = session.scalars(
+                select(PasswordTokenModel)
                 .where(
                     PasswordTokenModel.token_hash == token_hash,
                     PasswordTokenModel.used_at.is_(None),
                     PasswordTokenModel.expires_at > now,
                 )
-                .values(used_at=now)
-                .returning(PasswordTokenModel.user_id)
-            ).scalar_one_or_none()
-            if used is None:
-                session.rollback()
+                .with_for_update()
+            ).one_or_none()
+            if token is None:
                 return False
-            session.execute(update(UserModel).where(UserModel.id == used).values(password_hash=password_hash))
+            token.used_at = now
+            user = session.get(UserModel, token.user_id)
+            user.password_hash = password_hash
             session.commit()
             return True
-

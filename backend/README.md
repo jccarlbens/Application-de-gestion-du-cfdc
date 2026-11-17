@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-13T18:16:17Z
+updated: 2026-11-16T21:23:22Z
 ---
 
 # backend — API de l'application CFDC
@@ -48,6 +48,7 @@ Copiez `.env.example` en `.env`.
 | `PUT /api/v1/users/{id}/roles` | Change les rôles (administrateur) |
 | `POST /api/v1/users/{id}/deactivate`, `/reactivate` | Désactive ou réactive un compte (administrateur) |
 | `POST /api/v1/password/setup` | Choisit son mot de passe avec le jeton du lien, sans connexion |
+| `GET /api/v1/history/users/{id}` | L'historique d'un compte, dans l'ordre (administrateur, coordonnateur) |
 
 Tant que la connexion (US-004) n'existe pas, les routes de `/users` répondent `401 Vous n'êtes pas connecté.`
 | `GET /docs` | Documentation interactive de l'API |
@@ -74,3 +75,12 @@ DATABASE_URL='postgresql://…neon.tech/…' APP_BASE_URL=https://cfdc-frontend.
 ```
 
 Le serveur de test ne reçoit **que des données fictives** ; utilisez des adresses email que vous lisez vous-même.
+
+## Journal des modifications
+
+Chaque création, modification et suppression d'une ligne s'inscrit dans la table `audit_log` (US-003), **dans la même transaction** : auteur, heure, fiche, action, valeurs avant et après.
+
+- **Une nouvelle table doit choisir** : soit `__audit__ = AuditPolicy(...)` sur son modèle (`app/dal/dal_audit.py`), avec ses champs `secret` (jamais recopiés) et `personal` (masqués à la lecture) ; soit une ligne dans `EXEMPT_TABLES`, avec la raison. Sinon, `tests/unit/test_audit_coverage.py` échoue.
+- **Toute écriture déclare son auteur** avec `acting_as(...)`, dans la BLL. Sans auteur, l'enregistrement est refusé (`MissingAuditActorError`).
+- **Les modifications « en bloc »** (`update(...)`, `delete(...)` de SQLAlchemy) ne sont **pas** vues par le journal : modifiez les objets un par un.
+- **La base refuse** de modifier, supprimer ou vider `audit_log`, même en SQL à la main (déclencheur PostgreSQL).
