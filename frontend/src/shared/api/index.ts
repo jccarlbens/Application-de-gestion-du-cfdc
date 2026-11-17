@@ -41,6 +41,19 @@ export async function apiGet<T>(path: string): Promise<T> {
   return (await response.json()) as T
 }
 
+export async function apiPostJson<T>(path: string, body: unknown): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  if (!response.ok) {
+    throw await readError(response)
+  }
+  return (await response.json()) as T
+}
+
 export async function apiPost(path: string, body: unknown): Promise<void> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method: 'POST',

@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-16T21:23:22Z
+updated: 2026-11-17T15:50:13Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -152,9 +152,9 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 > 2. Qu'est-ce qui est émis (un jeton, une session, une clé), et que prouve-t-il réellement ?
 
 **De l'anonyme à l'autorisé, étape par étape :**
-1. L'utilisateur saisit son **numéro de badge** et son **mot de passe**. Après **5 échecs**, le compte est bloqué jusqu'à ce que l'administrateur le débloque.
+1. L'utilisateur saisit son **numéro de badge** et son **mot de passe**. Chaque tentative est notée dans `login_attempts`, sans le mot de passe. Après **5 échecs consécutifs**, le compte est bloqué jusqu'à ce que l'administrateur le débloque.
 2. Le serveur envoie un **code de double authentification** par le canal choisi (email par défaut, ou SMS). Le code vaut **5 minutes** et ne sert **qu'une fois**. Si le canal échoue, le serveur bascule sur l'autre ; en dernier recours, l'administrateur donne un code de secours.
-3. Une fois le code vérifié, le serveur ouvre une **session côté serveur**, dont l'identifiant est remis dans un **cookie protégé** (`HttpOnly`, `Secure`, `SameSite`) qu'aucun script du navigateur ne peut lire.
+3. Une fois le code vérifié, le serveur ouvre une **session côté serveur** (table `auth_sessions`, empreinte du jeton seulement ; cookie `cfdc_session`), dont l'identifiant est remis dans un **cookie protégé** (`HttpOnly`, `Secure`, `SameSite`) qu'aucun script du navigateur ne peut lire.
 4. La session expire après **15 minutes sans activité** ; chaque action la prolonge.
 5. **À chaque action**, le serveur vérifie que l'un des rôles de l'utilisateur l'autorise (`PRD.md` §5). L'interface masque ce qui n'est pas permis, mais c'est le serveur qui décide.
 
