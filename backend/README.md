@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-17T16:18:17Z
+updated: 2026-11-17T16:45:28Z
 ---
 
 # backend — API de l'application CFDC
@@ -48,6 +48,7 @@ Copiez `.env.example` en `.env`.
 | `GET /api/v1/health` | Répond `{"status": "ok", "database": "reachable" \| "unreachable"}` |
 | `POST /api/v1/users` | Crée un compte (administrateur, ou coordonnateur sans le rôle administrateur) et envoie le lien |
 | `GET /api/v1/users` | Liste les comptes (administrateur, coordonnateur) |
+| `GET /api/v1/users/by-badge/{numéro}` | Un compte, par son numéro de badge (administrateur, coordonnateur) ; 404 si inconnu |
 | `PUT /api/v1/users/{id}/roles` | Change les rôles (administrateur) |
 | `POST /api/v1/users/{id}/deactivate`, `/reactivate` | Désactive ou réactive un compte (administrateur) |
 | `POST /api/v1/password/setup` | Choisit son mot de passe avec le jeton du lien, sans connexion |
@@ -62,7 +63,7 @@ Sans cookie de session, les routes protégées répondent `401 Vous n'êtes pas 
 
 ## Comptes : les commandes
 
-Un compte se crée sans mot de passe ; la personne reçoit par email un lien, valable 48 heures, pour choisir le sien. En attendant l'écran des comptes (US-009), deux commandes créent les comptes :
+Un compte se crée sans mot de passe ; la personne reçoit par email un lien, valable 48 heures, pour choisir le sien. En attendant l'écran des comptes (US-009), deux commandes créent aussi les comptes (l'écran « Comptes » de US-009 le fait depuis le navigateur) :
 
 ```bash
 uv run python -m app.cli create-admin --badge A01-01 --first-name Jean --last-name Paul --email jean.paul@example.test
@@ -73,7 +74,7 @@ uv run python -m app.cli create-user --badge B07-42 --first-name Marie --last-na
 ```
 
 - `create-admin` crée le **premier** administrateur et refuse de servir une seconde fois.
-- `unblock-user --badge B07-42` débloque un compte bloqué après 5 échecs de connexion (en attendant l'écran de US-009).
+- `unblock-user --badge B07-42` débloque un compte bloqué après 5 échecs de connexion. L'écran « Comptes » (US-009) le fait aussi.
 - `create-user` accepte un ou plusieurs `--role` parmi `secretary`, `coordinator`, `service_head`, `trainer`, `it_admin`, `direction`.
 
 **Sur le serveur de test**, le plan gratuit de Render n'a pas de terminal : lancez la commande **depuis votre poste**, avec l'adresse de la base Neon et les réglages Brevo, pour que l'email parte vraiment et que le lien mène au serveur de test :

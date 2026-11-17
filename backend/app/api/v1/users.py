@@ -37,6 +37,15 @@ def list_users(
     return [UserResponse.from_entity(u) for u in bll.list_users(actor)]
 
 
+@router.get("/by-badge/{badge}", response_model=UserResponse)
+def get_by_badge(
+    badge: str,
+    actor: EntActor = Depends(ADMIN_OR_COORDINATOR),
+    bll: BllUser = Depends(get_bll_user),
+) -> UserResponse:
+    return UserResponse.from_entity(bll.get_by_badge(actor, badge))
+
+
 @router.put("/{user_id}/roles", response_model=UserResponse)
 def set_roles(
     user_id: UUID,

@@ -65,3 +65,26 @@ export async function apiPost(path: string, body: unknown): Promise<void> {
     throw await readError(response)
   }
 }
+
+async function send<T>(method: string, path: string, body?: unknown): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method,
+    credentials: 'same-origin',
+    headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  })
+  if (!response.ok) {
+    throw await readError(response)
+  }
+  return (await response.json()) as T
+}
+
+export function apiPut<T>(path: string, body: unknown): Promise<T> {
+  return send<T>('PUT', path, body)
+}
+
+/** Un POST sans corps qui renvoie du JSON (désactiver, réactiver, débloquer…). */
+export function apiPostAction<T>(path: string): Promise<T> {
+  return send<T>('POST', path)
+}
+
