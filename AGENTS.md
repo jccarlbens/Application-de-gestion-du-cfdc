@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-12T15:53:34Z
+updated: 2026-11-17T16:18:17Z
 ---
 
 # AGENTS.md — CFDC
@@ -88,7 +88,8 @@ Voir `project-docs/SOLUTION_DESIGN.md` §5 (pile), §11 (déploiement) et ses AD
 - **Pas d'invention :** l'agent ne remplit jamais un document fondateur à la place de l'équipe ; il pose les questions, attend la réponse, puis rédige.
 - **Epics séquentiels.** Un seul Epic actif à la fois, dans l'ordre de `PLAN.md` ; les deux membres travaillent en parallèle sur des user stories différentes.
 - **Suivi sur GitHub.** User story = issue, Epic = Milestone, tableau Projects « CFDC » n° 4. L'agent ne déplace jamais une issue sur le tableau et ne marque jamais une user story comme terminée de lui-même. Détail : `project-docs/PROJECT_WORKFLOW.md`.
-- **Le serveur décide des droits.** Chaque action est vérifiée côté serveur selon le tableau de `PRD.md` §5 ; masquer un bouton ne suffit jamais.
+- **Le serveur décide des droits.** Chaque route de l'API est **soit publique, soit protégée** par `require_roles(...)` (un test échoue sinon) ; les règles plus fines restent dans la BLL ; masquer un bouton ou un menu ne suffit jamais. Les menus de l'interface suivent le tableau de `execution/epic-001-setup-and-access/US-007.md`.
+- **Chaque table est journalisée ou exemptée** (`EXEMPT_TABLES`, avec sa raison) ; un test échoue sinon (US-003).
 - **Rien ne s'efface sans trace.** Toute modification et toute suppression passe par le journal (qui, quoi, quand, avant, après) ; une information enregistrée ne se modifie ou ne se supprime que par une demande de correction validée par l'administrateur (`PRD.md` §7).
 - **Attention aux homonymes** : session de formation / session de connexion, demande de formation / demande de correction, chef de service du CFDC / chef du service demandeur (`GLOSSARY.md`).
 - **Base de données :** tables et champs en anglais, noms de tables au pluriel en `snake_case` ; horodatages en UTC (ISO-8601 avec `Z`), convertis en heure locale dans l'interface seulement.

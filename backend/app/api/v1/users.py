@@ -3,9 +3,12 @@ from uuid import UUID
 from fastapi import APIRouter, Depends
 
 from app.api.v1.dto.dto_user import UserCreateRequest, UserResponse, UserRolesRequest
-from app.api.v1.security import get_current_actor
+from app.api.v1.security import require_roles
 from app.bll.bll_user import AccountInput, BllUser
-from app.entities.ent_user import EntActor
+from app.entities.ent_user import EntActor, Role
+
+ADMIN_OR_COORDINATOR = require_roles(Role.IT_ADMIN, Role.COORDINATOR)
+ADMIN_ONLY = require_roles(Role.IT_ADMIN)
 
 # Les droits de chaque action sont vérifiés par la BLL, avec l'acteur connecté
 # (AGENTS.md : « le serveur décide des droits »).
@@ -19,7 +22,7 @@ def get_bll_user() -> BllUser:
 @router.post("", response_model=UserResponse, status_code=201)
 def create_user(
     body: UserCreateRequest,
-    actor: EntActor = Depends(get_current_actor),
+    actor: EntActor = Depends(ADMIN_OR_COORDINATOR),
     bll: BllUser = Depends(get_bll_user),
 ) -> UserResponse:
     account = AccountInput(body.badge, body.first_name, body.last_name, body.email, body.phone, body.roles)
@@ -28,7 +31,7 @@ def create_user(
 
 @router.get("", response_model=list[UserResponse])
 def list_users(
-    actor: EntActor = Depends(get_current_actor),
+    actor: EntActor = Depends(ADMIN_OR_COORDINATOR),
     bll: BllUser = Depends(get_bll_user),
 ) -> list[UserResponse]:
     return [UserResponse.from_entity(u) for u in bll.list_users(actor)]
@@ -38,7 +41,7 @@ def list_users(
 def set_roles(
     user_id: UUID,
     body: UserRolesRequest,
-    actor: EntActor = Depends(get_current_actor),
+    actor: EntActor = Depends(ADMIN_ONLY),
     bll: BllUser = Depends(get_bll_user),
 ) -> UserResponse:
     return UserResponse.from_entity(bll.set_roles(actor, user_id, body.roles))
@@ -47,7 +50,7 @@ def set_roles(
 @router.post("/{user_id}/deactivate", response_model=UserResponse)
 def deactivate(
     user_id: UUID,
-    actor: EntActor = Depends(get_current_actor),
+    actor: EntActor = Depends(ADMIN_ONLY),
     bll: BllUser = Depends(get_bll_user),
 ) -> UserResponse:
     return UserResponse.from_entity(bll.set_active(actor, user_id, is_active=False))
@@ -56,7 +59,7 @@ def deactivate(
 @router.post("/{user_id}/reactivate", response_model=UserResponse)
 def reactivate(
     user_id: UUID,
-    actor: EntActor = Depends(get_current_actor),
+    actor: EntActor = Depends(ADMIN_ONLY),
     bll: BllUser = Depends(get_bll_user),
 ) -> UserResponse:
     return UserResponse.from_entity(bll.set_active(actor, user_id, is_active=True))
@@ -65,7 +68,7 @@ def reactivate(
 @router.post("/{user_id}/unblock", response_model=UserResponse)
 def unblock(
     user_id: UUID,
-    actor: EntActor = Depends(get_current_actor),
+    actor: EntActor = Depends(ADMIN_ONLY),
     bll: BllUser = Depends(get_bll_user),
 ) -> UserResponse:
     return UserResponse.from_entity(bll.unblock(actor, user_id))

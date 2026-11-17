@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app.api.v1.dto.dto_health import HealthResponse
+from app.api.v1.security import public_route
 from app.bll.bll_health import BllHealth
 
 router = APIRouter(tags=["health"])
@@ -10,7 +11,7 @@ def get_bll_health() -> BllHealth:
     return BllHealth()
 
 
-@router.get("/health", response_model=HealthResponse)
+@router.get("/health", response_model=HealthResponse, dependencies=[Depends(public_route)])
 def read_health(bll: BllHealth = Depends(get_bll_health)) -> HealthResponse:
     health = bll.get_health()
     return HealthResponse(

@@ -91,7 +91,7 @@ def test_the_password_change_is_logged_without_any_secret(setup) -> None:
 
 def test_role_and_activation_changes_name_the_signed_in_admin(setup) -> None:
     bll, dal_audit, _, _ = setup
-    admin = bll.create_first_admin(_account(badge="A01-01", email="admin@example.test", roles=()))
+    admin = bll.create_user(None, _account(badge="A01-01", email="admin@example.test", roles=("it_admin",)))
     acting = EntActor(user_id=admin.id, roles=admin.roles)
     user = bll.create_user(acting, _account())
 
