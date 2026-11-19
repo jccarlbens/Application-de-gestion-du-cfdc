@@ -1,11 +1,11 @@
 ---
 created: 2026-11-17T00:00:00Z
-updated: 2026-11-19T17:12:37Z
+updated: 2026-11-19T17:24:50Z
 ---
 
 # Affinage de l'Epic 002 — Formations et modules
 
-**Statut :** 🟡 Ouvert — questions résolues le 2026-11-19 ; lot de user stories en attente de validation.
+**Statut :** 🟡 Ouvert — affinage confirmé le 2026-11-19 ; user stories US-010 à US-013 créées.
 **Workstream :** WS-02 Formations et modules.
 **Milestone GitHub :** « Epic 2 — Formations et modules »
 
@@ -55,7 +55,7 @@ Hors de cet Epic : les sessions et les demandes (Epic 3), les participants (Epic
 
 ## Lot de user stories proposé
 
-*Mis à jour le 2026-11-19 après les réponses ; à valider.* Les numéros continuent ceux du projet (dernier : US-009).
+*Découpage et ordre validés par l'utilisateur le 2026-11-19.* Les numéros continuent ceux du projet (dernier : US-009).
 
 | Ordre | User story | Périmètre en une ligne | Dépend de |
 |---|---|---|---|

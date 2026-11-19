@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:33:40Z
+updated: 2026-11-19T17:24:50Z
 ---
 
 # PLAN.md — CFDC
@@ -26,7 +26,7 @@ updated: 2026-11-17T17:33:40Z
 | Ordre | Epic | Workstreams | Priorité | Statut |
 |---|---|---|---|---|
 | 1 | `epic-001-setup-and-access` — Epic 1 — Mise en place et accès | WS-01, WS-05 (journal) | Must | ✅ Terminé — clos le 2026-11-17, voir `execution/EPIC_EXECUTION.md` |
-| 2 | `epic-002-trainings-and-modules` — Epic 2 — Formations et modules | WS-02 | Must | 🟡 En cours — créé le 2026-11-17, affinage à faire |
+| 2 | `epic-002-trainings-and-modules` — Epic 2 — Formations et modules | WS-02 | Must | 🟡 En cours — affiné le 2026-11-19, US-010 à US-013 |
 | 3 | `epic-003-requests-and-sessions` | WS-03 | Must | ⏳ Pas démarré |
 | 4 | `epic-004-participants-and-tracking` | WS-04 | Must | ⏳ Pas démarré |
 | 5 | `epic-005-corrections` | WS-05 | Must | ⏳ Pas démarré |
@@ -101,7 +101,7 @@ Livre la double authentification par email (US-005), le mot de passe oublié (US
 > 1. Quelle est la toute prochaine action concrète — et non une reformulation de la feuille de route entière ?
 > 2. Cette section risque-t-elle de devenir vite obsolète — le statut au quotidien devrait-il plutôt vivre dans un suivi dédié (`project-docs/execution/EPIC_EXECUTION.md`) ?
 
-1. Affiner l'Epic 2 (« Epic 2 — Formations et modules », créé le 2026-11-17) avec la compétence `epic` : catalogue des formations, modules et formateurs, documents de cours ; puis écrire ses user stories.
+1. Affiner puis construire US-010 (catalogue des formations), première user story de l'Epic 2.
 2. Poser au service informatique de l'AAN les questions Q1 et Q3 de `SOLUTION_DESIGN.md` §15 (Docker, système des serveurs, sortie vers internet) : leurs réponses conditionnent l'Epic 7 et la mise en service.
 3. Ne pas mettre en service avant la fin de l'Epic 7 (double authentification par email et mot de passe oublié).
 
