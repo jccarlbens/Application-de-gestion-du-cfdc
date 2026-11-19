@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:29:48Z
+updated: 2026-11-19T17:12:37Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -41,7 +41,7 @@ updated: 2026-11-17T17:29:48Z
 |---|---|---|---|
 | WS-01 | Comptes et accès | Connexion par badge, double authentification, rôles, blocage après 5 échecs, déconnexion automatique, création et désactivation des comptes, mot de passe oublié | `PRD.md` §6 « Accès », §9 |
 | WS-02 | Formations et modules | Catalogue des formations, modules, formateurs, documents de cours | §6 « Formations, modules et documents » |
-| WS-03 | Demandes et planification | Demandes de formation, sessions, horaires, formations importantes | §6 « Demandes et planification » |
+| WS-03 | Demandes et planification | Demandes de formation, sessions, horaires | §6 « Demandes et planification » |
 | WS-04 | Participants et suivi | Participants, inscriptions, présences, évaluations, remise des attestations et des certificats | §6 « Participants, présences et évaluations » |
 | WS-05 | Corrections et traçabilité | Demandes de correction, validation par l'administrateur, historique des modifications, journal | §6 « Corrections », §7 |
 | WS-06 | Consultation | Vue d'ensemble de l'unité, recherche, export Excel et PDF | §6 « Consultation », §10 |
@@ -132,7 +132,8 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 | Fiche | Contenu principal |
 |---|---|
 | **Utilisateur** (`users`, `user_roles`) | numéro de badge (une lettre majuscule, deux chiffres, un tiret, deux chiffres : `[A-Z]\d{2}-\d{2}`, unique), prénom et nom séparés, email (obligatoire, unique), téléphone (facultatif), rôles (un ou plusieurs, une ligne par rôle dans `user_roles`), canal de double authentification, actif ou désactivé, bloqué ou non, mot de passe haché en **Argon2id** (vide tant que la personne ne l'a pas choisi). Tables d'accès associées : `password_tokens` (liens de mot de passe, empreinte seulement), `login_attempts` (tentatives de connexion), `auth_sessions` (sessions de connexion). Détail : `technical-specs/ws-tech-01-accounts-and-access.md` |
-| **Formation** | intitulé, domaine, **importante ou non** (décidé par le coordonnateur pour la formation, et non pour une session) |
+| **Formation** | intitulé (unique), description (facultative), sous-domaine |
+| **Domaine** et **sous-domaine** | deux niveaux de classement : un domaine contient des sous-domaines, une formation se range dans un sous-domaine |
 | **Module** | formation, titre, formateur (un **utilisateur** ayant le rôle formateur : les formateurs ont un compte limité à leurs modules, `PRD.md` §5) |
 | **Document de cours** | module, fichier (PDF, PowerPoint, Word), déposé par, date |
 | **Demande de formation** | service demandeur, date de réception, formation demandée, validée par le coordonnateur |
@@ -143,7 +144,9 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 | **Journal** (`audit_log`) | heure, auteur (utilisateur ou libellé : « Ligne de commande (administrateur) », « Titulaire du compte (lien de mot de passe) »), fiche visée, table, action, valeurs avant et après en JSON. Écrit automatiquement dans la même transaction que la modification ; la base refuse de le modifier ou de le supprimer (ADR 6). Secrets jamais recopiés ; données personnelles masquées à la lecture (`PRD.md` §7) |
 
 **Les listes de référence.**
-- **Domaines de formation :** une liste fixe, que l'utilisateur fournira.
+- **Domaines et sous-domaines de formation** (donnés le 2026-11-19, tenus ensuite par l'administrateur) :
+  - **Sûreté-Sécurité** : Sensibilisation sur la carte d'accès, Conduite sur la rampe, Formation des policiers ;
+  - **Accueil** : Protocole, Civilité.
 - **Services de l'AAN et entreprises externes :** une liste, que l'utilisateur fournira, avec une option « Autre ». En attendant, ils se saisissent en **texte libre**.
 
 ## 7. Flux d'authentification et d'autorisation *(Conditionnelle — à sauter s'il n'y a aucun contrôle d'accès)*

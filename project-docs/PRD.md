@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:29:48Z
+updated: 2026-11-19T17:12:37Z
 ---
 
 # PRD.md — CFDC
@@ -77,7 +77,7 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 4. **Les participants.** Le service demandeur fournit la liste de ses participants ; la secrétaire les enregistre.
 5. **La présence.** Le jour de la formation, la présence est relevée par écrit, puis enregistrée dans l'application.
 6. **L'évaluation.** Les participants sont évalués, généralement par un examen ou des questions. Le résultat est enregistré sous forme d'une **note**, accompagnée de **commentaires**. La note est **sur 100** ; la réussite demande au moins **la moyenne, soit 50/100**.
-7. **L'attestation et le certificat.** Tous les participants présents reçoivent une **attestation**, qu'ils aient ou non la moyenne. Un **certificat** est délivré en plus, sur demande ou pour une formation que le **coordonnateur** décide d'estimer importante. Attestations et certificats sont **produits en dehors de l'application** ; l'application note leur **remise** et sa **date**.
+7. **L'attestation et le certificat.** Tous les participants présents reçoivent une **attestation**, qu'ils aient ou non la moyenne. Un **certificat** est délivré en plus, **sur demande**. Attestations et certificats sont **produits en dehors de l'application** ; l'application note leur **remise** et sa **date**.
 
 **Où le parcours se brise aujourd'hui.** Aucune étape ne bloque en particulier. Le risque est réparti sur tout le parcours : ce sont les problèmes du papier décrits au §1, c'est-à-dire les pertes, le manque de fiabilité et la dépendance envers une personne.
 
@@ -162,7 +162,6 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 | Ajuster une demande | La secrétaire ou le coordonnateur la modifie | La demande mise à jour |
 | Planifier une session | Le coordonnateur fixe la date et la période d'une formation, en réponse à une demande ou non | Une session apparaît au calendrier |
 | Organiser les horaires | Un chef de service du CFDC ou le coordonnateur arrange les horaires d'une session | Les horaires de la session |
-| Marquer une formation comme importante | Le coordonnateur le décide | Ses participants peuvent recevoir un certificat |
 
 **Participants, présences et évaluations**
 
@@ -317,7 +316,7 @@ La V1 ne comprend pas :
 - **aucun paiement** ;
 - **de comptes pour les participants** : la secrétaire les enregistre ;
 - **la génération des attestations et des certificats** : ils sont produits hors de l'application, qui note seulement leur remise et sa date ;
-- **de notifications**, sauf les codes de double authentification ;
+- **de notifications**, sauf les emails et SMS de l'accès (premier mot de passe, mot de passe oublié, double authentification) ;
 - **les convocations des participants** ;
 - **d'application mobile** : la V1 est un **site web**, utilisable aussi sur téléphone connecté au réseau interne de l'AAN ;
 - **d'accès depuis internet** : l'application reste sur le réseau interne de l'AAN ;

@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T15:50:13Z
+updated: 2026-11-19T17:12:37Z
 ---
 
 # NFR.md — CFDC
@@ -22,7 +22,7 @@ updated: 2026-11-17T15:50:13Z
 
 - **Seuil de l'inacceptable :** ouvrir une page ou enregistrer une saisie ne prend **jamais plus de 5 secondes**.
 - **Recherche :** l'historique et les informations d'une formation se retrouvent en **2 minutes au plus**, gestes de l'utilisateur compris (`PRD.md` §11).
-- **Pointes de charge :** elles dépendent des demandes de formation, par exemple une formation importante avec beaucoup de participants à saisir d'un coup.
+- **Pointes de charge :** elles dépendent des demandes de formation, par exemple une formation avec beaucoup de participants à saisir d'un coup.
 - **Utilisateurs simultanés :** **10** au maximum.
 
 ## Fiabilité et disponibilité
