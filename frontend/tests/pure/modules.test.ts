@@ -46,7 +46,12 @@ describe('describeEntry pour les modules', () => {
     ],
     [
       entry({ before: { title: 'Vitesses', trainer_id: 'p' }, after: { title: 'Vitesses', trainer_id: 'x' } }),
-      'Formateur du module « Vitesses » modifié',
+      'Formateur changé pour « Vitesses »',
+      true,
+    ],
+    [
+      entry({ before: { title: 'Vitesses', trainer_id: null }, after: { title: 'Vitesses', trainer_id: 'x' } }),
+      'Formateur désigné pour « Vitesses »',
       true,
     ],
     [

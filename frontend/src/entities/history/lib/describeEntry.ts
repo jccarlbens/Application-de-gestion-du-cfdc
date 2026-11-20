@@ -84,10 +84,11 @@ function describeModule(entry: HistoryEntry, names: Readonly<Record<string, stri
     else if (key === 'description') parts.push(`Description du module ${title} modifiée`)
     else if (key === 'trainer_id') {
       if (!trainerId) parts.push(`Module ${title} : formateur à désigner`)
-      else if (trainer) parts.push(`${entry.before?.trainer_id ? 'Formateur changé' : 'Formateur désigné'} pour ${title} : ${trainer}`)
       else {
-        parts.push(`Formateur du module ${title} modifié`)
-        unknown = true
+        const verb = entry.before?.trainer_id ? 'Formateur changé' : 'Formateur désigné'
+        // Un nom inconnu de l'écran (la direction ne lit pas la liste des formateurs) : « Détails ».
+        parts.push(trainer ? `${verb} pour ${title} : ${trainer}` : `${verb} pour ${title}`)
+        unknown = unknown || !trainer
       }
     } else {
       parts.push(`Champ du module modifié : ${key}`)
