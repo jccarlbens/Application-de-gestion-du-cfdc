@@ -28,6 +28,8 @@ services:
       SMTP_HOST: mailpit
       SMTP_PORT: "1025"
       APP_BASE_URL: http://localhost:8080
+      # Les documents de cours (US-012), dans le volume ci-dessous.
+      DOCUMENTS_DIR: /data/documents
     volumes:
       # Les documents de cours (Epic 2) ; sauvegardés avec la base.
       - documents:/data/documents

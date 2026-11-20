@@ -79,6 +79,11 @@ EXPECTED = {
     ("POST", "/api/v1/trainings/{training_id}/modules"): WRITERS,
     ("POST", "/api/v1/modules/{module_id}/trainer"): WRITERS,
     ("PUT", "/api/v1/modules/{module_id}"): {Role.IT_ADMIN},
+    ("GET", "/api/v1/documents"): {Role.IT_ADMIN},
+    ("GET", "/api/v1/trainings/{training_id}/documents"): CATALOGUE,
+    ("POST", "/api/v1/modules/{module_id}/documents"): {Role.IT_ADMIN},
+    ("POST", "/api/v1/documents/{document_id}/replace"): {Role.IT_ADMIN},
+    ("GET", "/api/v1/documents/{document_id}/download"): {Role.TRAINER, Role.IT_ADMIN},
 }
 
 

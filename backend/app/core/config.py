@@ -35,5 +35,10 @@ class Settings(BaseSettings):
     # le désactivent ; jamais un serveur.
     session_cookie_secure: bool = True
 
+    # Documents de cours (US-012) : le dossier où ranger les fichiers (le
+    # volume `documents` dans Docker Compose), et leur taille maximale.
+    documents_dir: str = "/data/documents"
+    document_max_bytes: int = 25 * 1024 * 1024
+
 
 settings = Settings()
