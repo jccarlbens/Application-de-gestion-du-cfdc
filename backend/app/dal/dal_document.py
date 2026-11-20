@@ -132,6 +132,18 @@ class DalDocument:
             )
             return [_entity(*row) for row in rows]
 
+    def list_current_for_modules(self, module_ids: list[uuid.UUID]) -> list[EntDocument]:
+        """Les documents en vigueur de ces modules, dans l'ordre des dépôts (US-013)."""
+        if not module_ids:
+            return []
+        with self._sessions() as session:
+            rows = session.execute(
+                _select()
+                .where(CourseDocumentModel.module_id.in_(module_ids), CourseDocumentModel.replaced_by_id.is_(None))
+                .order_by(CourseDocumentModel.uploaded_at)
+            )
+            return [_entity(*row) for row in rows]
+
     def module_exists(self, module_id: uuid.UUID) -> bool:
         with self._sessions() as session:
             return session.get(ModuleModel, module_id) is not None

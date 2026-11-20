@@ -319,3 +319,11 @@ class FakeDalTraining:
             (t for t in getattr(self, "trainers", {}).values() if t.is_active and t.is_trainer),
             key=lambda t: (t.last_name, t.first_name),
         )
+
+    def list_trainer_modules(self, trainer_id):
+        pairs = [
+            (self._training(m["training_id"]), self._module(i))
+            for i, m in getattr(self, "modules", {}).items()
+            if m["trainer_id"] == trainer_id
+        ]
+        return sorted(pairs, key=lambda p: p[0].title)

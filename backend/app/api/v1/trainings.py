@@ -6,6 +6,7 @@ from app.api.v1.dto.dto_training import (
     DomainResponse,
     ModuleRequest,
     ModuleResponse,
+    MyTrainingResponse,
     NameRequest,
     SubdomainResponse,
     TrainerAssignRequest,
@@ -138,3 +139,11 @@ def update_module(
     return ModuleResponse.from_entity(
         bll.update_module(actor, module_id, body.title, body.description, body.trainer_id)
     )
+
+
+# --- « Mes modules » du formateur (US-013) -----------------------------------------
+
+
+@router.get("/me/modules", response_model=list[MyTrainingResponse])
+def my_modules(actor: EntActor = Depends(require_roles(Role.TRAINER)), bll: BllTraining = Depends(get_bll_training)):
+    return [MyTrainingResponse.from_entity(t) for t in bll.my_modules(actor)]
