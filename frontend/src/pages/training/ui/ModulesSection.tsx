@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent } from 'react'
+import { fetchTrainingDocuments, type CourseDocument } from '../../../entities/document'
 import {
   DESCRIPTION_MAX,
   TITLE_MAX,
@@ -15,6 +16,7 @@ import {
 } from '../../../entities/training'
 import { canRecordTraining, isAdmin, type Viewer } from '../../../entities/viewer'
 import { ApiError } from '../../../shared/api'
+import { ModuleDocuments } from './ModuleDocuments'
 
 const inputClass =
   'mt-1 w-full rounded-md border border-brand-100 px-3 py-2 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-100'
@@ -252,7 +254,17 @@ function EditModuleForm({ module, trainers, onDone }: { module: Module; trainers
   )
 }
 
-function ModuleItem({ module, viewer, trainers }: { module: Module; viewer: Viewer; trainers: readonly Trainer[] }) {
+function ModuleItem({
+  module,
+  viewer,
+  trainers,
+  documents,
+}: {
+  module: Module
+  viewer: Viewer
+  trainers: readonly Trainer[]
+  documents: readonly CourseDocument[]
+}) {
   const [mode, setMode] = useState<'view' | 'assign' | 'edit'>('view')
   const canAssign = !module.trainer && canRecordTraining(viewer.roles)
   const flagged = module.trainer && (!module.trainer.isActive || !module.trainer.isTrainer)
@@ -284,6 +296,7 @@ function ModuleItem({ module, viewer, trainers }: { module: Module; viewer: View
       )}
       {mode === 'assign' && <AssignForm module={module} trainers={trainers} onDone={() => setMode('view')} />}
       {mode === 'edit' && <EditModuleForm module={module} trainers={trainers} onDone={() => setMode('view')} />}
+      <ModuleDocuments trainingId={module.trainingId} moduleId={module.id} documents={documents} viewer={viewer} />
     </li>
   )
 }
@@ -294,6 +307,7 @@ export function ModulesSection({ trainingId, viewer }: { trainingId: string; vie
   const modules = useQuery({ queryKey: ['modules', trainingId], queryFn: () => fetchModules(trainingId) })
   const canRecord = canRecordTraining(viewer.roles)
   const trainers = useQuery({ queryKey: ['trainers'], queryFn: fetchTrainers, enabled: canRecord })
+  const documents = useQuery({ queryKey: ['documents', trainingId], queryFn: () => fetchTrainingDocuments(trainingId) })
 
   return (
     <section aria-labelledby="modules" className="mt-8">
@@ -313,7 +327,13 @@ export function ModulesSection({ trainingId, viewer }: { trainingId: string; vie
       {modules.data && modules.data.length > 0 && (
         <ol className="space-y-2">
           {modules.data.map((module) => (
-            <ModuleItem key={module.id} module={module} viewer={viewer} trainers={trainers.data ?? []} />
+            <ModuleItem
+              key={module.id}
+              module={module}
+              viewer={viewer}
+              trainers={trainers.data ?? []}
+              documents={(documents.data ?? []).filter((d) => d.moduleId === module.id)}
+            />
           ))}
         </ol>
       )}

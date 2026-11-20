@@ -14,7 +14,7 @@ import { canSeeCatalogue, isAdmin, type Viewer } from '../../../entities/viewer'
 import { ApiError } from '../../../shared/api'
 import { AccessDenied } from '../../../shared/ui'
 import { AppShell } from '../../../widgets/app-shell'
-import { useTrainerNames } from '../model/useTrainerNames'
+import { useHistoryNames } from '../model/useHistoryNames'
 import { ModulesSection } from './ModulesSection'
 
 /** La modification par l'administrateur (affinage de l'Epic 2, Q4). */
@@ -79,7 +79,7 @@ function TrainingDetails({ id, viewer }: { id: string; viewer: Viewer }) {
   const location = useLocation()
   const [editing, setEditing] = useState(false)
   const training = useQuery({ queryKey: ['training', id], queryFn: () => fetchTraining(id) })
-  const names = useTrainerNames(id, viewer)
+  const names = useHistoryNames(id, viewer)
 
   if (training.isPending) return <p className="text-brand-900">Chargement…</p>
   if (training.isError) {

@@ -116,6 +116,7 @@ describe('TrainingPage', () => {
         '/history/trainings/t-1': () => json(HISTORY),
         '/trainings/t-1/modules': () => json([]),
         '/trainers': () => json([]),
+        '/trainings/t-1/documents': () => json([]),
       },
     })
     expect(await screen.findByRole('heading', { name: 'Conduite sur la rampe' })).toBeInTheDocument()
@@ -135,6 +136,7 @@ describe('TrainingPage', () => {
         '/domains': () => json(DOMAINS),
         '/trainings/t-1/modules': () => json([]),
         '/trainers': () => json([]),
+        '/trainings/t-1/documents': () => json([]),
       },
     })
     await userEvent.click(await screen.findByRole('button', { name: 'Modifier' }))
@@ -188,6 +190,7 @@ function trainingPage(roles: string[], modules: unknown[], extra: Record<string,
       '/history/trainings/t-1': () => json([]),
       '/trainings/t-1/modules': () => json(modules),
       '/trainers': () => json([PAUL, ROSE]),
+      '/trainings/t-1/documents': () => json([]),
       ...extra,
     },
   })
@@ -256,5 +259,65 @@ describe('Les modules sur la fiche', () => {
     const select = screen.getByLabelText('Formateur') as HTMLSelectElement
     expect(select.value).toBe('p')
     expect(screen.getByRole('option', { name: 'Paul Michel (C03-15) (compte désactivé)' })).toBeInTheDocument()
+  })
+})
+
+function doc(overrides: Record<string, unknown> = {}) {
+  return {
+    id: 'd-1', module_id: 'm-1', module_title: 'Vitesses', training_id: 't-1', training_title: 'Conduite sur la rampe',
+    file_name: 'Cours.pdf', content_type: 'application/pdf', size_bytes: 2.4 * 1024 * 1024,
+    uploaded_by_name: 'Ada Admin (Z01-01)', uploaded_at: '2026-11-20T10:00:00Z', replaced_by_id: null, ...overrides,
+  }
+}
+
+describe('Les documents de cours sur la fiche', () => {
+  it('montre la liste à la secrétaire, sans lien ni bouton', async () => {
+    trainingPage(['secretary'], [module({ trainer: PAUL })], { '/trainings/t-1/documents': () => json([doc()]) })
+    expect(await screen.findByText('Cours.pdf')).toBeInTheDocument()
+    expect(screen.getByText('2,4 Mo · 20/11/2026 · Ada Admin (Z01-01)')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Cours.pdf' })).not.toBeInTheDocument()
+    expect(screen.queryByText('Déposer un document')).not.toBeInTheDocument()
+    expect(screen.queryByText(/Remplacer/)).not.toBeInTheDocument()
+  })
+
+  it("donne à l'administrateur le lien, « Remplacer » et les versions remplacées", async () => {
+    trainingPage(['it_admin'], [module({ trainer: PAUL })], {
+      '/trainings/t-1/documents': () => json([doc({ id: 'd-0', file_name: 'Ancien.pdf', replaced_by_id: 'd-1' }), doc()]),
+    })
+    expect(await screen.findByRole('link', { name: 'Cours.pdf' })).toHaveAttribute('href', '/api/v1/documents/d-1/download')
+    expect(screen.getByText('Remplacer « Cours.pdf »')).toBeInTheDocument()
+    expect(screen.getByText('Versions remplacées (1)')).toBeInTheDocument()
+    expect(screen.queryByText('Remplacer « Ancien.pdf »')).not.toBeInTheDocument()
+  })
+
+  it("envoie le fichier choisi par l'administrateur", async () => {
+    const fetchMock = trainingPage(['it_admin'], [module({ trainer: PAUL })], {
+      '/modules/m-1/documents': () => json(doc(), 201),
+    })
+    const file = new File(['%PDF-1.4'], 'Nouveau.pdf', { type: 'application/pdf' })
+    await userEvent.upload(await screen.findByLabelText('Déposer un document'), file)
+    const calls = fetchMock.mock.calls as unknown as [string, RequestInit | undefined][]
+    const call = calls.find(([url]) => String(url).endsWith('/modules/m-1/documents'))
+    expect(call?.[1]?.method).toBe('POST')
+    const body = call?.[1]?.body
+    expect(body instanceof FormData && body.get('file')).toBe(file)
+  })
+
+  it('refuse tout de suite un fichier de plus de 25 Mo', async () => {
+    const fetchMock = trainingPage(['it_admin'], [module({ trainer: PAUL })])
+    const big = new File(['x'], 'Gros.pdf', { type: 'application/pdf' })
+    Object.defineProperty(big, 'size', { value: 26 * 1024 * 1024 })
+    await userEvent.upload(await screen.findByLabelText('Déposer un document'), big)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Le fichier dépasse 25 Mo.')
+    const calls = fetchMock.mock.calls as unknown as [string][]
+    expect(calls.some(([url]) => String(url).endsWith('/modules/m-1/documents'))).toBe(false)
+  })
+
+  it('affiche le refus du serveur en français', async () => {
+    trainingPage(['it_admin'], [module({ trainer: PAUL })], {
+      '/modules/m-1/documents': () => json({ detail: 'Le contenu du fichier ne correspond pas à son extension (.pdf) : il n’est pas accepté.' }, 422),
+    })
+    await userEvent.upload(await screen.findByLabelText('Déposer un document'), new File(['MZ'], 'faux.pdf'))
+    expect(await screen.findByRole('alert')).toHaveTextContent('ne correspond pas à son extension')
   })
 })
