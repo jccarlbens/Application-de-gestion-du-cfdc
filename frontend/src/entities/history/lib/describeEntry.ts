@@ -66,6 +66,38 @@ function describeTraining(entry: HistoryEntry): EntryDescription | null {
   return parts.length ? { text: parts.join(' ; '), needsDetails: parts.some((p) => !p.startsWith('Intitulé')) } : null
 }
 
+/** Un module s'inscrit dans l'historique de sa formation (US-011, décision 5A).
+ *  `names` donne le nom des formateurs connus de l'écran ; sinon « Détails ». */
+function describeModule(entry: HistoryEntry, names: Readonly<Record<string, string>>): EntryDescription | null {
+  const title = `« ${String(entry.after?.title ?? entry.before?.title ?? '')} »`
+  const trainerId = entry.after?.trainer_id
+  const trainer = typeof trainerId === 'string' ? names[trainerId] : undefined
+  if (entry.action === 'create') {
+    const who = trainerId ? ` — formateur : ${trainer ?? 'voir les détails'}` : ' — formateur à désigner'
+    return { text: `Module ajouté : ${title}${who}`, needsDetails: Boolean(trainerId && !trainer) }
+  }
+  if (entry.action !== 'update') return null
+  const parts: string[] = []
+  let unknown = false
+  for (const key of changedKeys(entry)) {
+    if (key === 'title') parts.push(`Module renommé : « ${String(entry.before?.title ?? '')} » devient ${title}`)
+    else if (key === 'description') parts.push(`Description du module ${title} modifiée`)
+    else if (key === 'trainer_id') {
+      if (!trainerId) parts.push(`Module ${title} : formateur à désigner`)
+      else {
+        const verb = entry.before?.trainer_id ? 'Formateur changé' : 'Formateur désigné'
+        // Un nom inconnu de l'écran (la direction ne lit pas la liste des formateurs) : « Détails ».
+        parts.push(trainer ? `${verb} pour ${title} : ${trainer}` : `${verb} pour ${title}`)
+        unknown = unknown || !trainer
+      }
+    } else {
+      parts.push(`Champ du module modifié : ${key}`)
+      unknown = true
+    }
+  }
+  return parts.length ? { text: parts.join(' ; '), needsDetails: unknown || changedKeys(entry).includes('description') } : null
+}
+
 function describeNamed(entry: HistoryEntry, kind: 'Domaine' | 'Sous-domaine'): EntryDescription | null {
   const name = String(entry.after?.name ?? '')
   if (entry.action === 'create') return { text: `${kind} créé : « ${name} »`, needsDetails: false }
@@ -75,14 +107,16 @@ function describeNamed(entry: HistoryEntry, kind: 'Domaine' | 'Sous-domaine'): E
   return null
 }
 
-/** Une entrée du journal, en phrase lisible (US-009 ; étendu aux formations par US-010). */
-export function describeEntry(entry: HistoryEntry): EntryDescription {
+/** Une entrée du journal, en phrase lisible (US-009 ; étendu aux formations
+ *  par US-010, aux modules par US-011). `names` : identifiant → nom affiché. */
+export function describeEntry(entry: HistoryEntry, names: Readonly<Record<string, string>> = {}): EntryDescription {
   let description: EntryDescription | null = null
   if (entry.tableName === 'user_roles') {
     if (entry.action === 'create') description = { text: `Rôle ajouté : ${roleLabel(entry.after?.role)}`, needsDetails: false }
     if (entry.action === 'delete') description = { text: `Rôle retiré : ${roleLabel(entry.before?.role)}`, needsDetails: false }
   } else if (entry.tableName === 'users') description = describeAccount(entry)
   else if (entry.tableName === 'trainings') description = describeTraining(entry)
+  else if (entry.tableName === 'modules') description = describeModule(entry, names)
   else if (entry.tableName === 'domains') description = describeNamed(entry, 'Domaine')
   else if (entry.tableName === 'subdomains') description = describeNamed(entry, 'Sous-domaine')
   if (description) return description

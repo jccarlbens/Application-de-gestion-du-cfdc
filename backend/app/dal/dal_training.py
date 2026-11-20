@@ -1,6 +1,7 @@
-"""Le catalogue des formations (US-010) : domaines, sous-domaines, formations.
+"""Le catalogue des formations (US-010, US-011) : domaines, sous-domaines,
+formations, modules.
 
-Les trois tables sont journalisées (US-003). Rien ne s'y supprime : on ajoute,
+Les quatre tables sont journalisées (US-003). Rien ne s'y supprime : on ajoute,
 et l'administrateur modifie.
 """
 
@@ -13,8 +14,18 @@ from sqlalchemy.orm import Mapped, Session, mapped_column, relationship, selecti
 
 from app.core.exceptions import DuplicateNameError, RecordNotFoundError
 from app.dal.dal_audit import AuditPolicy
+from app.dal.dal_user import UserModel, UserRoleModel
 from app.dal.database import Base, SessionLocal
-from app.entities.ent_training import EntDomain, EntSubdomain, EntTraining, EntTrainingInput
+from app.entities.ent_training import (
+    EntDomain,
+    EntModule,
+    EntModuleInput,
+    EntSubdomain,
+    EntTrainer,
+    EntTraining,
+    EntTrainingInput,
+)
+from app.entities.ent_user import Role
 
 
 class DomainModel(Base):
@@ -57,6 +68,25 @@ class TrainingModel(Base):
     subdomain: Mapped[SubdomainModel] = relationship(lazy="joined")
 
 
+class ModuleModel(Base):
+    """Un module : un cours d'une formation, confié à un seul formateur, ou
+    « à désigner » (US-011). Il se journalise sous sa formation (décision 5A)."""
+
+    __tablename__ = "modules"
+    __table_args__ = (UniqueConstraint("training_id", "title_key", name="uq_modules_training_id_title_key"),)
+    __audit__ = AuditPolicy(subject=lambda module: ("trainings", module.training_id))
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    training_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("trainings.id"), index=True)
+    title: Mapped[str] = mapped_column(String(200))
+    title_key: Mapped[str] = mapped_column(String(200))
+    description: Mapped[str | None] = mapped_column(String(2000))
+    trainer_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"), index=True)
+    # L'ordre des modules est celui de leur ajout (décision 3A) : clock_timestamp()
+    # et non now(), qui donne la même heure à tout ce qu'écrit une transaction.
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.clock_timestamp())
+
+
 def _subdomain(model: SubdomainModel) -> EntSubdomain:
     return EntSubdomain(id=model.id, domain_id=model.domain_id, name=model.name)
 
@@ -79,10 +109,33 @@ def _training(model: TrainingModel) -> EntTraining:
     )
 
 
+def _trainer(user: UserModel) -> EntTrainer:
+    return EntTrainer(
+        id=user.id,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        badge=user.badge,
+        is_active=user.is_active,
+        is_trainer=any(r.role == Role.TRAINER.value for r in user.roles),
+    )
+
+
+def _module(model: ModuleModel, trainer: UserModel | None) -> EntModule:
+    return EntModule(
+        id=model.id,
+        training_id=model.training_id,
+        title=model.title,
+        description=model.description,
+        trainer=_trainer(trainer) if trainer is not None else None,
+        created_at=model.created_at,
+    )
+
+
 _DUPLICATES = {
     "trainings_title_key_key": "Une formation porte déjà cet intitulé.",
     "domains_name_key": "Un domaine porte déjà ce nom.",
     "uq_subdomains_domain_id_name": "Ce domaine a déjà un sous-domaine de ce nom.",
+    "uq_modules_training_id_title_key": "Cette formation a déjà un module de ce titre.",
 }
 
 
@@ -187,3 +240,66 @@ class DalTraining:
         if model is None:
             raise RecordNotFoundError(missing)
         return model
+
+    # --- Modules et formateurs (US-011) ------------------------------------------
+
+    def training_exists(self, training_id: uuid.UUID) -> bool:
+        with self._sessions() as session:
+            return session.get(TrainingModel, training_id) is not None
+
+    def list_modules(self, training_id: uuid.UUID) -> list[EntModule]:
+        """Les modules d'une formation, dans l'ordre où ils ont été ajoutés."""
+        with self._sessions() as session:
+            rows = session.execute(
+                select(ModuleModel, UserModel)
+                .outerjoin(UserModel, UserModel.id == ModuleModel.trainer_id)
+                .where(ModuleModel.training_id == training_id)
+                .order_by(ModuleModel.created_at, ModuleModel.id)
+            )
+            return [_module(module, trainer) for module, trainer in rows]
+
+    def get_module(self, module_id: uuid.UUID) -> EntModule:
+        with self._sessions() as session:
+            model = self._get(session, ModuleModel, module_id, "Ce module n'existe pas.")
+            trainer = session.get(UserModel, model.trainer_id) if model.trainer_id else None
+            return _module(model, trainer)
+
+    def add_module(self, training_id: uuid.UUID, module: EntModuleInput) -> EntModule:
+        with self._sessions() as session:
+            model = ModuleModel(
+                training_id=training_id,
+                title=module.title,
+                title_key=module.title_key,
+                description=module.description,
+                trainer_id=module.trainer_id,
+            )
+            session.add(model)
+            _commit(session)
+            return self.get_module(model.id)
+
+    def update_module(self, module_id: uuid.UUID, module: EntModuleInput) -> EntModule:
+        """Une modification ordinaire, champ par champ, que le journal voit."""
+        with self._sessions() as session:
+            model = self._get(session, ModuleModel, module_id, "Ce module n'existe pas.")
+            model.title = module.title
+            model.title_key = module.title_key
+            model.description = module.description
+            model.trainer_id = module.trainer_id
+            _commit(session)
+        return self.get_module(module_id)
+
+    def get_trainer(self, user_id: uuid.UUID) -> EntTrainer | None:
+        with self._sessions() as session:
+            user = session.get(UserModel, user_id)
+            return _trainer(user) if user is not None else None
+
+    def list_active_trainers(self) -> list[EntTrainer]:
+        """Les comptes actifs au rôle formateur, triés par nom."""
+        with self._sessions() as session:
+            users = session.scalars(
+                select(UserModel)
+                .join(UserRoleModel, UserRoleModel.user_id == UserModel.id)
+                .where(UserRoleModel.role == Role.TRAINER.value, UserModel.is_active.is_(True))
+                .order_by(UserModel.last_name, UserModel.first_name)
+            )
+            return [_trainer(u) for u in users]

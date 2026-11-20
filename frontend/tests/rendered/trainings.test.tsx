@@ -114,6 +114,8 @@ describe('TrainingPage', () => {
         '/auth/me': () => json(me(['secretary'])),
         '/trainings/t-1': () => json(training()),
         '/history/trainings/t-1': () => json(HISTORY),
+        '/trainings/t-1/modules': () => json([]),
+        '/trainers': () => json([]),
       },
     })
     expect(await screen.findByRole('heading', { name: 'Conduite sur la rampe' })).toBeInTheDocument()
@@ -131,6 +133,8 @@ describe('TrainingPage', () => {
         '/trainings/t-1': () => json(training()),
         '/history/trainings/t-1': () => json(HISTORY),
         '/domains': () => json(DOMAINS),
+        '/trainings/t-1/modules': () => json([]),
+        '/trainers': () => json([]),
       },
     })
     await userEvent.click(await screen.findByRole('button', { name: 'Modifier' }))
@@ -165,5 +169,92 @@ describe('DomainsPage', () => {
   it("n'est ouverte qu'à l'administrateur", async () => {
     renderApp(<DomainsPage />, { at: '/formations/domaines', path: '/formations/domaines', responses: { '/auth/me': () => json(me(['coordinator'])) } })
     expect(await screen.findByText("Vous n'avez pas accès à cette page.")).toBeInTheDocument()
+  })
+})
+
+const PAUL = { id: 'p', first_name: 'Paul', last_name: 'Michel', badge: 'C03-15', is_active: true, is_trainer: true }
+const ROSE = { id: 'r', first_name: 'Rose', last_name: 'Pierre', badge: 'E05-55', is_active: true, is_trainer: true }
+
+function module(overrides: Record<string, unknown> = {}) {
+  return { id: 'm-1', training_id: 't-1', title: 'Vitesses', description: null, trainer: null, created_at: '2026-11-20T10:00:00Z', ...overrides }
+}
+
+function trainingPage(roles: string[], modules: unknown[], extra: Record<string, () => Response> = {}) {
+  return renderApp(<TrainingPage />, {
+    at: '/formations/t-1', path: '/formations/:id',
+    responses: {
+      '/auth/me': () => json(me(roles)),
+      '/trainings/t-1': () => json(training()),
+      '/history/trainings/t-1': () => json([]),
+      '/trainings/t-1/modules': () => json(modules),
+      '/trainers': () => json([PAUL, ROSE]),
+      ...extra,
+    },
+  })
+}
+
+describe('Les modules sur la fiche', () => {
+  it("dit qu'il n'y a pas encore de module", async () => {
+    trainingPage(['direction'], [])
+    expect(await screen.findByText("Aucun module pour l'instant.")).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Ajouter un module' })).not.toBeInTheDocument()
+  })
+
+  it('liste les modules avec leur formateur et signale un compte désactivé', async () => {
+    trainingPage(['direction'], [
+      module(),
+      module({ id: 'm-2', title: 'Balisage', trainer: { ...PAUL, is_active: false } }),
+    ])
+    expect(await screen.findByText('Formateur à désigner')).toBeInTheDocument()
+    expect(screen.getByText('Paul Michel (C03-15) (compte désactivé)')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Désigner le formateur' })).not.toBeInTheDocument()
+  })
+
+  it('laisse la secrétaire ajouter un module avec son formateur', async () => {
+    const fetchMock = trainingPage(['secretary'], [], { '/trainings/t-1/modules': () => json([]) })
+    await userEvent.click(await screen.findByRole('button', { name: 'Ajouter un module' }))
+    await userEvent.type(screen.getByLabelText('Titre du module'), 'Vitesses')
+    await screen.findByRole('option', { name: 'Paul Michel (C03-15)' })
+    await userEvent.selectOptions(screen.getByLabelText('Formateur'), 'p')
+    await userEvent.click(screen.getByRole('button', { name: 'Enregistrer le module' }))
+    const calls = fetchMock.mock.calls as unknown as [string, RequestInit | undefined][]
+    const call = calls.find(([url, init]) => String(url).endsWith('/trainings/t-1/modules') && init?.method === 'POST')
+    expect(JSON.parse(String(call?.[1]?.body))).toEqual({ title: 'Vitesses', description: null, trainer_id: 'p' })
+  })
+
+  it("laisse la secrétaire désigner le formateur d'un module « à désigner », mais pas changer un formateur", async () => {
+    const fetchMock = trainingPage(['secretary'], [module(), module({ id: 'm-2', title: 'Balisage', trainer: ROSE })], {
+      '/modules/m-1/trainer': () => json(module({ trainer: PAUL })),
+    })
+    const buttons = await screen.findAllByRole('button', { name: 'Désigner le formateur' })
+    expect(buttons).toHaveLength(1)
+    expect(screen.queryByRole('button', { name: /Modifier le module/ })).not.toBeInTheDocument()
+    await userEvent.click(buttons[0])
+    await screen.findAllByRole('option', { name: 'Paul Michel (C03-15)' })
+    await userEvent.selectOptions(screen.getByLabelText('Formateur de « Vitesses »'), 'p')
+    await userEvent.click(screen.getByRole('button', { name: 'Désigner' }))
+    const calls = fetchMock.mock.calls as unknown as [string, RequestInit | undefined][]
+    const call = calls.find(([url]) => String(url).endsWith('/modules/m-1/trainer'))
+    expect(JSON.parse(String(call?.[1]?.body))).toEqual({ trainer_id: 'p' })
+  })
+
+  it("affiche le refus du serveur en français", async () => {
+    trainingPage(['secretary'], [], {
+      '/trainings/t-1/modules': () => json([]),
+    })
+    await userEvent.click(await screen.findByRole('button', { name: 'Ajouter un module' }))
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(json({ detail: 'Cette formation a déjà un module de ce titre.' }, 409))))
+    await userEvent.type(screen.getByLabelText('Titre du module'), 'Vitesses')
+    await userEvent.click(screen.getByRole('button', { name: 'Enregistrer le module' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Cette formation a déjà un module de ce titre.')
+  })
+
+  it("donne « Modifier » à l'administrateur, qui garde le formateur désactivé dans la liste", async () => {
+    // Le serveur ne propose que les formateurs actifs : Paul n'est pas dans la liste.
+    trainingPage(['it_admin'], [module({ trainer: { ...PAUL, is_active: false } })], { '/trainers': () => json([ROSE]) })
+    await userEvent.click(await screen.findByRole('button', { name: 'Modifier le module « Vitesses »' }))
+    const select = screen.getByLabelText('Formateur') as HTMLSelectElement
+    expect(select.value).toBe('p')
+    expect(screen.getByRole('option', { name: 'Paul Michel (C03-15) (compte désactivé)' })).toBeInTheDocument()
   })
 })

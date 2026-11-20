@@ -34,11 +34,14 @@ export function HistoryPanel({
   subjectId,
   emptyText,
   headingLevel = 2,
+  names = {},
 }: {
   subjectType: SubjectType
   subjectId: string
   emptyText: string
   headingLevel?: 2 | 3
+  /** Les noms connus de l'écran (un formateur…), pour des phrases complètes. */
+  names?: Readonly<Record<string, string>>
 }) {
   const history = useQuery({
     queryKey: ['history', subjectType, subjectId],
@@ -58,7 +61,7 @@ export function HistoryPanel({
       {history.data && history.data.length > 0 && (
         <ol className="space-y-2">
           {history.data.map((entry, index) => {
-            const description = describeEntry(entry)
+            const description = describeEntry(entry, names)
             return (
               <li key={index} className="rounded-md border border-brand-50 px-3 py-2 text-sm">
                 <span className="text-brand-700">{formatWhen(entry.occurredAt)}</span>

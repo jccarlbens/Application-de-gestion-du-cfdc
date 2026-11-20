@@ -78,3 +78,57 @@ def test_a_trainer_is_refused_the_catalogue(client) -> None:
     _as(Role.TRAINER)
     assert client.get("/api/v1/trainings").status_code == 403
     assert client.get("/api/v1/domains").status_code == 403
+
+
+# --- Modules et formateurs (US-011) ----------------------------------------------
+
+
+def _training_with_module(client, dal, trainer_id=None) -> tuple[str, str]:
+    _as(Role.SECRETARY)
+    training_id = client.post(
+        "/api/v1/trainings", json={"title": "Rampe", "subdomain_id": str(dal.subdomain_id("Conduite sur la rampe"))}
+    ).json()["id"]
+    body = {"title": "Vitesses", "trainer_id": str(trainer_id) if trainer_id else None}
+    module_id = client.post(f"/api/v1/trainings/{training_id}/modules", json=body).json()["id"]
+    return training_id, module_id
+
+
+def test_the_trainers_list_carries_no_personal_data(client, dal) -> None:
+    dal.add_trainer("Paul", "Michel", "C03-15")
+    _as(Role.SECRETARY)
+    body = client.get("/api/v1/trainers").json()
+    assert body == [
+        {"id": body[0]["id"], "first_name": "Paul", "last_name": "Michel", "badge": "C03-15", "is_active": True, "is_trainer": True}
+    ]
+
+
+def test_a_secretary_adds_a_module_then_designates_its_trainer(client, dal) -> None:
+    paul = dal.add_trainer("Paul", "Michel", "C03-15")
+    training_id, module_id = _training_with_module(client, dal)
+    response = client.post(f"/api/v1/modules/{module_id}/trainer", json={"trainer_id": str(paul.id)})
+    assert response.status_code == 200
+    _as(Role.DIRECTION)
+    modules = client.get(f"/api/v1/trainings/{training_id}/modules").json()
+    assert [(m["title"], m["trainer"]["badge"]) for m in modules] == [("Vitesses", "C03-15")]
+
+
+def test_a_secretary_cannot_change_a_designated_trainer(client, dal) -> None:
+    paul = dal.add_trainer("Paul", "Michel", "C03-15")
+    rose = dal.add_trainer("Rose", "Pierre", "E05-55")
+    _, module_id = _training_with_module(client, dal, trainer_id=paul.id)
+    response = client.post(f"/api/v1/modules/{module_id}/trainer", json={"trainer_id": str(rose.id)})
+    assert response.status_code == 403
+    assert "seul l'administrateur" in response.json()["detail"]
+
+
+def test_a_duplicate_module_title_answers_409(client, dal) -> None:
+    training_id, _ = _training_with_module(client, dal)
+    response = client.post(f"/api/v1/trainings/{training_id}/modules", json={"title": "vitesses "})
+    assert response.status_code == 409
+    assert response.json() == {"detail": "Cette formation a déjà un module de ce titre."}
+
+
+def test_a_trainer_cannot_read_the_modules_of_a_training(client, dal) -> None:
+    training_id, _ = _training_with_module(client, dal)
+    _as(Role.TRAINER)
+    assert client.get(f"/api/v1/trainings/{training_id}/modules").status_code == 403

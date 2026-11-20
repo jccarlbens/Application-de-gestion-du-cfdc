@@ -3,7 +3,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from app.entities.ent_training import EntDomain, EntSubdomain, EntTraining
+from app.entities.ent_training import EntDomain, EntModule, EntSubdomain, EntTrainer, EntTraining
 
 # Des bornes larges, seulement contre les envois démesurés : les vraies
 # limites (200 et 2 000 caractères) sont vérifiées par la BLL, avec un message
@@ -57,3 +57,48 @@ class TrainingResponse(BaseModel):
     @classmethod
     def from_entity(cls, training: EntTraining) -> "TrainingResponse":
         return cls(**training.__dict__)
+
+
+class ModuleRequest(BaseModel):
+    title: str = Field(max_length=1000)
+    description: str | None = Field(default=None, max_length=10000)
+    trainer_id: UUID | None = None
+
+
+class TrainerAssignRequest(BaseModel):
+    trainer_id: UUID
+
+
+class TrainerResponse(BaseModel):
+    """Le formateur, sans ses données personnelles (email, téléphone)."""
+
+    id: UUID
+    first_name: str
+    last_name: str
+    badge: str
+    is_active: bool
+    is_trainer: bool
+
+    @classmethod
+    def from_entity(cls, trainer: EntTrainer) -> "TrainerResponse":
+        return cls(**trainer.__dict__)
+
+
+class ModuleResponse(BaseModel):
+    id: UUID
+    training_id: UUID
+    title: str
+    description: str | None
+    trainer: TrainerResponse | None
+    created_at: datetime
+
+    @classmethod
+    def from_entity(cls, module: EntModule) -> "ModuleResponse":
+        return cls(
+            id=module.id,
+            training_id=module.training_id,
+            title=module.title,
+            description=module.description,
+            trainer=TrainerResponse.from_entity(module.trainer) if module.trainer else None,
+            created_at=module.created_at,
+        )

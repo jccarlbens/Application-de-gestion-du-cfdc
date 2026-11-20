@@ -4,8 +4,12 @@ from fastapi import APIRouter, Depends
 
 from app.api.v1.dto.dto_training import (
     DomainResponse,
+    ModuleRequest,
+    ModuleResponse,
     NameRequest,
     SubdomainResponse,
+    TrainerAssignRequest,
+    TrainerResponse,
     TrainingRequest,
     TrainingResponse,
 )
@@ -92,4 +96,45 @@ def update_training(
 ):
     return TrainingResponse.from_entity(
         bll.update_training(actor, training_id, body.title, body.description, body.subdomain_id)
+    )
+
+
+# --- Modules et formateurs (US-011) ---------------------------------------------
+
+
+@router.get("/trainers", response_model=list[TrainerResponse])
+def list_trainers(actor: EntActor = Depends(WRITERS), bll: BllTraining = Depends(get_bll_training)):
+    return [TrainerResponse.from_entity(t) for t in bll.list_trainers(actor)]
+
+
+@router.get("/trainings/{training_id}/modules", response_model=list[ModuleResponse])
+def list_modules(training_id: UUID, actor: EntActor = Depends(READERS), bll: BllTraining = Depends(get_bll_training)):
+    return [ModuleResponse.from_entity(m) for m in bll.list_modules(actor, training_id)]
+
+
+@router.post("/trainings/{training_id}/modules", response_model=ModuleResponse, status_code=201)
+def add_module(
+    training_id: UUID, body: ModuleRequest, actor: EntActor = Depends(WRITERS), bll: BllTraining = Depends(get_bll_training)
+):
+    return ModuleResponse.from_entity(bll.add_module(actor, training_id, body.title, body.description, body.trainer_id))
+
+
+@router.post("/modules/{module_id}/trainer", response_model=ModuleResponse)
+def assign_trainer(
+    module_id: UUID,
+    body: TrainerAssignRequest,
+    actor: EntActor = Depends(WRITERS),
+    bll: BllTraining = Depends(get_bll_training),
+):
+    """Ceux qui enregistrent désignent le formateur d'un module « à désigner » ;
+    changer un formateur déjà désigné est vérifié par la BLL (administrateur)."""
+    return ModuleResponse.from_entity(bll.assign_trainer(actor, module_id, body.trainer_id))
+
+
+@router.put("/modules/{module_id}", response_model=ModuleResponse)
+def update_module(
+    module_id: UUID, body: ModuleRequest, actor: EntActor = Depends(ADMIN_ONLY), bll: BllTraining = Depends(get_bll_training)
+):
+    return ModuleResponse.from_entity(
+        bll.update_module(actor, module_id, body.title, body.description, body.trainer_id)
     )

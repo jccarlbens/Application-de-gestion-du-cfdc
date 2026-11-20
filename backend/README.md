@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-20T18:34:23Z
+updated: 2026-11-20T19:07:37Z
 ---
 
 # backend — API de l'application CFDC
@@ -63,6 +63,11 @@ Copiez `.env.example` en `.env`.
 | `GET /api/v1/trainings`, `GET /api/v1/trainings/{id}` | Le catalogue, trié par domaine, sous-domaine et intitulé (tous sauf le formateur) |
 | `POST /api/v1/trainings` | Enregistre une formation (secrétaire, coordonnateur, chef de service, administrateur) |
 | `PUT /api/v1/trainings/{id}` | Modifie une formation (administrateur) |
+| `GET /api/v1/trainings/{id}/modules` | Les modules d'une formation, dans l'ordre d'ajout, avec leur formateur et sa situation (tous sauf le formateur) |
+| `POST /api/v1/trainings/{id}/modules` | Ajoute un module, avec ou sans formateur (secrétaire, coordonnateur, chef de service, administrateur) |
+| `POST /api/v1/modules/{id}/trainer` | Désigne le formateur d'un module « à désigner » (mêmes rôles) ; en changer un déjà désigné : administrateur |
+| `PUT /api/v1/modules/{id}` | Modifie un module : titre, description, formateur (administrateur) |
+| `GET /api/v1/trainers` | Les formateurs actifs, nom et badge seulement (secrétaire, coordonnateur, chef de service, administrateur) |
 | `GET /docs` | Documentation interactive de l'API |
 
 Sans cookie de session, les routes protégées répondent `401 Vous n'êtes pas connecté.` ; avec une session expirée ou fermée, `401 Votre session a expiré, reconnectez-vous.`
