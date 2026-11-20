@@ -1,12 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import {
-  describeEntry,
-  fetchAccountHistory,
-  fetchAccounts,
-  formatWhen,
-  type HistoryEntry,
-} from '../../../entities/account'
+import { fetchHistory } from '../api/history'
+import { describeEntry, formatWhen } from '../lib/describeEntry'
+import { authorOf, type HistoryEntry, type SubjectType } from '../model/history'
 
 function Details({ entry }: { entry: HistoryEntry }) {
   const [open, setOpen] = useState(false)
@@ -30,29 +26,35 @@ function Details({ entry }: { entry: HistoryEntry }) {
   )
 }
 
-/** Le panneau « Historique » d'un compte : son journal, en phrases (US-009). */
-export function AccountHistory({ accountId }: { accountId: string }) {
-  const history = useQuery({ queryKey: ['account-history', accountId], queryFn: () => fetchAccountHistory(accountId) })
-  // Pour nommer l'auteur quand c'est une personne connectée.
-  const accounts = useQuery({ queryKey: ['accounts'], queryFn: fetchAccounts })
-
-  function author(entry: HistoryEntry): string {
-    const person = accounts.data?.find((account) => account.id === entry.actorUserId)
-    return person ? `${person.firstName} ${person.lastName} (${person.badge})` : entry.actorLabel
-  }
+/** Le panneau « Historique » d'une fiche : son journal, en phrases. L'auteur
+ *  est nommé par le serveur (US-010, décision 4A). `emptyText` dit pourquoi
+ *  une fiche n'a aucune entrée (créée avant le journal, chargée à l'installation). */
+export function HistoryPanel({
+  subjectType,
+  subjectId,
+  emptyText,
+  headingLevel = 2,
+}: {
+  subjectType: SubjectType
+  subjectId: string
+  emptyText: string
+  headingLevel?: 2 | 3
+}) {
+  const history = useQuery({
+    queryKey: ['history', subjectType, subjectId],
+    queryFn: () => fetchHistory(subjectType, subjectId),
+  })
+  const Heading = headingLevel === 2 ? 'h2' : 'h3'
+  const headingId = `historique-${subjectId}`
 
   return (
-    <section aria-labelledby="historique" className="mt-8">
-      <h2 id="historique" className="mb-3 font-semibold text-brand-900">
+    <section aria-labelledby={headingId} className="mt-8">
+      <Heading id={headingId} className="mb-3 font-semibold text-brand-900">
         Historique
-      </h2>
+      </Heading>
       {history.isPending && <p className="text-brand-900">Chargement…</p>}
       {history.isError && <p className="text-red-700">L'historique n'a pas pu être chargé.</p>}
-      {history.data && history.data.length === 0 && (
-        <p className="text-brand-900">
-          Aucune entrée : ce compte a été créé avant la mise en place du journal.
-        </p>
-      )}
+      {history.data && history.data.length === 0 && <p className="text-brand-900">{emptyText}</p>}
       {history.data && history.data.length > 0 && (
         <ol className="space-y-2">
           {history.data.map((entry, index) => {
@@ -61,7 +63,7 @@ export function AccountHistory({ accountId }: { accountId: string }) {
               <li key={index} className="rounded-md border border-brand-50 px-3 py-2 text-sm">
                 <span className="text-brand-700">{formatWhen(entry.occurredAt)}</span>
                 {' — '}
-                <span className="font-medium text-brand-900">{author(entry)}</span>
+                <span className="font-medium text-brand-900">{authorOf(entry)}</span>
                 {' : '}
                 <span className="text-brand-900">{description.text}</span>
                 {description.needsDetails && <Details entry={entry} />}

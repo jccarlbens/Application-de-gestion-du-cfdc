@@ -1,10 +1,12 @@
-import { accountStatus, byLastName, describeEntry, toAccount, type HistoryEntry } from '../../src/entities/account'
+import { accountStatus, byLastName, toAccount } from '../../src/entities/account'
+import { describeEntry, type HistoryEntry } from '../../src/entities/history'
 
 function entry(partial: Partial<HistoryEntry>): HistoryEntry {
   return {
     occurredAt: '2026-11-17T15:21:00Z',
     actorUserId: null,
     actorLabel: 'Ligne de commande (administrateur)',
+    actorName: null,
     tableName: 'users',
     action: 'update',
     before: null,

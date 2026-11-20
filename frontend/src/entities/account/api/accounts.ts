@@ -1,6 +1,6 @@
 import { apiGet, apiPostAction, apiPostJson, apiPut } from '../../../shared/api'
 import { isRole } from '../../viewer/@x/account'
-import type { Account, HistoryEntry, NewAccount } from '../model/account'
+import type { Account, NewAccount } from '../model/account'
 
 type AccountDto = {
   id: string
@@ -15,16 +15,6 @@ type AccountDto = {
   has_password: boolean
 }
 
-type HistoryEntryDto = {
-  occurred_at: string
-  actor_user_id: string | null
-  actor_label: string
-  table_name: string
-  action: 'create' | 'update' | 'delete'
-  before: Record<string, unknown> | null
-  after: Record<string, unknown> | null
-}
-
 export function toAccount(dto: AccountDto): Account {
   return {
     id: dto.id,
@@ -37,18 +27,6 @@ export function toAccount(dto: AccountDto): Account {
     isActive: dto.is_active,
     isBlocked: dto.is_blocked,
     hasPassword: dto.has_password,
-  }
-}
-
-function toHistoryEntry(dto: HistoryEntryDto): HistoryEntry {
-  return {
-    occurredAt: dto.occurred_at,
-    actorUserId: dto.actor_user_id,
-    actorLabel: dto.actor_label,
-    tableName: dto.table_name,
-    action: dto.action,
-    before: dto.before,
-    after: dto.after,
   }
 }
 
@@ -81,8 +59,4 @@ export type AccountAction = 'deactivate' | 'reactivate' | 'unblock'
 
 export async function runAccountAction(id: string, action: AccountAction): Promise<Account> {
   return toAccount(await apiPostAction<AccountDto>(`/users/${id}/${action}`))
-}
-
-export async function fetchAccountHistory(id: string): Promise<HistoryEntry[]> {
-  return (await apiGet<HistoryEntryDto[]>(`/history/users/${id}`)).map(toHistoryEntry)
 }

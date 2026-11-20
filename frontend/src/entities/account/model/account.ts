@@ -42,13 +42,3 @@ export type NewAccount = {
   phone: string
   roles: Role[]
 }
-
-export type HistoryEntry = {
-  occurredAt: string
-  actorUserId: string | null
-  actorLabel: string
-  tableName: string
-  action: 'create' | 'update' | 'delete'
-  before: Record<string, unknown> | null
-  after: Record<string, unknown> | null
-}

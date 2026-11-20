@@ -3,6 +3,8 @@ export {
   ALL_ROLES,
   ROLE_LABELS,
   canManageAccounts,
+  canRecordTraining,
+  canSeeCatalogue,
   grantableRoles,
   isAdmin,
   isRole,
