@@ -1,5 +1,14 @@
 import { apiGet, apiPostJson, apiPut } from '../../../shared/api'
-import type { Domain, Module, ModuleInput, Subdomain, Trainer, Training, TrainingInput } from '../model/training'
+import type {
+  Domain,
+  Module,
+  ModuleInput,
+  MyTraining,
+  Subdomain,
+  Trainer,
+  Training,
+  TrainingInput,
+} from '../model/training'
 
 type SubdomainDto = { id: string; domain_id: string; name: string }
 type DomainDto = { id: string; name: string; subdomains: SubdomainDto[] }
@@ -125,4 +134,36 @@ export async function assignTrainer(moduleId: string, trainerId: string): Promis
 
 export async function updateModule(moduleId: string, input: ModuleInput): Promise<Module> {
   return toModule(await apiPut<ModuleDto>(`/modules/${moduleId}`, toModuleBody(input)))
+}
+
+// --- « Mes modules » du formateur (US-013) -------------------------------------------
+
+type MyTrainingDto = {
+  id: string
+  title: string
+  description: string | null
+  domain_name: string
+  subdomain_name: string
+  modules: {
+    id: string
+    title: string
+    description: string | null
+    documents: { id: string; file_name: string; size_bytes: number; uploaded_at: string }[]
+  }[]
+}
+
+export async function fetchMyModules(): Promise<MyTraining[]> {
+  return (await apiGet<MyTrainingDto[]>('/me/modules')).map((t) => ({
+    id: t.id,
+    title: t.title,
+    description: t.description,
+    domainName: t.domain_name,
+    subdomainName: t.subdomain_name,
+    modules: t.modules.map((m) => ({
+      id: m.id,
+      title: m.title,
+      description: m.description,
+      documents: m.documents.map((d) => ({ id: d.id, fileName: d.file_name, sizeBytes: d.size_bytes, uploadedAt: d.uploaded_at })),
+    })),
+  }))
 }
