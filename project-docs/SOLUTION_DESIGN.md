@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-19T17:12:37Z
+updated: 2026-11-20T18:34:23Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -132,8 +132,8 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 | Fiche | Contenu principal |
 |---|---|
 | **Utilisateur** (`users`, `user_roles`) | numéro de badge (une lettre majuscule, deux chiffres, un tiret, deux chiffres : `[A-Z]\d{2}-\d{2}`, unique), prénom et nom séparés, email (obligatoire, unique), téléphone (facultatif), rôles (un ou plusieurs, une ligne par rôle dans `user_roles`), canal de double authentification, actif ou désactivé, bloqué ou non, mot de passe haché en **Argon2id** (vide tant que la personne ne l'a pas choisi). Tables d'accès associées : `password_tokens` (liens de mot de passe, empreinte seulement), `login_attempts` (tentatives de connexion), `auth_sessions` (sessions de connexion). Détail : `technical-specs/ws-tech-01-accounts-and-access.md` |
-| **Formation** | intitulé (unique), description (facultative), sous-domaine |
-| **Domaine** et **sous-domaine** | deux niveaux de classement : un domaine contient des sous-domaines, une formation se range dans un sous-domaine |
+| **Formation** (`trainings`) | intitulé (200 caractères au plus), `title_key` (l'intitulé sans majuscules ni espaces en trop, **unique**), description (facultative, 2 000 caractères au plus), sous-domaine. Journalisée (US-010) |
+| **Domaine** et **sous-domaine** (`domains`, `subdomains`) | deux niveaux de classement : un domaine (nom unique) contient des sous-domaines (nom unique dans son domaine) ; une formation se range dans un sous-domaine. Journalisés ; la liste de départ est chargée par la migration `b88262b5a722`, donc hors du journal (US-010) |
 | **Module** | formation, titre, formateur (un **utilisateur** ayant le rôle formateur : les formateurs ont un compte limité à leurs modules, `PRD.md` §5) |
 | **Document de cours** | module, fichier (PDF, PowerPoint, Word), déposé par, date |
 | **Demande de formation** | service demandeur, date de réception, formation demandée, validée par le coordonnateur |
