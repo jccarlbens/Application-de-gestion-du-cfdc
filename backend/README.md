@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-20T19:29:51Z
+updated: 2026-11-20T21:07:52Z
 ---
 
 # backend — API de l'application CFDC
@@ -73,6 +73,7 @@ Copiez `.env.example` en `.env`.
 | `POST /api/v1/documents/{id}/replace` | Remplace un document en vigueur ; l'ancien reste, « remplacé » (administrateur) |
 | `GET /api/v1/documents/{id}/download` | Le fichier, sous son nom d'origine : formateur actuel du module, ou administrateur (seul à ouvrir une version remplacée) |
 | `GET /api/v1/documents` | Tous les documents (administrateur) |
+| `GET /api/v1/me/modules` | « Mes modules » : les modules dont la personne connectée est le formateur actuel, par formation, avec leurs documents en vigueur (formateur) |
 | `GET /docs` | Documentation interactive de l'API |
 
 Sans cookie de session, les routes protégées répondent `401 Vous n'êtes pas connecté.` ; avec une session expirée ou fermée, `401 Votre session a expiré, reconnectez-vous.`
