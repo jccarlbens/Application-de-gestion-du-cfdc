@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-20T19:07:37Z
+updated: 2026-11-20T19:29:51Z
 ---
 
 # backend — API de l'application CFDC
@@ -68,6 +68,11 @@ Copiez `.env.example` en `.env`.
 | `POST /api/v1/modules/{id}/trainer` | Désigne le formateur d'un module « à désigner » (mêmes rôles) ; en changer un déjà désigné : administrateur |
 | `PUT /api/v1/modules/{id}` | Modifie un module : titre, description, formateur (administrateur) |
 | `GET /api/v1/trainers` | Les formateurs actifs, nom et badge seulement (secrétaire, coordonnateur, chef de service, administrateur) |
+| `GET /api/v1/trainings/{id}/documents` | Les documents de cours d'une formation : en vigueur pour tous sauf le formateur ; versions remplacées en plus pour l'administrateur |
+| `POST /api/v1/modules/{id}/documents` | Dépose un document (formulaire `file`) : PDF, Word, PowerPoint, 25 Mo au plus, contenu vérifié (administrateur) |
+| `POST /api/v1/documents/{id}/replace` | Remplace un document en vigueur ; l'ancien reste, « remplacé » (administrateur) |
+| `GET /api/v1/documents/{id}/download` | Le fichier, sous son nom d'origine : formateur actuel du module, ou administrateur (seul à ouvrir une version remplacée) |
+| `GET /api/v1/documents` | Tous les documents (administrateur) |
 | `GET /docs` | Documentation interactive de l'API |
 
 Sans cookie de session, les routes protégées répondent `401 Vous n'êtes pas connecté.` ; avec une session expirée ou fermée, `401 Votre session a expiré, reconnectez-vous.`
@@ -105,6 +110,7 @@ Chaque création, modification et suppression d'une ligne s'inscrit dans la tabl
 - **Les modifications « en bloc »** (`update(...)`, `delete(...)` de SQLAlchemy) ne sont **pas** vues par le journal : modifiez les objets un par un.
 - **La base refuse** de modifier, supprimer ou vider `audit_log`, même en SQL à la main (déclencheur PostgreSQL).
 - **Une fiche qui a un historique à l'écran** ajoute son genre à `_READERS` (`app/bll/bll_history.py`), avec les rôles qui la voient ; la route `GET /history/{genre}/{id}` la sert sans autre changement.
+- **Une clé étrangère donnée par un objet** (`UserRoleModel(user=…)`, `CourseDocumentModel(module=…)`) est recopiée dans sa colonne avant la photo du journal (`_fill_foreign_keys`) : sans cela, l'entrée de création garderait une clé vide (constaté sur US-012).
 - **Une liste chargée par une migration** (la liste de départ des domaines, US-010) n'est pas au journal : la migration écrit en SQL, hors de la session de l'application.
 
 ## Connexion
@@ -125,3 +131,11 @@ Chaque route de l'API est **soit publique, soit protégée** (US-007) ; `tests/u
   `require_roles(*ANY_ROLE)` : il suffit d'être connecté.
 - **Publique**, exprès : `dependencies=[Depends(public_route)]` sur le décorateur, et la route ajoutée à `PUBLIC` dans le test.
 - **Les règles plus fines** (le coordonnateur ne crée pas d'administrateur, le dernier administrateur est protégé) restent dans la BLL.
+
+## Documents de cours
+
+- Les fichiers sont rangés dans `DOCUMENTS_DIR` (le volume `documents` dans Docker Compose ; `./documents` en local, ignoré par Git), sous un **nom aléatoire** ; le nom d'origine est dans la base.
+- Un fichier est écrit dans un fichier temporaire, mis à sa place, puis sa fiche est enregistrée ; si la fiche échoue, le fichier est effacé.
+- Le contenu est vérifié selon l'extension : `%PDF` ; archive ZIP avec `word/` ou `ppt/` ; en-tête OLE2 pour `.doc` et `.ppt` (sans distinguer Word et PowerPoint).
+- Nginx accepte 26 Mo (`client_max_body_size`) et répond en français au-delà ; le backend vérifie les 25 Mo.
+- Sur le serveur de test (Render gratuit), le dossier se vide à chaque redémarrage : la fiche reste, et le téléchargement répond « Le fichier de ce document est introuvable sur le serveur. ».

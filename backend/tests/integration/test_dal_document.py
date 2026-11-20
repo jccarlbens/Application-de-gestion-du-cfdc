@@ -67,6 +67,8 @@ def test_uploads_are_told_in_the_history_of_the_training(setup) -> None:
         ("update", "Cours.pdf"),
     ]
     assert entries[2].after["replaced_by_id"] is not None
+    # Le module figure dans chaque entrée, dès la création.
+    assert {e.after["module_id"] for e in entries} == {str(s["module"].id)}
     assert {e.actor_name for e in entries} == {"Ada Admin (Q21-21)"}
 
 

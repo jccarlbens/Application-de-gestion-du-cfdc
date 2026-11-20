@@ -147,3 +147,12 @@ def test_the_history_reads_in_chronological_order_for_the_admin(setup) -> None:
 
     history = BllHistory(dal_audit).history(admin_actor, "users", str(user.id))
     assert [e.action.value for e in history] == ["create", "create", "delete", "create"]
+
+
+def test_a_role_created_with_its_account_records_its_user_id(setup) -> None:
+    # La clé étrangère donnée par l'objet (`user=…`) doit figurer dans l'entrée
+    # (constaté vide sur US-012, depuis US-003).
+    bll, _, _, session_factory = setup
+    user = bll.create_user(None, _account(badge="B08-42", email="fk@example.test", roles=("trainer",)))
+    roles = [r for r in _rows(session_factory) if r["table_name"] == "user_roles"]
+    assert [r["after"]["user_id"] for r in roles] == [str(user.id)]
