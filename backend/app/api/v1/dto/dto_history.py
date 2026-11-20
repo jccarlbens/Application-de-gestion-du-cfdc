@@ -11,6 +11,7 @@ class HistoryEntryResponse(BaseModel):
     occurred_at: datetime
     actor_user_id: UUID | None
     actor_label: str
+    actor_name: str | None
     table_name: str
     action: str
     before: dict[str, Any] | None
@@ -22,6 +23,7 @@ class HistoryEntryResponse(BaseModel):
             occurred_at=entry.occurred_at,
             actor_user_id=entry.actor_user_id,
             actor_label=entry.actor_label,
+            actor_name=entry.actor_name,
             table_name=entry.table_name,
             action=entry.action.value,
             before=entry.before,

@@ -10,11 +10,11 @@ import {
   type Account,
   type AccountAction,
 } from '../../../entities/account'
+import { HistoryPanel } from '../../../entities/history'
 import { ALL_ROLES, ROLE_LABELS, canManageAccounts, isAdmin, rolesLabel, type Role } from '../../../entities/viewer'
 import { ApiError } from '../../../shared/api'
 import { AccessDenied, ConfirmDialog } from '../../../shared/ui'
 import { AppShell } from '../../../widgets/app-shell'
-import { AccountHistory } from './AccountHistory'
 
 type Pending = { kind: 'action'; action: AccountAction } | { kind: 'roles' } | null
 
@@ -157,7 +157,11 @@ function AccountDetails({ badge, admin }: { badge: string; admin: boolean }) {
         <dd>{rolesLabel(a.roles)}</dd>
       </dl>
       {admin && <AdminActions key={`${a.roles.join()}-${a.isActive}-${a.isBlocked}`} account={a} />}
-      <AccountHistory accountId={a.id} />
+      <HistoryPanel
+        subjectType="users"
+        subjectId={a.id}
+        emptyText="Aucune entrée : ce compte a été créé avant la mise en place du journal."
+      />
     </>
   )
 }

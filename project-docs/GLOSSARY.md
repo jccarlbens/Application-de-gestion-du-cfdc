@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-10T17:11:26Z
+updated: 2026-11-19T17:12:37Z
 ---
 
 # GLOSSARY.md — CFDC
@@ -72,17 +72,17 @@ updated: 2026-11-10T17:11:26Z
 |---|---|
 | **AAN** | Autorité Aéroportuaire Nationale |
 | **CFDC** | Centre de Formation et de Développement des Compétences de l'AAN, rattaché à la direction des ressources humaines |
-| **Formation** | Un programme du catalogue, par exemple « conduite sur le tarmac ». Elle a un domaine et contient plusieurs modules. Elle peut être donnée plusieurs fois par an |
-| **Domaine** | La catégorie d'une formation, par exemple sûreté ou sécurité. Liste fixe, à fournir |
+| **Formation** | Un programme du catalogue, par exemple « conduite sur le tarmac ». Elle se range dans un sous-domaine et contient plusieurs modules. Elle peut être donnée plusieurs fois par an |
+| **Domaine** | Le premier niveau de classement des formations : « Sûreté-Sécurité », « Accueil ». Chaque domaine contient des sous-domaines. Liste tenue par l'administrateur |
+| **Sous-domaine** | Le second niveau de classement, à l'intérieur d'un domaine : par exemple « Conduite sur la rampe » (Sûreté-Sécurité) ou « Protocole » (Accueil). Une formation se range dans un seul sous-domaine |
 | **Module** | Un cours d'une formation, dispensé par **un seul** formateur, avec ses documents de cours |
 | **Session** (de formation) | Une occurrence datée d'une formation, d'une heure à une semaine |
-| **Formation importante** | Formation que le coordonnateur décide de marquer ainsi ; ses participants reçoivent un certificat |
 | **Demande de formation** | La requête administrative écrite d'un service demandeur, validée par le coordonnateur puis enregistrée |
 | **Inscription** | La présence d'un participant dans une session, avec sa présence, sa note et la remise de ses documents |
 | **Présence** | Un seul « présent / absent » par participant et par session, même sur plusieurs jours |
 | **Évaluation** | Une note sur 100 et des commentaires, une par participant et par session. Réussite à partir de 50/100 |
 | **Attestation** | Preuve de participation, remise à tous les participants présents. Produite **hors de l'application**, qui note sa remise et sa date |
-| **Certificat** | Document remis en plus de l'attestation, sur demande ou pour une formation importante. Produit hors de l'application |
+| **Certificat** | Document remis en plus de l'attestation, **sur demande**. Produit hors de l'application |
 | **Demande de correction** | Demande, faite dans l'application, de modifier ou de supprimer une information déjà enregistrée. Seul l'administrateur la valide. **À ne pas confondre avec une demande de formation** |
 | **Données personnelles** | Le NIF, le CIN et le téléphone d'un participant. Visibles seulement du coordonnateur et de l'administrateur après saisie |
 | **NIF / CIN** | Numéro d'identification fiscale / carte d'identification nationale. Au moins l'un des deux est obligatoire ; il sert à reconnaître une même personne d'une session à l'autre |

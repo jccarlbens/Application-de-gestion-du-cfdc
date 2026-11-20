@@ -77,3 +77,11 @@ class AccountUnavailableError(AppError):
 
 class SessionExpiredError(AppError):
     """Le cookie de session est là, mais la session est expirée ou fermée."""
+
+
+class RecordNotFoundError(AppError):
+    """Une fiche demandée n'existe pas (formation, domaine…)."""
+
+
+class DuplicateNameError(AppError):
+    """Un nom ou un intitulé déjà pris (domaine, sous-domaine, formation)."""

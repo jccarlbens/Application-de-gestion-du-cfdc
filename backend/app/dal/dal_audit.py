@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime
 from typing import Any
 
-from sqlalchemy import BigInteger, DateTime, Index, String, event, func, inspect, select
+from sqlalchemy import BigInteger, DateTime, Index, String, column, event, func, inspect, select, table
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, Session, mapped_column, sessionmaker
 from sqlalchemy.orm.attributes import NO_VALUE
@@ -183,7 +183,7 @@ def _table_rank(obj: Any) -> tuple[int, str]:
 # --- La lecture -------------------------------------------------------------------
 
 
-def _to_entity(model: AuditLogModel) -> EntAuditEntry:
+def _to_entity(model: AuditLogModel, actor_name: str | None = None) -> EntAuditEntry:
     return EntAuditEntry(
         occurred_at=model.occurred_at,
         actor_user_id=model.actor_user_id,
@@ -194,6 +194,7 @@ def _to_entity(model: AuditLogModel) -> EntAuditEntry:
         action=AuditAction(model.action),
         before=model.before,
         after=model.after,
+        actor_name=actor_name,
     )
 
 
@@ -215,10 +216,20 @@ class DalAudit:
         self._sessions = session_factory
 
     def history(self, subject_type: str, subject_id: str) -> list[EntAuditEntry]:
+        """L'historique d'une fiche, dans l'ordre, avec le nom de chaque auteur
+        lu dans `users` (le journal ne dépend pas de la DAL des comptes)."""
+        name = (_USERS.c.first_name + " " + _USERS.c.last_name + " (" + _USERS.c.badge + ")").label("actor_name")
         with self._sessions() as session:
-            models = session.scalars(
-                select(AuditLogModel)
+            rows = session.execute(
+                select(AuditLogModel, name)
+                .outerjoin(_USERS, _USERS.c.id == AuditLogModel.actor_user_id)
                 .where(AuditLogModel.subject_type == subject_type, AuditLogModel.subject_id == subject_id)
                 .order_by(AuditLogModel.id)
             )
-            return [_to_entity(m) for m in models]
+            return [_to_entity(model, actor_name) for model, actor_name in rows]
+
+
+# Juste ce qu'il faut de la table des comptes pour nommer un auteur.
+_USERS = table(
+    "users", column("id"), column("first_name", String), column("last_name", String), column("badge", String)
+)

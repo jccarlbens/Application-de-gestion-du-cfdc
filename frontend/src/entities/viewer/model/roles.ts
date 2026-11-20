@@ -40,3 +40,14 @@ export function grantableRoles(roles: readonly Role[]): Role[] {
 }
 
 export const ALL_ROLES: readonly Role[] = ORDER
+
+/** Voir le catalogue des formations : tous les rôles sauf formateur (PRD.md §5).
+ *  Une personne à plusieurs rôles le voit dès que l'un d'eux le permet. */
+export function canSeeCatalogue(roles: readonly Role[]): boolean {
+  return roles.some((role) => role !== 'trainer')
+}
+
+/** Enregistrer une formation : la direction consulte seulement (PRD.md §5). */
+export function canRecordTraining(roles: readonly Role[]): boolean {
+  return roles.some((role) => role === 'secretary' || role === 'coordinator' || role === 'service_head' || role === 'it_admin')
+}

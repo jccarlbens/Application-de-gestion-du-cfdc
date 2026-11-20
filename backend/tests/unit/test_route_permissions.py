@@ -51,20 +51,39 @@ def test_every_route_is_public_or_protected(route: ApiRoute) -> None:
         assert (declaration == "public") == is_public, f"{method} {route.path} : {declaration}"
 
 
-def test_admin_only_routes_are_admin_only() -> None:
-    expected = {
-        "/api/v1/users": {Role.IT_ADMIN, Role.COORDINATOR},
-        "/api/v1/users/by-badge/{badge}": {Role.IT_ADMIN, Role.COORDINATOR},
-        "/api/v1/users/{user_id}/roles": {Role.IT_ADMIN},
-        "/api/v1/users/{user_id}/deactivate": {Role.IT_ADMIN},
-        "/api/v1/users/{user_id}/reactivate": {Role.IT_ADMIN},
-        "/api/v1/users/{user_id}/unblock": {Role.IT_ADMIN},
-        "/api/v1/history/users/{user_id}": {Role.IT_ADMIN, Role.COORDINATOR},
-        "/api/v1/auth/me": set(Role),
-    }
-    for route in _routes():
-        if route.path in expected:
-            assert _declaration(route) == expected[route.path], route.path
+CATALOGUE = set(Role) - {Role.TRAINER}
+WRITERS = {Role.SECRETARY, Role.COORDINATOR, Role.SERVICE_HEAD, Role.IT_ADMIN}
+
+EXPECTED = {
+    ("POST", "/api/v1/users"): {Role.IT_ADMIN, Role.COORDINATOR},
+    ("GET", "/api/v1/users"): {Role.IT_ADMIN, Role.COORDINATOR},
+    ("GET", "/api/v1/users/by-badge/{badge}"): {Role.IT_ADMIN, Role.COORDINATOR},
+    ("PUT", "/api/v1/users/{user_id}/roles"): {Role.IT_ADMIN},
+    ("POST", "/api/v1/users/{user_id}/deactivate"): {Role.IT_ADMIN},
+    ("POST", "/api/v1/users/{user_id}/reactivate"): {Role.IT_ADMIN},
+    ("POST", "/api/v1/users/{user_id}/unblock"): {Role.IT_ADMIN},
+    # La route ouvre à tous les lecteurs possibles ; la BLL vérifie le genre de fiche.
+    ("GET", "/api/v1/history/{subject_type}/{subject_id}"): CATALOGUE,
+    ("GET", "/api/v1/auth/me"): set(Role),
+    ("GET", "/api/v1/domains"): CATALOGUE,
+    ("POST", "/api/v1/domains"): {Role.IT_ADMIN},
+    ("PUT", "/api/v1/domains/{domain_id}"): {Role.IT_ADMIN},
+    ("POST", "/api/v1/domains/{domain_id}/subdomains"): {Role.IT_ADMIN},
+    ("PUT", "/api/v1/subdomains/{subdomain_id}"): {Role.IT_ADMIN},
+    ("GET", "/api/v1/trainings"): CATALOGUE,
+    ("POST", "/api/v1/trainings"): WRITERS,
+    ("GET", "/api/v1/trainings/{training_id}"): CATALOGUE,
+    ("PUT", "/api/v1/trainings/{training_id}"): {Role.IT_ADMIN},
+}
+
+
+def test_each_protected_route_allows_exactly_the_expected_roles() -> None:
+    found = {(method, route.path): _declaration(route) for route in _routes() for method in route.methods}
+    # Une route renommée ne doit pas sortir du contrôle sans bruit.
+    missing = set(EXPECTED) - set(found)
+    assert not missing, f"routes attendues introuvables : {sorted(missing)}"
+    for key, roles in EXPECTED.items():
+        assert found[key] == roles, key
 
 
 @pytest.mark.parametrize("role", [Role.SECRETARY, Role.SERVICE_HEAD, Role.TRAINER, Role.DIRECTION])
@@ -76,10 +95,13 @@ def test_a_direct_call_from_a_role_without_the_right_is_refused(role: Role) -> N
         for method, path in [
             ("get", "/api/v1/users"),
             ("post", f"/api/v1/users/{some_id}/deactivate"),
-            ("get", f"/api/v1/history/users/{some_id}"),
+            ("put", f"/api/v1/trainings/{some_id}"),
+            ("post", "/api/v1/domains"),
         ]:
-            response = getattr(client, method)(path)
+            response = client.request(method.upper(), path, json={} if method != "get" else None)
             assert response.status_code == 403, path
             assert response.json() == {"detail": "Votre rôle ne permet pas cette action."}
+        # L'historique d'un compte : la route laisse passer, la BLL refuse.
+        assert client.get(f"/api/v1/history/users/{some_id}").status_code == 403
     finally:
         app.dependency_overrides.clear()

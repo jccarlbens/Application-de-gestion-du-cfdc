@@ -35,3 +35,7 @@ def test_accounts_and_their_roles_are_audited() -> None:
 
 def test_every_exemption_gives_its_reason() -> None:
     assert all(reason.strip() for reason in EXEMPT_TABLES.values())
+
+
+def test_the_catalogue_tables_are_audited() -> None:
+    assert {"domains", "subdomains", "trainings"} <= AUDITED

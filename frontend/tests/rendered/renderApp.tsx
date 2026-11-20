@@ -24,7 +24,11 @@ export function renderApp(
   { at = '/', path = '/', responses }: { at?: string; path?: string; responses: Record<string, () => Response> },
 ) {
   const fetchMock = vi.fn((url: string) => {
-    const key = Object.keys(responses).find((p) => String(url).endsWith(p))
+    // Le chemin le plus long qui convient : « /history/trainings/t-1 » ne doit
+    // pas recevoir la réponse de « /trainings/t-1 ».
+    const key = Object.keys(responses)
+      .filter((p) => String(url).endsWith(p))
+      .sort((a, b) => b.length - a.length)[0]
     return key ? Promise.resolve(responses[key]()) : Promise.reject(new Error(`inattendu : ${url}`))
   })
   vi.stubGlobal('fetch', fetchMock)

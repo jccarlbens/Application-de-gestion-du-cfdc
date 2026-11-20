@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-17T16:45:28Z
+updated: 2026-11-20T18:34:23Z
 ---
 
 # backend — API de l'application CFDC
@@ -52,14 +52,20 @@ Copiez `.env.example` en `.env`.
 | `PUT /api/v1/users/{id}/roles` | Change les rôles (administrateur) |
 | `POST /api/v1/users/{id}/deactivate`, `/reactivate` | Désactive ou réactive un compte (administrateur) |
 | `POST /api/v1/password/setup` | Choisit son mot de passe avec le jeton du lien, sans connexion |
-| `GET /api/v1/history/users/{id}` | L'historique d'un compte, dans l'ordre (administrateur, coordonnateur) |
+| `GET /api/v1/history/{genre}/{id}` | L'historique d'une fiche, dans l'ordre, avec le nom de chaque auteur (`actor_name`). Genres : `users` (administrateur, coordonnateur), `trainings`, `domains`, `subdomains` (tous sauf le formateur) |
 | `POST /api/v1/auth/login` | Connexion par numéro de badge et mot de passe ; pose le cookie de session `cfdc_session` |
 | `POST /api/v1/auth/logout` | Ferme la session et efface le cookie |
 | `GET /api/v1/auth/me` | La personne connectée |
 | `POST /api/v1/users/{id}/unblock` | Débloque un compte (administrateur) |
+| `GET /api/v1/domains` | Les domaines et leurs sous-domaines (tous sauf le formateur) |
+| `POST /api/v1/domains`, `PUT /api/v1/domains/{id}` | Ajoute ou renomme un domaine (administrateur) |
+| `POST /api/v1/domains/{id}/subdomains`, `PUT /api/v1/subdomains/{id}` | Ajoute ou renomme un sous-domaine (administrateur) |
+| `GET /api/v1/trainings`, `GET /api/v1/trainings/{id}` | Le catalogue, trié par domaine, sous-domaine et intitulé (tous sauf le formateur) |
+| `POST /api/v1/trainings` | Enregistre une formation (secrétaire, coordonnateur, chef de service, administrateur) |
+| `PUT /api/v1/trainings/{id}` | Modifie une formation (administrateur) |
+| `GET /docs` | Documentation interactive de l'API |
 
 Sans cookie de session, les routes protégées répondent `401 Vous n'êtes pas connecté.` ; avec une session expirée ou fermée, `401 Votre session a expiré, reconnectez-vous.`
-| `GET /docs` | Documentation interactive de l'API |
 
 ## Comptes : les commandes
 
@@ -93,6 +99,8 @@ Chaque création, modification et suppression d'une ligne s'inscrit dans la tabl
 - **Toute écriture déclare son auteur** avec `acting_as(...)`, dans la BLL. Sans auteur, l'enregistrement est refusé (`MissingAuditActorError`).
 - **Les modifications « en bloc »** (`update(...)`, `delete(...)` de SQLAlchemy) ne sont **pas** vues par le journal : modifiez les objets un par un.
 - **La base refuse** de modifier, supprimer ou vider `audit_log`, même en SQL à la main (déclencheur PostgreSQL).
+- **Une fiche qui a un historique à l'écran** ajoute son genre à `_READERS` (`app/bll/bll_history.py`), avec les rôles qui la voient ; la route `GET /history/{genre}/{id}` la sert sans autre changement.
+- **Une liste chargée par une migration** (la liste de départ des domaines, US-010) n'est pas au journal : la migration écrit en SQL, hors de la session de l'application.
 
 ## Connexion
 
