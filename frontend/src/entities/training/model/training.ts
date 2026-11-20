@@ -17,3 +17,35 @@ export type TrainingInput = { title: string; description: string; subdomainId: s
 // Les limites vérifiées par le serveur (US-010, décision 8), rappelées à l'écran.
 export const TITLE_MAX = 200
 export const DESCRIPTION_MAX = 2000
+
+/** Un formateur, sans ses données personnelles (US-011). */
+export type Trainer = {
+  id: string
+  firstName: string
+  lastName: string
+  badge: string
+  isActive: boolean
+  isTrainer: boolean
+}
+
+export type Module = {
+  id: string
+  trainingId: string
+  title: string
+  description: string | null
+  trainer: Trainer | null
+}
+
+export type ModuleInput = { title: string; description: string; trainerId: string }
+
+export function trainerName(trainer: Trainer): string {
+  return `${trainer.firstName} ${trainer.lastName} (${trainer.badge})`
+}
+
+/** Le formateur d'un module, tel qu'on l'affiche (US-011, décision 4A). */
+export function trainerLabel(trainer: Trainer | null): string {
+  if (!trainer) return 'Formateur à désigner'
+  if (!trainer.isActive) return `${trainerName(trainer)} (compte désactivé)`
+  if (!trainer.isTrainer) return `${trainerName(trainer)} (n'est plus formateur)`
+  return trainerName(trainer)
+}

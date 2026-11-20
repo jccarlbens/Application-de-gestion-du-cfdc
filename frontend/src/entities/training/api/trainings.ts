@@ -1,5 +1,5 @@
 import { apiGet, apiPostJson, apiPut } from '../../../shared/api'
-import type { Domain, Subdomain, Training, TrainingInput } from '../model/training'
+import type { Domain, Module, ModuleInput, Subdomain, Trainer, Training, TrainingInput } from '../model/training'
 
 type SubdomainDto = { id: string; domain_id: string; name: string }
 type DomainDto = { id: string; name: string; subdomains: SubdomainDto[] }
@@ -66,4 +66,63 @@ export async function addSubdomain(domainId: string, name: string): Promise<Subd
 
 export async function renameSubdomain(id: string, name: string): Promise<Subdomain> {
   return toSubdomain(await apiPut<SubdomainDto>(`/subdomains/${id}`, { name }))
+}
+
+// --- Modules et formateurs (US-011) ------------------------------------------------
+
+type TrainerDto = {
+  id: string
+  first_name: string
+  last_name: string
+  badge: string
+  is_active: boolean
+  is_trainer: boolean
+}
+type ModuleDto = {
+  id: string
+  training_id: string
+  title: string
+  description: string | null
+  trainer: TrainerDto | null
+}
+
+const toTrainer = (dto: TrainerDto): Trainer => ({
+  id: dto.id,
+  firstName: dto.first_name,
+  lastName: dto.last_name,
+  badge: dto.badge,
+  isActive: dto.is_active,
+  isTrainer: dto.is_trainer,
+})
+
+const toModule = (dto: ModuleDto): Module => ({
+  id: dto.id,
+  trainingId: dto.training_id,
+  title: dto.title,
+  description: dto.description,
+  trainer: dto.trainer ? toTrainer(dto.trainer) : null,
+})
+
+function toModuleBody(input: ModuleInput) {
+  return { title: input.title, description: input.description.trim() || null, trainer_id: input.trainerId || null }
+}
+
+export async function fetchTrainers(): Promise<Trainer[]> {
+  return (await apiGet<TrainerDto[]>('/trainers')).map(toTrainer)
+}
+
+export async function fetchModules(trainingId: string): Promise<Module[]> {
+  return (await apiGet<ModuleDto[]>(`/trainings/${encodeURIComponent(trainingId)}/modules`)).map(toModule)
+}
+
+export async function addModule(trainingId: string, input: ModuleInput): Promise<Module> {
+  return toModule(await apiPostJson<ModuleDto>(`/trainings/${trainingId}/modules`, toModuleBody(input)))
+}
+
+export async function assignTrainer(moduleId: string, trainerId: string): Promise<Module> {
+  return toModule(await apiPostJson<ModuleDto>(`/modules/${moduleId}/trainer`, { trainer_id: trainerId }))
+}
+
+export async function updateModule(moduleId: string, input: ModuleInput): Promise<Module> {
+  return toModule(await apiPut<ModuleDto>(`/modules/${moduleId}`, toModuleBody(input)))
 }

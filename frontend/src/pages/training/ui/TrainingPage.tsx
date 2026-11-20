@@ -14,6 +14,8 @@ import { canSeeCatalogue, isAdmin, type Viewer } from '../../../entities/viewer'
 import { ApiError } from '../../../shared/api'
 import { AccessDenied } from '../../../shared/ui'
 import { AppShell } from '../../../widgets/app-shell'
+import { useTrainerNames } from '../model/useTrainerNames'
+import { ModulesSection } from './ModulesSection'
 
 /** La modification par l'administrateur (affinage de l'Epic 2, Q4). */
 function EditForm({ training, onDone }: { training: Training; onDone: () => void }) {
@@ -77,6 +79,7 @@ function TrainingDetails({ id, viewer }: { id: string; viewer: Viewer }) {
   const location = useLocation()
   const [editing, setEditing] = useState(false)
   const training = useQuery({ queryKey: ['training', id], queryFn: () => fetchTraining(id) })
+  const names = useTrainerNames(id, viewer)
 
   if (training.isPending) return <p className="text-brand-900">Chargement…</p>
   if (training.isError) {
@@ -121,7 +124,8 @@ function TrainingDetails({ id, viewer }: { id: string; viewer: Viewer }) {
           )}
         </>
       )}
-      <HistoryPanel subjectType="trainings" subjectId={t.id} emptyText="Aucune entrée au journal." />
+      <ModulesSection trainingId={t.id} viewer={viewer} />
+      <HistoryPanel subjectType="trainings" subjectId={t.id} emptyText="Aucune entrée au journal." names={names} />
     </>
   )
 }
