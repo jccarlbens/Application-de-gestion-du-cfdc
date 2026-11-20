@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .env
 database/*.db
+# Les documents de cours déposés en local (US-012).
+documents/

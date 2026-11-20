@@ -49,3 +49,15 @@ export function trainerLabel(trainer: Trainer | null): string {
   if (!trainer.isTrainer) return `${trainerName(trainer)} (n'est plus formateur)`
   return trainerName(trainer)
 }
+
+/** « Mes modules » (US-013) : ce que voit le formateur, sans « déposé par ». */
+export type MyDocument = { id: string; fileName: string; sizeBytes: number; uploadedAt: string }
+export type MyModule = { id: string; title: string; description: string | null; documents: MyDocument[] }
+export type MyTraining = {
+  id: string
+  title: string
+  description: string | null
+  domainName: string
+  subdomainName: string
+  modules: MyModule[]
+}

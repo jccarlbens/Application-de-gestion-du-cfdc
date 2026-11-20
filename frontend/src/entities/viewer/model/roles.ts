@@ -51,3 +51,8 @@ export function canSeeCatalogue(roles: readonly Role[]): boolean {
 export function canRecordTraining(roles: readonly Role[]): boolean {
   return roles.some((role) => role === 'secretary' || role === 'coordinator' || role === 'service_head' || role === 'it_admin')
 }
+
+/** « Mes modules » : le rôle formateur, même à côté d'un autre rôle (US-013). */
+export function isTrainer(roles: readonly Role[]): boolean {
+  return roles.includes('trainer')
+}

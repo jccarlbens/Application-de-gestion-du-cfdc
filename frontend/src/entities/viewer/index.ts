@@ -8,6 +8,7 @@ export {
   grantableRoles,
   isAdmin,
   isRole,
+  isTrainer,
   rolesLabel,
   type Role,
 } from './model/roles'

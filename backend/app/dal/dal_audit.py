@@ -23,7 +23,7 @@ from typing import Any
 
 from sqlalchemy import BigInteger, DateTime, Index, String, column, event, func, inspect, select, table
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, Session, mapped_column, sessionmaker
+from sqlalchemy.orm import MANYTOONE, Mapped, Session, mapped_column, sessionmaker
 from sqlalchemy.orm.attributes import NO_VALUE
 
 from app.dal.database import Base, SessionLocal
@@ -163,6 +163,12 @@ def _record_changes(session: Session, flush_context, instances) -> None:
     for obj in new:
         if getattr(obj, "id", None) is None:
             obj.id = uuid.uuid4()
+    # Une clé étrangère donnée par un objet (`module=…`, `user=…`) n'est remplie
+    # par SQLAlchemy qu'au moment de l'écriture, après cette photo : on la
+    # recopie d'abord, sinon l'entrée garderait une clé vide (constaté sur
+    # US-012 : `module_id`, et `user_id` des rôles depuis US-003).
+    for obj in new:
+        _fill_foreign_keys(obj)
     # Un ordre lisible et toujours le même (SQLAlchemy ne garantit aucun ordre) :
     # les retraits, puis les modifications, puis les ajouts ; une fiche avant
     # ses dépendances (un compte avant ses rôles), dans l'ordre des tables.
@@ -172,6 +178,20 @@ def _record_changes(session: Session, flush_context, instances) -> None:
         + [_entry(o, AuditAction.CREATE, actor) for o in sorted(new, key=_table_rank)]
     )
     session.add_all(entries)
+
+
+def _fill_foreign_keys(obj: Any) -> None:
+    state = inspect(obj)
+    for relationship in state.mapper.relationships:
+        if relationship.direction is not MANYTOONE:
+            continue
+        related = state.attrs[relationship.key].loaded_value
+        if related is None or related is NO_VALUE:
+            continue
+        for local, remote in relationship.local_remote_pairs:
+            key = state.mapper.get_property_by_column(local).key
+            if getattr(obj, key) is None:
+                setattr(obj, key, getattr(related, inspect(related).mapper.get_property_by_column(remote).key))
 
 
 def _table_rank(obj: Any) -> tuple[int, str]:

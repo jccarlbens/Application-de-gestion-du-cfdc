@@ -1,5 +1,7 @@
 import { API_BASE_URL } from '../config'
 
+export { API_BASE_URL }
+
 /** Une erreur renvoyée par l'API. `message` est le texte du serveur, en
  *  français, à afficher tel quel ; sinon un message générique. */
 export class ApiError extends Error {
@@ -73,6 +75,16 @@ async function send<T>(method: string, path: string, body?: unknown): Promise<T>
     headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
     body: body === undefined ? undefined : JSON.stringify(body),
   })
+  if (!response.ok) {
+    throw await readError(response)
+  }
+  return (await response.json()) as T
+}
+
+/** Un envoi de fichier (formulaire multipart) : le navigateur fixe lui-même
+ *  l'en-tête Content-Type, avec sa frontière. */
+export async function apiPostForm<T>(path: string, form: FormData): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, { method: 'POST', credentials: 'same-origin', body: form })
   if (!response.ok) {
     throw await readError(response)
   }

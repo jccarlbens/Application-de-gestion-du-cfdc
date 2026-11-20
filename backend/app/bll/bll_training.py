@@ -17,11 +17,14 @@ from uuid import UUID
 from app.bll.bll_user import audit_actor
 from app.core.exceptions import DuplicateNameError, ForbiddenError, InvalidInputError, RecordNotFoundError
 from app.dal.dal_audit import acting_as
+from app.dal.dal_document import DalDocument
 from app.dal.dal_training import DalTraining
 from app.entities.ent_training import (
     EntDomain,
     EntModule,
     EntModuleInput,
+    EntMyModule,
+    EntMyTraining,
     EntSubdomain,
     EntTrainer,
     EntTraining,
@@ -53,8 +56,9 @@ def title_key(title: str) -> str:
 
 
 class BllTraining:
-    def __init__(self, dal: DalTraining | None = None) -> None:
+    def __init__(self, dal: DalTraining | None = None, documents: DalDocument | None = None) -> None:
         self._dal = dal or DalTraining()
+        self._documents = documents or DalDocument()
 
     # --- Domaines et sous-domaines -------------------------------------------
 
@@ -184,6 +188,25 @@ class BllTraining:
             module = EntModuleInput(module.title, module.title_key, module.description, trainer_id)
         with acting_as(audit_actor(actor)):
             return self._dal.update_module(module_id, module)
+
+    # --- « Mes modules » du formateur (US-013) ------------------------------------
+
+    def my_modules(self, actor: EntActor) -> list[EntMyTraining]:
+        """Les modules dont la personne connectée est le formateur actuel, par
+        formation, avec leurs documents en vigueur. L'identifiant vient de la
+        session, jamais de l'écran : on ne demande pas les modules d'un autre."""
+        self._require(actor, {Role.TRAINER}, "Cette page est réservée aux formateurs.")
+        pairs = self._dal.list_trainer_modules(actor.user_id)
+        documents = self._documents.list_current_for_modules([module.id for _, module in pairs])
+        trainings: dict = {}
+        for training, module in pairs:
+            entry = trainings.setdefault(training.id, (training, []))
+            docs = tuple(d for d in documents if d.module_id == module.id)
+            entry[1].append(EntMyModule(module.id, module.title, module.description, docs))
+        return [
+            EntMyTraining(t.id, t.title, t.description, t.domain_name, t.subdomain_name, tuple(modules))
+            for t, modules in trainings.values()
+        ]
 
     def _validate_module(self, title: str, description: str | None, trainer_id: UUID | None) -> EntModuleInput:
         title = clean(title)

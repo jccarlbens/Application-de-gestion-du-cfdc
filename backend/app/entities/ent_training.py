@@ -79,3 +79,26 @@ class EntModuleInput:
     title_key: str
     description: str | None
     trainer_id: UUID | None
+
+
+@dataclass(frozen=True)
+class EntMyModule:
+    """Un module tel que le voit son formateur (US-013), avec ses documents en
+    vigueur. `documents` contient des `EntDocument` (ent_document)."""
+
+    id: UUID
+    title: str
+    description: str | None
+    documents: tuple
+
+
+@dataclass(frozen=True)
+class EntMyTraining:
+    """Une formation où le formateur a au moins un module (US-013)."""
+
+    id: UUID
+    title: str
+    description: str | None
+    domain_name: str
+    subdomain_name: str
+    modules: tuple[EntMyModule, ...]

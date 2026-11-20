@@ -303,3 +303,16 @@ class DalTraining:
                 .order_by(UserModel.last_name, UserModel.first_name)
             )
             return [_trainer(u) for u in users]
+
+    def list_trainer_modules(self, trainer_id: uuid.UUID) -> list[tuple[EntTraining, EntModule]]:
+        """Les modules dont ce compte est le formateur actuel (US-013), avec leur
+        formation : par intitulé de formation, puis dans l'ordre d'ajout."""
+        with self._sessions() as session:
+            rows = session.execute(
+                select(ModuleModel, TrainingModel)
+                .join(TrainingModel, TrainingModel.id == ModuleModel.training_id)
+                .where(ModuleModel.trainer_id == trainer_id)
+                .order_by(TrainingModel.title, ModuleModel.created_at, ModuleModel.id)
+            )
+            trainer = session.get(UserModel, trainer_id)
+            return [(_training(training), _module(module, trainer)) for module, training in rows]

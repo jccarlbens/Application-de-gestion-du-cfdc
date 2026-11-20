@@ -35,6 +35,10 @@ services:
         sync: false # secret : la clé SMTP de Brevo
       - key: EMAIL_SENDER
         sync: false # une adresse d'expéditeur vérifiée dans Brevo, par exemple « CFDC <adresse@…> »
+      # Documents de cours (US-012). Le plan gratuit n'a pas de disque permanent :
+      # ce dossier se vide à chaque redémarrage (affinage de l'Epic 2, Q8, accepté).
+      - key: DOCUMENTS_DIR
+        value: /data/documents
 
   - type: web
     name: cfdc-frontend

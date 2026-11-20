@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.v1 import auth, health, history, password, trainings, users
+from app.api.v1 import auth, documents, health, history, password, trainings, users
 
 router = APIRouter()
 
@@ -11,3 +11,4 @@ router.include_router(password.router)
 router.include_router(history.router)
 router.include_router(auth.router)
 router.include_router(trainings.router)
+router.include_router(documents.router)

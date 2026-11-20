@@ -98,6 +98,20 @@ function describeModule(entry: HistoryEntry, names: Readonly<Record<string, stri
   return parts.length ? { text: parts.join(' ; '), needsDetails: unknown || changedKeys(entry).includes('description') } : null
 }
 
+/** Un document de cours s'inscrit dans l'historique de sa formation (US-012,
+ *  décision 5A). `names` donne le titre des modules connus de l'écran. */
+function describeDocument(entry: HistoryEntry, names: Readonly<Record<string, string>>): EntryDescription | null {
+  const values = entry.after ?? entry.before ?? {}
+  const file = `« ${String(values.file_name ?? '')} »`
+  const moduleTitle = typeof values.module_id === 'string' ? names[values.module_id] : undefined
+  const where = moduleTitle ? ` (module « ${moduleTitle} »)` : ''
+  if (entry.action === 'create') return { text: `Document déposé : ${file}${where}`, needsDetails: false }
+  if (entry.action === 'update' && changedKeys(entry).includes('replaced_by_id')) {
+    return { text: `Document remplacé par une nouvelle version : ${file}${where}`, needsDetails: false }
+  }
+  return null
+}
+
 function describeNamed(entry: HistoryEntry, kind: 'Domaine' | 'Sous-domaine'): EntryDescription | null {
   const name = String(entry.after?.name ?? '')
   if (entry.action === 'create') return { text: `${kind} créé : « ${name} »`, needsDetails: false }
@@ -117,6 +131,7 @@ export function describeEntry(entry: HistoryEntry, names: Readonly<Record<string
   } else if (entry.tableName === 'users') description = describeAccount(entry)
   else if (entry.tableName === 'trainings') description = describeTraining(entry)
   else if (entry.tableName === 'modules') description = describeModule(entry, names)
+  else if (entry.tableName === 'course_documents') description = describeDocument(entry, names)
   else if (entry.tableName === 'domains') description = describeNamed(entry, 'Domaine')
   else if (entry.tableName === 'subdomains') description = describeNamed(entry, 'Sous-domaine')
   if (description) return description

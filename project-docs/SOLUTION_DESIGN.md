@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-20T19:07:37Z
+updated: 2026-11-20T19:29:51Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -135,7 +135,7 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 | **Formation** (`trainings`) | intitulé (200 caractères au plus), `title_key` (l'intitulé sans majuscules ni espaces en trop, **unique**), description (facultative, 2 000 caractères au plus), sous-domaine. Journalisée (US-010) |
 | **Domaine** et **sous-domaine** (`domains`, `subdomains`) | deux niveaux de classement : un domaine (nom unique) contient des sous-domaines (nom unique dans son domaine) ; une formation se range dans un sous-domaine. Journalisés ; la liste de départ est chargée par la migration `b88262b5a722`, donc hors du journal (US-010) |
 | **Module** (`modules`) | formation, titre (200 caractères au plus, `title_key` **unique dans la formation**), description (facultative), formateur (un **utilisateur** ayant le rôle formateur, ou vide : « Formateur à désigner » ; les formateurs ont un compte limité à leurs modules, `PRD.md` §5), date d'ajout (`clock_timestamp()`, qui fixe l'ordre). Journalisé **sous sa formation** (US-011) |
-| **Document de cours** | module, fichier (PDF, PowerPoint, Word), déposé par, date |
+| **Document de cours** (`course_documents`) | module, nom du fichier d'origine, type, taille, nom sur le disque (aléatoire, dans `DOCUMENTS_DIR`), déposé par, date, « remplacé par » (vide tant qu'il est en vigueur). PDF, Word, PowerPoint, 25 Mo au plus, contenu vérifié. Journalisé **sous sa formation** ; rien ne s'efface : remplacer ajoute une version (US-012) |
 | **Demande de formation** | service demandeur, date de réception, formation demandée, validée par le coordonnateur |
 | **Session** | formation, demande d'origine (facultative), date de début, date de fin, horaires. Une session dure **d'une heure à une semaine** |
 | **Participant** | nom, prénom, **NIF ou CIN** (au moins l'un des deux, obligatoire ; il sert à reconnaître la même personne d'une session à l'autre), fonction, service ou entreprise, téléphone, interne ou externe |
