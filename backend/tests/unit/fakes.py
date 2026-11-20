@@ -161,3 +161,99 @@ class FakeDalAuth:
         for session in self.sessions.values():
             if session["user_id"] == user_id:
                 session["closed"] = True
+
+
+class FakeDalTraining:
+    """Le catalogue en mémoire, avec la liste de départ (US-010)."""
+
+    def __init__(self) -> None:
+        self.domains: dict[uuid.UUID, dict] = {}
+        self.subdomains: dict[uuid.UUID, dict] = {}
+        self.trainings: dict[uuid.UUID, dict] = {}
+        for domain, subs in (
+            ("Sûreté-Sécurité", ("Sensibilisation sur la carte d'accès", "Conduite sur la rampe")),
+            ("Accueil", ("Protocole", "Civilité")),
+        ):
+            domain_id = self.add_domain(domain).id
+            for name in subs:
+                self.add_subdomain(domain_id, name)
+
+    def subdomain_id(self, name: str) -> uuid.UUID:
+        return next(i for i, s in self.subdomains.items() if s["name"] == name)
+
+    def domain_id(self, name: str) -> uuid.UUID:
+        return next(i for i, d in self.domains.items() if d["name"] == name)
+
+    def _domain(self, domain_id):
+        from app.entities.ent_training import EntDomain, EntSubdomain
+
+        subs = sorted(
+            (EntSubdomain(i, s["domain_id"], s["name"]) for i, s in self.subdomains.items() if s["domain_id"] == domain_id),
+            key=lambda s: s.name.casefold(),
+        )
+        return EntDomain(domain_id, self.domains[domain_id]["name"], tuple(subs))
+
+    def list_domains(self):
+        return sorted((self._domain(i) for i in self.domains), key=lambda d: d.name.casefold())
+
+    def add_domain(self, name):
+        domain_id = uuid.uuid4()
+        self.domains[domain_id] = {"name": name}
+        return self._domain(domain_id)
+
+    def rename_domain(self, domain_id, name):
+        self.domains[domain_id]["name"] = name
+        return self._domain(domain_id)
+
+    def add_subdomain(self, domain_id, name):
+        from app.entities.ent_training import EntSubdomain
+
+        sub_id = uuid.uuid4()
+        self.subdomains[sub_id] = {"domain_id": domain_id, "name": name}
+        return EntSubdomain(sub_id, domain_id, name)
+
+    def rename_subdomain(self, subdomain_id, name):
+        from app.entities.ent_training import EntSubdomain
+
+        self.subdomains[subdomain_id]["name"] = name
+        return EntSubdomain(subdomain_id, self.subdomains[subdomain_id]["domain_id"], name)
+
+    def subdomain_exists(self, subdomain_id) -> bool:
+        return subdomain_id in self.subdomains
+
+    def _training(self, training_id):
+        from app.entities.ent_training import EntTraining
+
+        t = self.trainings[training_id]
+        sub = self.subdomains[t["subdomain_id"]]
+        return EntTraining(
+            training_id, t["title"], t["description"], t["subdomain_id"], sub["name"],
+            sub["domain_id"], self.domains[sub["domain_id"]]["name"], datetime(2026, 11, 20, tzinfo=UTC),
+        )
+
+    def list_trainings(self):
+        return [self._training(i) for i in self.trainings]
+
+    def get_training(self, training_id):
+        from app.core.exceptions import RecordNotFoundError
+
+        if training_id not in self.trainings:
+            raise RecordNotFoundError("Cette formation n'existe pas.")
+        return self._training(training_id)
+
+    def _check_unique(self, key, ignore=None) -> None:
+        from app.core.exceptions import DuplicateNameError
+
+        if any(t["title_key"] == key for i, t in self.trainings.items() if i != ignore):
+            raise DuplicateNameError("Une formation porte déjà cet intitulé.")
+
+    def create_training(self, training):
+        self._check_unique(training.title_key)
+        training_id = uuid.uuid4()
+        self.trainings[training_id] = dict(training.__dict__)
+        return self._training(training_id)
+
+    def update_training(self, training_id, training):
+        self._check_unique(training.title_key, ignore=training_id)
+        self.trainings[training_id] = dict(training.__dict__)
+        return self._training(training_id)

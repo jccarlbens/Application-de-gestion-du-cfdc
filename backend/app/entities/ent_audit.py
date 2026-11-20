@@ -42,3 +42,6 @@ class EntAuditEntry:
     action: AuditAction
     before: dict[str, Any] | None
     after: dict[str, Any] | None
+    # « Prénom Nom (badge) » de l'auteur, quand c'est un utilisateur : le
+    # serveur le donne à tout lecteur de l'historique (US-010, décision 4A).
+    actor_name: str | None = None
