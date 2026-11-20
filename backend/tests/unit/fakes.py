@@ -257,3 +257,65 @@ class FakeDalTraining:
         self._check_unique(training.title_key, ignore=training_id)
         self.trainings[training_id] = dict(training.__dict__)
         return self._training(training_id)
+
+    # --- Modules et formateurs (US-011) ---------------------------------------
+
+    def add_trainer(self, first: str, last: str, badge: str, is_active=True, is_trainer=True):
+        from app.entities.ent_training import EntTrainer
+
+        trainer = EntTrainer(uuid.uuid4(), first, last, badge, is_active, is_trainer)
+        self.trainers = {**getattr(self, "trainers", {}), trainer.id: trainer}
+        return trainer
+
+    def training_exists(self, training_id) -> bool:
+        return training_id in self.trainings
+
+    def _module(self, module_id):
+        from app.entities.ent_training import EntModule
+
+        m = self.modules[module_id]
+        trainer = getattr(self, "trainers", {}).get(m["trainer_id"]) if m["trainer_id"] else None
+        return EntModule(module_id, m["training_id"], m["title"], m["description"], trainer, m["created_at"])
+
+    def list_modules(self, training_id):
+        return [self._module(i) for i, m in getattr(self, "modules", {}).items() if m["training_id"] == training_id]
+
+    def get_module(self, module_id):
+        from app.core.exceptions import RecordNotFoundError
+
+        if module_id not in getattr(self, "modules", {}):
+            raise RecordNotFoundError("Ce module n'existe pas.")
+        return self._module(module_id)
+
+    def _check_module_title(self, training_id, key, ignore=None) -> None:
+        from app.core.exceptions import DuplicateNameError
+
+        for i, m in getattr(self, "modules", {}).items():
+            if i != ignore and m["training_id"] == training_id and m["title_key"] == key:
+                raise DuplicateNameError("Cette formation a déjà un module de ce titre.")
+
+    def add_module(self, training_id, module):
+        self.modules = getattr(self, "modules", {})
+        self._check_module_title(training_id, module.title_key)
+        module_id = uuid.uuid4()
+        self.modules[module_id] = {
+            **module.__dict__,
+            "training_id": training_id,
+            "created_at": datetime(2026, 11, 20, tzinfo=UTC),
+        }
+        return self._module(module_id)
+
+    def update_module(self, module_id, module):
+        current = self.modules[module_id]
+        self._check_module_title(current["training_id"], module.title_key, ignore=module_id)
+        self.modules[module_id] = {**current, **module.__dict__}
+        return self._module(module_id)
+
+    def get_trainer(self, user_id):
+        return getattr(self, "trainers", {}).get(user_id)
+
+    def list_active_trainers(self):
+        return sorted(
+            (t for t in getattr(self, "trainers", {}).values() if t.is_active and t.is_trainer),
+            key=lambda t: (t.last_name, t.first_name),
+        )

@@ -44,3 +44,38 @@ class EntTrainingInput:
     title_key: str
     description: str | None
     subdomain_id: UUID
+
+
+@dataclass(frozen=True)
+class EntTrainer:
+    """Un formateur, tel que le voit le catalogue : jamais ses données
+    personnelles (email, téléphone), seulement son nom et son badge."""
+
+    id: UUID
+    first_name: str
+    last_name: str
+    badge: str
+    is_active: bool
+    is_trainer: bool
+
+
+@dataclass(frozen=True)
+class EntModule:
+    """Un module d'une formation (US-011), avec son formateur s'il est désigné."""
+
+    id: UUID
+    training_id: UUID
+    title: str
+    description: str | None
+    trainer: EntTrainer | None
+    created_at: datetime
+
+
+@dataclass(frozen=True)
+class EntModuleInput:
+    """Un module validé par la BLL, prêt à enregistrer."""
+
+    title: str
+    title_key: str
+    description: str | None
+    trainer_id: UUID | None

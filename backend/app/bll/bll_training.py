@@ -5,6 +5,9 @@
 - La modifier : l'administrateur seulement, en attendant les demandes de
   correction de l'Epic 5 (affinage de l'Epic 2, Q4).
 - Ajouter ou renommer un domaine ou un sous-domaine : l'administrateur seulement.
+- Ajouter un module, désigner le formateur d'un module « à désigner » : ceux
+  qui enregistrent les formations ; changer un formateur déjà désigné, ou le
+  titre d'un module : l'administrateur seulement (US-011, décision 1A).
 - Rien ne se supprime.
 """
 
@@ -15,7 +18,15 @@ from app.bll.bll_user import audit_actor
 from app.core.exceptions import DuplicateNameError, ForbiddenError, InvalidInputError, RecordNotFoundError
 from app.dal.dal_audit import acting_as
 from app.dal.dal_training import DalTraining
-from app.entities.ent_training import EntDomain, EntSubdomain, EntTraining, EntTrainingInput
+from app.entities.ent_training import (
+    EntDomain,
+    EntModule,
+    EntModuleInput,
+    EntSubdomain,
+    EntTrainer,
+    EntTraining,
+    EntTrainingInput,
+)
 from app.entities.ent_user import EntActor, Role
 
 TITLE_MAX = 200
@@ -119,6 +130,80 @@ class BllTraining:
         training = self._validate(title, description, subdomain_id)
         with acting_as(audit_actor(actor)):
             return self._dal.update_training(training_id, training)
+
+    # --- Modules et formateurs (US-011) ------------------------------------------
+
+    def list_modules(self, actor: EntActor, training_id: UUID) -> list[EntModule]:
+        self._require(actor, CATALOGUE_READERS, "Votre rôle ne permet pas de voir le catalogue.")
+        self._dal.get_training(training_id)  # 404 si la formation n'existe pas
+        return self._dal.list_modules(training_id)
+
+    def list_trainers(self, actor: EntActor) -> list[EntTrainer]:
+        """Les formateurs qu'on peut désigner : comptes actifs au rôle formateur."""
+        self._require(actor, TRAINING_WRITERS, "Votre rôle ne permet pas de désigner un formateur.")
+        return self._dal.list_active_trainers()
+
+    def add_module(
+        self, actor: EntActor, training_id: UUID, title: str, description: str | None, trainer_id: UUID | None
+    ) -> EntModule:
+        self._require(actor, TRAINING_WRITERS, "Votre rôle ne permet pas d'ajouter un module.")
+        self._dal.get_training(training_id)
+        module = self._validate_module(title, description, trainer_id)
+        with acting_as(audit_actor(actor)):
+            return self._dal.add_module(training_id, module)
+
+    def assign_trainer(self, actor: EntActor, module_id: UUID, trainer_id: UUID) -> EntModule:
+        """Désigner le formateur d'un module « à désigner » est un complément ;
+        changer un formateur déjà désigné, une modification (décision 1A)."""
+        self._require(actor, TRAINING_WRITERS, "Votre rôle ne permet pas de désigner un formateur.")
+        module = self._dal.get_module(module_id)
+        if module.trainer is not None and Role.IT_ADMIN not in actor.roles:
+            raise ForbiddenError(
+                "Ce module a déjà un formateur : seul l'administrateur informatique peut le changer."
+            )
+        self._check_trainer(trainer_id)
+        changed = EntModuleInput(module.title, title_key(module.title), module.description, trainer_id)
+        with acting_as(audit_actor(actor)):
+            return self._dal.update_module(module_id, changed)
+
+    def update_module(
+        self, actor: EntActor, module_id: UUID, title: str, description: str | None, trainer_id: UUID | None
+    ) -> EntModule:
+        self._require(
+            actor,
+            {Role.IT_ADMIN},
+            "Seul l'administrateur informatique modifie un module enregistré ; "
+            "les autres feront une demande de correction.",
+        )
+        current = self._dal.get_module(module_id)
+        # Garder le même formateur reste permis même s'il a quitté ce rôle
+        # (décision 4A) : seul un nouveau formateur doit être actif et formateur.
+        same_trainer = current.trainer is not None and current.trainer.id == trainer_id
+        module = self._validate_module(title, description, None if same_trainer else trainer_id)
+        if same_trainer:
+            module = EntModuleInput(module.title, module.title_key, module.description, trainer_id)
+        with acting_as(audit_actor(actor)):
+            return self._dal.update_module(module_id, module)
+
+    def _validate_module(self, title: str, description: str | None, trainer_id: UUID | None) -> EntModuleInput:
+        title = clean(title)
+        if not title:
+            raise InvalidInputError("Le titre du module est obligatoire.")
+        if len(title) > TITLE_MAX:
+            raise InvalidInputError(f"Le titre du module ne doit pas dépasser {TITLE_MAX} caractères.")
+        description = (description or "").strip() or None
+        if description is not None and len(description) > DESCRIPTION_MAX:
+            raise InvalidInputError(f"La description ne doit pas dépasser {DESCRIPTION_MAX} caractères.")
+        if trainer_id is not None:
+            self._check_trainer(trainer_id)
+        return EntModuleInput(title, title_key(title), description, trainer_id)
+
+    def _check_trainer(self, trainer_id: UUID) -> None:
+        trainer = self._dal.get_trainer(trainer_id)
+        if trainer is None or not trainer.is_trainer:
+            raise InvalidInputError("Choisissez un formateur de la liste : ce compte n'a pas le rôle de formateur.")
+        if not trainer.is_active:
+            raise InvalidInputError("Ce compte de formateur est désactivé : choisissez-en un autre.")
 
     # --- Validation -----------------------------------------------------------
 
