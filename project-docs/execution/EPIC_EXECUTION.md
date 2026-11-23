@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-20T21:17:30Z
+updated: 2026-11-23T16:26:53Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -61,8 +61,8 @@ Le catalogue des formations, leurs modules et leurs formateurs, et les documents
 
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
-| US-010 | Catalogue des formations | 🟡 En cours — construite, en attente de vérification sur le serveur de test | [US-010.md](epic-002-trainings-and-modules/US-010.md) |
-| US-011 | Modules et formateurs | 🟡 En cours — construite, en attente de vérification sur le serveur de test | [US-011.md](epic-002-trainings-and-modules/US-011.md) |
+| US-010 | Catalogue des formations | 🟡 En cours — vérifiée sur le serveur de test, en attente de validation | [US-010.md](epic-002-trainings-and-modules/US-010.md) |
+| US-011 | Modules et formateurs | 🟡 En cours — vérifiée sur le serveur de test, en attente de validation | [US-011.md](epic-002-trainings-and-modules/US-011.md) |
 | US-012 | Documents de cours | 🟡 En cours — construite, en attente de vérification sur le serveur de test | [US-012.md](epic-002-trainings-and-modules/US-012.md) |
 | US-013 | « Mes modules » du formateur | 🟡 En cours — construite, en attente de vérification sur le serveur de test | [US-013.md](epic-002-trainings-and-modules/US-013.md) |
 
