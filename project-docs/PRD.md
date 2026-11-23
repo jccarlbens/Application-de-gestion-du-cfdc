@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-23T16:29:06Z
+updated: 2026-11-23T17:24:21Z
 ---
 
 # PRD.md — CFDC
@@ -62,6 +62,8 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 
 **Qui peut modifier ou supprimer.** Une information déjà enregistrée ne se modifie ou ne se supprime que **par l'intermédiaire de l'administrateur informatique**, y compris quand la demande vient de la secrétaire, du coordonnateur ou d'un chef de service. La personne fait une **demande de modification ou de suppression dans l'application**, et l'administrateur informatique la valide.
 
+**Deux exceptions, voulues** (affinage de l'Epic 3, 2026-11-23) : la secrétaire et le coordonnateur **ajustent une demande de formation** ; le coordonnateur **reporte ou annule une session**. Chaque changement reste journalisé et visible dans l'historique ; rien ne se supprime.
+
 **En cas de conflit.** La **simplicité d'utilisation**, surtout pour la secrétaire qui saisit, passe avant le reste, par exemple avant le détail des bilans.
 
 ## 3. Scénario idéal de bout en bout
@@ -108,10 +110,10 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 
 | Action | Secrétaire | Coordonnateur | Chef de service du CFDC | Formateur | Admin informatique | Direction du CFDC |
 |---|---|---|---|---|---|---|
-| Enregistrer formations, sessions, participants, présences | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Enregistrer formations, participants, présences | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | Saisir les notes et les commentaires d'évaluation | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | Enregistrer ou ajuster une demande de formation | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
-| Planifier une session (date, période) | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
+| Planifier une session (date, période), la reporter ou l'annuler | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
 | Organiser les horaires | ❌ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | Tout consulter, sauf les données personnelles des participants | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
 | Voir les données personnelles des participants (NIF, CIN, téléphone) une fois saisies | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ |
@@ -134,7 +136,7 @@ Les participants, internes à l'AAN ou externes, ne sont pas des utilisateurs : 
 > 2. Pour chaque capacité, qu'est-ce qui la déclenche, et quelle en est la sortie réelle ?
 > 3. Y a-t-il une capacité que tout le monde supposera existante mais qui n'est en fait pas prévue ? Énoncez-la explicitement comme hors périmètre dès maintenant.
 
-**Organisation des formations.** Une **formation** (par exemple « conduite sur le tarmac ») contient plusieurs **modules** ; un module est un cours dispensé par un formateur. Une même formation peut être donnée **plusieurs fois par an**, chaque fois sous forme d'une **session**.
+**Organisation des formations.** Une **formation** (par exemple « Conduite sur la rampe — niveau 1 ») contient plusieurs **modules** ; un module est un cours dispensé par un formateur. Une même formation peut être donnée **plusieurs fois par an**, chaque fois sous forme d'une **session**.
 
 Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 
@@ -193,7 +195,7 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 - Les participants n'ont **pas de compte** : ils ne se connectent pas.
 - L'application **ne génère pas** les attestations ni les certificats : elle note seulement leur remise.
 - **Aucun paiement.**
-- **Aucune notification** en dehors de la double authentification : ni pour les demandes de correction, ni de rappel avant une session. Les participants ne sont pas convoqués par l'application.
+- **Aucune notification** en dehors des emails d'accès (premier mot de passe, mot de passe oublié, double authentification) : ni pour les demandes de correction, ni de rappel avant une session. Les participants ne sont pas convoqués par l'application.
 
 ## 7. Ce que le produit ne doit jamais faire
 
