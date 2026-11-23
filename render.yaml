@@ -25,8 +25,10 @@ services:
       # saisis dans le tableau de bord de Render, jamais ici.
       - key: SMTP_HOST
         value: smtp-relay.brevo.com
+      # Port 2525 : depuis septembre 2025, l'offre gratuite de Render bloque
+      # l'envoi par les ports 25, 465 et 587 (constaté le 2026-11-23).
       - key: SMTP_PORT
-        value: "587"
+        value: "2525"
       - key: SMTP_STARTTLS
         value: "true"
       - key: SMTP_USERNAME
