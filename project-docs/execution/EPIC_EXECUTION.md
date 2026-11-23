@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-23T16:31:09Z
+updated: 2026-11-23T17:25:50Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -71,14 +71,20 @@ Le catalogue des formations, leurs modules et leurs formateurs, et les documents
 **Dossier :** `epic-003-requests-and-sessions/`
 **Workstream :** WS-03 Demandes et planification
 **Milestone GitHub :** « Epic 3 — Demandes et planification »
-**Statut :** 🟡 En cours — créé le 2026-11-23 ; affinage en cours, aucune user story encore
+**Statut :** 🟡 En cours — affinage confirmé le 2026-11-23 ; 4 user stories à faire
 
 Les demandes de formation, la planification des sessions, les horaires et le calendrier (`PRD.md` §6 « Demandes et planification »). **Objectif :** le coordonnateur enregistre les demandes validées et planifie les sessions dans l'application plutôt que sur papier. Comportement et implémentation, une fois livrés : `functional-specs/ws-func-03-*.md` et `technical-specs/ws-tech-03-*.md`.
+
+**Ordre de construction :** US-014 et US-015 en parallèle (le lien entre une session et une demande se branche en dernier) ; puis US-016 ; puis US-017.
 
 **Affinage :** [epic-003-refinement.md](epic-003-requests-and-sessions/epic-003-refinement.md) — en cours ; les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
 
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
+| US-014 | Demandes de formation | 🔲 À faire | [US-014.md](epic-003-requests-and-sessions/US-014.md) |
+| US-015 | Sessions | 🔲 À faire | [US-015.md](epic-003-requests-and-sessions/US-015.md) |
+| US-016 | Horaires des sessions | 🔲 À faire | [US-016.md](epic-003-requests-and-sessions/US-016.md) |
+| US-017 | Calendrier des sessions | 🔲 À faire | [US-017.md](epic-003-requests-and-sessions/US-017.md) |
 
 ---
 

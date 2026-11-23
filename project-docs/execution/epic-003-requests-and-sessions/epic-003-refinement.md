@@ -1,11 +1,11 @@
 ---
 created: 2026-11-23T00:00:00Z
-updated: 2026-11-23T17:24:21Z
+updated: 2026-11-23T17:25:50Z
 ---
 
 # Affinage de l'Epic 003 — Demandes et planification
 
-**Statut :** 🟡 Ouvert — questions résolues le 2026-11-23 ; lot de user stories en attente de validation.
+**Statut :** 🟡 Ouvert — affinage confirmé le 2026-11-23 ; user stories US-014 à US-017 créées.
 **Workstream :** WS-03 Demandes et planification.
 **Milestone GitHub :** « Epic 3 — Demandes et planification »
 
@@ -58,7 +58,7 @@ Hors de cet Epic : les participants, les présences et les évaluations (Epic 4)
 
 ## Lot de user stories proposé
 
-*Mis à jour le 2026-11-23 après les réponses ; à valider.* Les numéros continuent ceux du projet (dernier : US-013).
+*Découpage et ordre validés par l'utilisateur le 2026-11-23.* Les numéros continuent ceux du projet (dernier : US-013).
 
 | Ordre | User story | Périmètre en une ligne | Dépend de |
 |---|---|---|---|
