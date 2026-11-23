@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-19T17:12:37Z
+updated: 2026-11-23T16:29:06Z
 ---
 
 # PRD.md — CFDC
@@ -149,9 +149,9 @@ Qui peut utiliser chaque capacité : voir le tableau des droits au §5.
 
 | Capacité | Déclencheur | Résultat |
 |---|---|---|
-| Enregistrer une formation | Un utilisateur renseigne son intitulé et son domaine (sûreté, sécurité…) | La formation existe dans le catalogue |
+| Enregistrer une formation | Un utilisateur renseigne son intitulé, son sous-domaine (par exemple Sûreté-Sécurité › Conduite sur la rampe) et une description facultative | La formation existe dans le catalogue |
 | Enregistrer un module | Un utilisateur l'ajoute à une formation et lui associe **un seul formateur** | Le module fait partie de la formation |
-| Déposer un document de cours | L'admin joint un fichier PDF, PowerPoint ou Word à un module | Le document est consultable par les formateurs du module |
+| Déposer un document de cours | L'admin joint un fichier PDF, PowerPoint ou Word à un module | Le document est consultable par le formateur actuel du module et l'administrateur |
 | Consulter ses modules et leurs documents | Un formateur est connecté | La liste de ses modules et leurs documents |
 
 **Demandes et planification**

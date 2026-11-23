@@ -1,9 +1,7 @@
 ---
 created: 2026-11-20T00:00:00Z
-updated: 2026-11-20T21:17:30Z
+updated: 2026-11-23T16:29:06Z
 ---
-
-> **Brouillon de clôture de l'Epic 2, non canonique.** Préparé le 2026-11-20, avant les tests sur le serveur. À la clôture, ce fichier sera ajusté selon les tests, puis déplacé vers `project-docs/functional-specs/ws-func-02-trainings-and-modules.md`. D'ici là, la référence reste les fichiers US-010 à US-013 et `epic-002-refinement.md`.
 
 # WS-02 — Formations et modules : comportement
 

@@ -1,9 +1,7 @@
 ---
 created: 2026-11-20T00:00:00Z
-updated: 2026-11-20T21:17:30Z
+updated: 2026-11-23T16:29:06Z
 ---
-
-> **Brouillon de clôture de l'Epic 2, non canonique.** À déplacer vers `project-docs/technical-specs/ws-tech-02-trainings-and-modules.md` à la clôture, après les tests sur le serveur.
 
 # WS-02 — Formations et modules : implémentation
 

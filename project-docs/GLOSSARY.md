@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-19T17:12:37Z
+updated: 2026-11-23T16:29:06Z
 ---
 
 # GLOSSARY.md — CFDC
@@ -72,7 +72,7 @@ updated: 2026-11-19T17:12:37Z
 |---|---|
 | **AAN** | Autorité Aéroportuaire Nationale |
 | **CFDC** | Centre de Formation et de Développement des Compétences de l'AAN, rattaché à la direction des ressources humaines |
-| **Formation** | Un programme du catalogue, par exemple « conduite sur le tarmac ». Elle se range dans un sous-domaine et contient plusieurs modules. Elle peut être donnée plusieurs fois par an |
+| **Formation** | Un programme du catalogue, par exemple « Conduite sur la rampe — niveau 1 », rangée dans Sûreté-Sécurité › Conduite sur la rampe. Elle se range dans un sous-domaine et contient plusieurs modules. Elle peut être donnée plusieurs fois par an |
 | **Domaine** | Le premier niveau de classement des formations : « Sûreté-Sécurité », « Accueil ». Chaque domaine contient des sous-domaines. Liste tenue par l'administrateur |
 | **Sous-domaine** | Le second niveau de classement, à l'intérieur d'un domaine : par exemple « Conduite sur la rampe » (Sûreté-Sécurité) ou « Protocole » (Accueil). Une formation se range dans un seul sous-domaine |
 | **Module** | Un cours d'une formation, dispensé par **un seul** formateur, avec ses documents de cours |

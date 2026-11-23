@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-23T16:27:13Z
+updated: 2026-11-23T16:29:06Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -49,22 +49,20 @@ Le socle technique (code de départ, Docker Compose, GitHub Actions, serveur de 
 **Dossier :** `epic-002-trainings-and-modules/`
 **Workstream :** WS-02 Formations et modules
 **Milestone GitHub :** « Epic 2 — Formations et modules »
-**Statut :** 🟡 En cours — affinage confirmé le 2026-11-19 ; 4 user stories à faire
+**Statut :** ✅ Terminé — clos le 2026-11-23, voir [epic-002-closeout.md](epic-002-trainings-and-modules/epic-002-closeout.md)
 
 Le catalogue des formations, leurs modules et leurs formateurs, et les documents de cours (`PRD.md` §6 « Formations, modules et documents »). **Objectif :** le CFDC a son catalogue de formations dans l'application, et chaque formateur y retrouve ses modules et ses documents. Comportement et implémentation, une fois livrés : `functional-specs/ws-func-02-*.md` et `technical-specs/ws-tech-02-*.md`.
 
 **Ordre de construction :** US-010 d'abord ; puis US-011 ; ensuite US-012 et US-013 en parallèle (US-013 affiche les documents dès que US-012 est fusionnée).
 
-**Brouillons de clôture** (non canoniques, préparés le 2026-11-20 en attendant les tests) : [`closure-draft/`](epic-002-trainings-and-modules/closure-draft/) — specs WS-02 et bilan.
-
-**Affinage :** [epic-002-refinement.md](epic-002-trainings-and-modules/epic-002-refinement.md) — en cours ; les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
+**Affinage :** [epic-002-refinement.md](epic-002-trainings-and-modules/epic-002-refinement.md) — clos ; ses règles ont rejoint `functional-specs/ws-func-02-trainings-and-modules.md`, `technical-specs/ws-tech-02-trainings-and-modules.md`, `PRD.md`, `GLOSSARY.md` et `SOLUTION_DESIGN.md`.
 
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
-| US-010 | Catalogue des formations | 🟡 En cours — vérifiée sur le serveur de test, en attente de validation | [US-010.md](epic-002-trainings-and-modules/US-010.md) |
-| US-011 | Modules et formateurs | 🟡 En cours — vérifiée sur le serveur de test, en attente de validation | [US-011.md](epic-002-trainings-and-modules/US-011.md) |
-| US-012 | Documents de cours | 🟡 En cours — vérifiée sur le serveur de test, en attente de validation | [US-012.md](epic-002-trainings-and-modules/US-012.md) |
-| US-013 | « Mes modules » du formateur | 🟡 En cours — vérifiée sur le serveur de test, en attente de validation | [US-013.md](epic-002-trainings-and-modules/US-013.md) |
+| US-010 | Catalogue des formations | ✅ Terminé | [US-010.md](epic-002-trainings-and-modules/US-010.md) |
+| US-011 | Modules et formateurs | ✅ Terminé | [US-011.md](epic-002-trainings-and-modules/US-011.md) |
+| US-012 | Documents de cours | ✅ Terminé | [US-012.md](epic-002-trainings-and-modules/US-012.md) |
+| US-013 | « Mes modules » du formateur | ✅ Terminé | [US-013.md](epic-002-trainings-and-modules/US-013.md) |
 
 ---
 

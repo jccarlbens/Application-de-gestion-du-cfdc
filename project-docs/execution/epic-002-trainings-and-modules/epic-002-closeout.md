@@ -1,14 +1,12 @@
 ---
 created: 2026-11-20T00:00:00Z
-updated: 2026-11-20T21:17:30Z
+updated: 2026-11-23T16:29:06Z
 ---
-
-> **Brouillon de clôture, non canonique.** Préparé le 2026-11-20, avant les tests sur le serveur et la validation de US-010 à US-013. À la clôture : ajuster selon les tests, puis déplacer vers `epic-002-trainings-and-modules/epic-002-closeout.md`. Les passages ⏳ sont à remplir à ce moment-là.
 
 # Clôture de l'Epic 002 — Formations et modules
 
 **Workstream :** WS-02 Formations et modules ; contributions à WS-05 (le journal) et WS-01 (droits)
-**Statut :** ⏳ à clore après la validation des tests sur le serveur
+**Statut :** ✅ Terminé — clos le 2026-11-23
 **Objectif :** le CFDC a son catalogue de formations dans l'application, et chaque formateur y retrouve ses modules et ses documents.
 
 Ce document fige ce que l'Epic a livré.
@@ -24,11 +22,11 @@ Ce document fige ce que l'Epic a livré.
 | US-012 | Documents de cours | [US-012.md](US-012.md) |
 | US-013 | « Mes modules » du formateur | [US-013.md](US-013.md) |
 
-⏳ Les 4 user stories sont ✅ Terminé ; validées par l'administrateur informatique le …
+Les 4 user stories sont ✅ Terminé ; vérifiées sur le serveur de test et validées par l'administrateur informatique le 2026-11-23.
 
 ## Suivi
 
-- Milestone « Epic 2 — Formations et modules » : 4 issues sur 4 fermées (#18 à #21). ⏳ Milestone fermé le …
+- Milestone « Epic 2 — Formations et modules » : 4 issues sur 4 fermées (#18 à #21). Milestone fermé le 2026-11-23.
 - Pull requests fusionnées : [#22](https://github.com/jccarlbens/Application-de-gestion-du-cfdc/pull/22) (affinage et US-010), [#23](https://github.com/jccarlbens/Application-de-gestion-du-cfdc/pull/23) (US-011), [#24](https://github.com/jccarlbens/Application-de-gestion-du-cfdc/pull/24) (US-012 et US-013).
 
 ## Bilan pour l'équipe
@@ -41,13 +39,13 @@ Ce document fige ce que l'Epic a livré.
 - Chaque formateur trouve, dans « Mes modules », les modules qui lui sont confiés et leurs documents.
 - Chaque fiche a son historique, en phrases, avec le nom de chaque auteur.
 
-⏳ Vérifié sur le serveur de test le …
+Vérifié sur le serveur de test le 2026-11-23 : les quatre user stories sont conformes.
 
 ### Qui a fait quoi
 
 | Personne | Rôle dans l'Epic |
 |---|---|
-| `jccarlbens` | Auteur et administrateur informatique : réponses de l'affinage (domaines, retrait de la « formation importante »…), construction avec l'agent (commits à son nom), fusion des pull requests, ⏳ tests sur le serveur et validation |
+| `jccarlbens` | Auteur et administrateur informatique : réponses de l'affinage (domaines, retrait de la « formation importante »…), construction avec l'agent (commits à son nom), fusion des pull requests, tests sur le serveur et validation (2026-11-23) |
 | `caleb17` | Relecteur demandé sur les pull requests #22, #23 et #24 |
 
 Les issues n'avaient pas de personne assignée.
@@ -74,13 +72,13 @@ Ce qu'on croyait, et qui s'est révélé faux. Le détail est dans les notes de 
 - **Un test de droits sautait sans bruit une route renommée** (l'historique) ; il échoue désormais si une route attendue manque (US-010).
 - **L'outil des tests de l'interface** répondait à `/history/trainings/t-1` avec la réponse prévue pour `/trainings/t-1` ; il choisit maintenant le chemin le plus long (US-010).
 - **Le nom de l'auteur dans l'historique** n'était connu que de l'administrateur et du coordonnateur ; c'est désormais le serveur qui le donne (US-010).
+- **Render bloque l'envoi d'emails** par les ports 25, 465 et 587 sur son offre gratuite, depuis septembre 2025. Découvert pendant les tests, en créant un compte depuis l'écran : jusque-là, tous les emails partaient du poste de l'administrateur. Le serveur de test utilise maintenant le port 2525 (`ws-tech-01-accounts-and-access.md` § Emails).
 
 ### Points ouverts
 
 - **La direction ne voit pas le nom d'un ancien formateur** dans l'historique quand il n'est plus sur aucun module : elle voit « Détails » à la place. Le serveur pourrait donner ces noms ; ce n'est pas demandé.
 - **Les documents ne sont pas sauvegardés** sur le serveur de test ; la sauvegarde du volume `documents` viendra avec la mise en service sur les serveurs de l'AAN.
 - **Pas d'antivirus** sur les documents déposés : seuls l'extension, le contenu et la taille sont vérifiés.
-- ⏳ Écarts trouvés pendant les tests sur le serveur, s'il y en a.
 
 ### Ensuite
 
@@ -88,16 +86,22 @@ Ce qu'on croyait, et qui s'est révélé faux. Le détail est dans les notes de 
 
 ## Contributions à d'autres Workstreams
 
-- **WS-05, le journal :** à la clôture, mettre à jour sa paire de specs.
+- **WS-05, le journal :** sa paire de specs est mise à jour (`ws-func-05-traceability.md`, `ws-tech-05-traceability.md`).
   - La route d'historique est commune à toutes les fiches (`GET /history/{genre}/{id}`), avec le nom de l'auteur (`actor_name`).
   - Le panneau « Historique » est devenu une entité commune (`entities/history`).
   - Les clés étrangères données par un objet sont recopiées avant la photo du journal (`_fill_foreign_keys`).
   - Une fiche peut s'inscrire dans l'historique d'une autre : modules et documents sous leur formation.
 - **WS-01, droits et menus :** les menus « Formations », « Mes modules » et « Documents de cours » mènent désormais à de vrais écrans. Le test des droits vérifie les rôles exacts de chaque route.
 
-## À vérifier dans `PRD.md` et `SOLUTION_DESIGN.md` à la clôture (étape 5)
+## Contrôle de `PRD.md`, `SOLUTION_DESIGN.md` et `GLOSSARY.md`
 
-- `PRD.md` §6, ligne « Enregistrer une formation » : elle dit encore « son domaine (sûreté, sécurité…) ». C'est désormais un **sous-domaine**, dans un domaine.
-- `PRD.md` §6, ligne « Déposer un document de cours » : « consultable par les formateurs du module ». Préciser « le formateur actuel du module » ?
-- `GLOSSARY.md`, exemple de **Formation** : « conduite sur le tarmac ». Garder, ou prendre un exemple de la liste réelle ?
-- `SOLUTION_DESIGN.md` §6 : déjà mis à jour par US-010 à US-012. À relire.
+Validé par l'administrateur le 2026-11-23 :
+- `PRD.md` §6, « Enregistrer une formation » : le **sous-domaine** remplace « son domaine (sûreté, sécurité…) » ;
+- `PRD.md` §6, « Déposer un document de cours » : consultable par le **formateur actuel du module** et l'administrateur ;
+- `GLOSSARY.md`, exemple de **Formation** : « Conduite sur la rampe — niveau 1 », au lieu de « conduite sur le tarmac ».
+
+`SOLUTION_DESIGN.md` §6 avait été tenu à jour par US-010 à US-012 : relu, rien d'obsolète. Les corrections de l'affinage (domaines, retrait de la « formation importante », §13 du PRD) avaient été faites le 2026-11-19.
+
+## Où sont allées les règles de l'affinage
+
+Voir la fin de [epic-002-refinement.md](epic-002-refinement.md).
