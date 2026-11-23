@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-17T17:33:40Z
+updated: 2026-11-23T16:31:09Z
 ---
 
 # CFDC — Application de gestion du centre de formation de l'AAN
@@ -9,7 +9,7 @@ updated: 2026-11-17T17:33:40Z
 
 Application de gestion du **Centre de Formation et de Développement des Compétences (CFDC)** de l'**Autorité Aéroportuaire Nationale (AAN)** : les **formations** et leurs **sessions**, les **formateurs**, les **modules** de formation et les **participants**, qu'ils soient **internes à l'AAN** ou **externes** (concessionnaires, etc.). L'application ne gère **aucun paiement**.
 
-> **Statut : Epic 1 clos** (mise en place et accès) le 2026-11-17 ; Epic 2 (formations et modules) en cours. Suivi : `project-docs/execution/EPIC_EXECUTION.md`. Description complète du produit : `project-docs/PRD.md`.
+> **Statut : Epic 1 clos** (mise en place et accès) le 2026-11-17 ; Epic 2 (formations et modules) clos le 2026-11-23 ; Epic 3 (demandes et planification) en cours. Suivi : `project-docs/execution/EPIC_EXECUTION.md`. Description complète du produit : `project-docs/PRD.md`.
 
 Le dépôt suit la même organisation que le projet `fds-pay` réalisé par BRAINSTORM "St-Germain, Nicolas et Carlbens" : le **développement piloté par la spécification** (on documente le contexte *avant* d'écrire du code).
 

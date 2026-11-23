@@ -1,6 +1,6 @@
 ---
 created: 2026-11-17T00:00:00Z
-updated: 2026-11-17T17:29:48Z
+updated: 2026-11-23T15:57:34Z
 ---
 
 # WS-01 — Comptes et accès : implémentation
@@ -92,6 +92,7 @@ updated: 2026-11-17T17:29:48Z
 `app/dal/dal_email.py`, un client SMTP configuré par `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_STARTTLS` et `EMAIL_SENDER`.
 - En local, les emails vont à Mailpit.
 - Sur le serveur de test, ils partent par Brevo, avec les identifiants saisis dans Render, jamais dans le dépôt.
+- **Sur Render, le port est 2525.** Depuis septembre 2025, l'offre gratuite de Render bloque l'envoi par les ports 25, 465 et 587 ; Brevo accepte aussi 2525. Constaté le 2026-11-23 : c'était le premier email envoyé par le serveur de test lui-même, puisque jusque-là les commandes partaient du poste de l'administrateur.
 - Certains réseaux filtrent les ports SMTP (587, 2525) : une connexion qui s'ouvre puis ne répond plus vient du réseau, pas du code.
 
 ## Commandes

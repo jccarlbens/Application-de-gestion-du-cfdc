@@ -1,15 +1,15 @@
 ---
 created: 2026-11-17T00:00:00Z
-updated: 2026-11-19T17:24:50Z
+updated: 2026-11-23T16:29:06Z
 ---
 
 # Affinage de l'Epic 002 — Formations et modules
 
-**Statut :** 🟡 Ouvert — affinage confirmé le 2026-11-19 ; user stories US-010 à US-013 créées.
+**Statut :** ✅ Clos le 2026-11-23 avec l'Epic ([epic-002-closeout.md](epic-002-closeout.md)). Ce fichier reste comme l'histoire de l'affinage ; **ses règles ont déménagé** (voir la fin).
 **Workstream :** WS-02 Formations et modules.
 **Milestone GitHub :** « Epic 2 — Formations et modules »
 
-> Tant que l'Epic est ouvert, **ses règles vivent ici**. À la clôture, chacune part vers le document qui possède les règles de son genre.
+> Tant que l'Epic était ouvert, ses règles vivaient ici. Depuis la clôture, **ce fichier n'est plus la référence** : voir « Où sont allées les règles ».
 
 ## Périmètre
 
@@ -65,3 +65,22 @@ Hors de cet Epic : les sessions et les demandes (Epic 3), les participants (Epic
 | 4 | US-013 « Mes modules » du formateur | Le formateur voit ses modules, leur formation et leurs documents, et rien d'autre | US-011 ; US-012 pour les documents |
 
 **Ordre de construction à deux :** US-010 d'abord ; puis US-011 ; ensuite US-012 et US-013 en parallèle (US-013 affiche les documents dès que US-012 est fusionnée).
+
+## Où sont allées les règles
+
+*Clôture du 2026-11-23.*
+
+| Règle | Document qui la porte désormais |
+|---|---|
+| Q1 — domaines et sous-domaines, liste de départ, gérés par l'administrateur | `SOLUTION_DESIGN.md` §6 ; `GLOSSARY.md` ; `functional-specs/ws-func-02-trainings-and-modules.md` § Domaines et sous-domaines |
+| Q2 — intitulé unique, description facultative | `functional-specs/ws-func-02-trainings-and-modules.md` § Formations ; `PRD.md` §6 |
+| Q3 — « formation importante » retirée, certificat sur demande | `PRD.md` §3 et §6 ; `GLOSSARY.md` |
+| Q4 — l'administrateur corrige directement en attendant l'Epic 5 | `functional-specs/ws-func-02-trainings-and-modules.md` § Qui fait quoi |
+| Q5 — tous les formateurs sont du personnel de l'AAN | `functional-specs/ws-func-02-trainings-and-modules.md` § Modules et formateurs |
+| Q6 — qui ouvre les documents, qui voit la liste | `functional-specs/ws-func-02-trainings-and-modules.md` § Documents de cours ; `PRD.md` §6 |
+| Q7 — 25 Mo, formats, contenu vérifié | `functional-specs/ws-func-02-trainings-and-modules.md` § Documents de cours ; `technical-specs/ws-tech-02-trainings-and-modules.md` |
+| Q8 — fichiers perdus sur le serveur de test, accepté | `technical-specs/ws-tech-02-trainings-and-modules.md` § Stockage des fichiers |
+| Q9 — remplacer garde l'ancienne version | `functional-specs/ws-func-02-trainings-and-modules.md` § Documents de cours |
+| Q10 — module « Formateur à désigner » | `functional-specs/ws-func-02-trainings-and-modules.md` § Modules et formateurs |
+| Q11 — emails pour l'accès en général | `PRD.md` §6 et §13 |
+| Décisions des user stories (US-010 à US-013) | la paire WS-02 ; pour l'historique, la paire WS-05 |
