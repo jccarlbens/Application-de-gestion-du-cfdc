@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-23T16:29:06Z
+updated: 2026-11-23T16:31:09Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -63,6 +63,22 @@ Le catalogue des formations, leurs modules et leurs formateurs, et les documents
 | US-011 | Modules et formateurs | ✅ Terminé | [US-011.md](epic-002-trainings-and-modules/US-011.md) |
 | US-012 | Documents de cours | ✅ Terminé | [US-012.md](epic-002-trainings-and-modules/US-012.md) |
 | US-013 | « Mes modules » du formateur | ✅ Terminé | [US-013.md](epic-002-trainings-and-modules/US-013.md) |
+
+---
+
+## Epic 3 — Demandes et planification
+
+**Dossier :** `epic-003-requests-and-sessions/`
+**Workstream :** WS-03 Demandes et planification
+**Milestone GitHub :** « Epic 3 — Demandes et planification »
+**Statut :** 🟡 En cours — créé le 2026-11-23 ; affinage en cours, aucune user story encore
+
+Les demandes de formation, la planification des sessions, les horaires et le calendrier (`PRD.md` §6 « Demandes et planification »). **Objectif :** le coordonnateur enregistre les demandes validées et planifie les sessions dans l'application plutôt que sur papier. Comportement et implémentation, une fois livrés : `functional-specs/ws-func-03-*.md` et `technical-specs/ws-tech-03-*.md`.
+
+**Affinage :** [epic-003-refinement.md](epic-003-requests-and-sessions/epic-003-refinement.md) — en cours ; les questions ouvertes, les règles de l'Epic tant qu'il est ouvert, et le lot de user stories dans l'ordre de construction.
+
+| User story | Titre | Statut | Spec |
+|---|---|---|---|
 
 ---
 
