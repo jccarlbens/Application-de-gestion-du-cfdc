@@ -30,3 +30,12 @@ export function groupTrainings(trainings: readonly Training[], domainId?: string
   }
   return groups
 }
+
+/** Les formations pour une liste de choix : intitulé, et « Domaine › Sous-domaine » comme groupe. */
+export function trainingOptions(trainings: readonly Training[]): { id: string; title: string; group: string }[] {
+  return groupTrainings(trainings).flatMap((domain) =>
+    domain.subdomains.flatMap((sub) =>
+      sub.trainings.map((t) => ({ id: t.id, title: t.title, group: `${domain.domainName} › ${sub.subdomainName}` })),
+    ),
+  )
+}

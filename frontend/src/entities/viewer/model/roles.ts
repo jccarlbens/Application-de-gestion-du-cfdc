@@ -56,3 +56,13 @@ export function canRecordTraining(roles: readonly Role[]): boolean {
 export function isTrainer(roles: readonly Role[]): boolean {
   return roles.includes('trainer')
 }
+
+/** Ajuster une demande de formation (US-014, exception voulue, PRD.md §2). */
+export function canAdjustRequest(roles: readonly Role[]): boolean {
+  return roles.some((role) => role === 'secretary' || role === 'coordinator' || role === 'it_admin')
+}
+
+/** Valider ou refuser une demande de formation : coordonnateur et administrateur. */
+export function canDecideRequest(roles: readonly Role[]): boolean {
+  return roles.some((role) => role === 'coordinator' || role === 'it_admin')
+}
