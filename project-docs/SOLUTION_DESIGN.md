@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-24T17:18:13Z
+updated: 2026-11-24T17:24:51Z
 ---
 
 # SOLUTION_DESIGN.md — CFDC
@@ -138,7 +138,7 @@ La pile reprend celle de `fds-pay` et la recommandation de `_ARCHITECTURE_EXPLAI
 | **Module** (`modules`) | formation, titre (200 caractères au plus, `title_key` **unique dans la formation**), description (facultative), formateur (un **utilisateur** ayant le rôle formateur, ou vide : « Formateur à désigner » ; les formateurs ont un compte limité à leurs modules, `PRD.md` §5), date d'ajout (`clock_timestamp()`, qui fixe l'ordre). Journalisé **sous sa formation** (US-011) |
 | **Document de cours** (`course_documents`) | module, nom du fichier d'origine, type, taille, nom sur le disque (aléatoire, dans `DOCUMENTS_DIR`), déposé par, date, « remplacé par » (vide tant qu'il est en vigueur). PDF, Word, PowerPoint, 25 Mo au plus, contenu vérifié. Journalisé **sous sa formation** ; rien ne s'efface : remplacer ajoute une version (US-012) |
 | **Demande de formation** (`training_requests`) | service demandeur (texte libre, 150 caractères), interne ou externe, date de réception, formation du catalogue, nombre de participants prévu (1 à 500), période souhaitée, commentaire ; statut **en attente → validée ou refusée** (décision définitive, corrigée par l'administrateur seul), avec qui a décidé, quand et le motif ; qui l'a enregistrée. Journalisée ; ajustable par la secrétaire et le coordonnateur, exception voulue (`PRD.md` §2) (US-014) |
-| **Session** | formation, demande d'origine (facultative), date de début, date de fin, horaires. Une session dure **d'une heure à une semaine** |
+| **Session** | formation, demande d'origine (facultative), date de début, date de fin, horaires. Une session dure un ou plusieurs jours, **sans durée maximale** (US-015) |
 | **Participant** | nom, prénom, **NIF ou CIN** (au moins l'un des deux, obligatoire ; il sert à reconnaître la même personne d'une session à l'autre), fonction, service ou entreprise, téléphone, interne ou externe |
 | **Inscription** (un participant dans une session) | inscrit par, présence (**un seul** présent ou absent pour toute la session, même si elle dure plusieurs jours), note sur 100, commentaires, date de remise de l'attestation, date de remise du certificat |
 | **Demande de correction** | fiche visée, modification ou suppression, changement proposé, demandeur, décision de l'administrateur |

@@ -1,6 +1,6 @@
 ---
 created: 2026-11-23T00:00:00Z
-updated: 2026-11-23T17:25:50Z
+updated: 2026-11-24T17:24:51Z
 ---
 
 # Affinage de l'Epic 003 — Demandes et planification
@@ -15,7 +15,7 @@ updated: 2026-11-23T17:25:50Z
 
 `PRD.md` §3 (parcours, étapes 1 à 3) et §6 « Demandes et planification » :
 - les **demandes de formation** : la requête écrite d'un service, validée par le coordonnateur, enregistrée puis ajustée ;
-- les **sessions** : une occurrence datée d'une formation, d'une heure à une semaine, en réponse à une demande ou non ;
+- les **sessions** : une occurrence datée d'une formation (sans durée maximale, décidé le 2026-11-24), en réponse à une demande ou non ;
 - les **horaires** d'une session, arrangés par les chefs de service du CFDC ;
 - le **calendrier** des sessions (menu « Sessions et calendrier »).
 
