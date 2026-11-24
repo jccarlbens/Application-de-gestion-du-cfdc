@@ -1,6 +1,6 @@
 ---
 created: 2026-11-12T00:00:00Z
-updated: 2026-11-24T17:18:13Z
+updated: 2026-11-24T17:32:59Z
 ---
 
 # backend — API de l'application CFDC
@@ -78,6 +78,11 @@ Copiez `.env.example` en `.env`.
 | `POST /api/v1/training-requests` | Enregistre une demande, « en attente » (secrétaire, coordonnateur, chef de service, administrateur) |
 | `PUT /api/v1/training-requests/{id}` | Ajuste une demande, tous les champs sauf le statut (secrétaire, coordonnateur, administrateur) |
 | `POST /api/v1/training-requests/{id}/decision` | Valide ou refuse (motif obligatoire) une demande en attente (coordonnateur, administrateur) ; corrige une décision prise (administrateur) |
+| `GET /api/v1/training-sessions`, `GET /api/v1/training-sessions/{id}` | Les sessions, à venir d'abord ; statut `planned`, `finished` (déduit) ou `cancelled` (tous sauf le formateur) |
+| `GET /api/v1/trainings/{id}/sessions`, `GET /api/v1/training-requests/{id}/sessions` | Les sessions d'une formation, d'une demande |
+| `POST /api/v1/training-sessions` | Planifie une session, depuis une formation ou une demande **validée** (coordonnateur, administrateur) |
+| `PUT /api/v1/training-sessions/{id}/dates`, `POST /api/v1/training-sessions/{id}/cancel` | Reporte (pas une session terminée, sauf l'administrateur), annule avec motif (coordonnateur, administrateur) |
+| `POST /api/v1/training-sessions/{id}/restore` | Remet une session annulée en « planifiée » (administrateur) |
 | `GET /docs` | Documentation interactive de l'API |
 
 Sans cookie de session, les routes protégées répondent `401 Vous n'êtes pas connecté.` ; avec une session expirée ou fermée, `401 Votre session a expiré, reconnectez-vous.`

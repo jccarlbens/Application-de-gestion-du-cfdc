@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-24T17:18:13Z
+updated: 2026-11-24T17:32:59Z
 ---
 
 # EPIC_EXECUTION.md — CFDC
@@ -82,7 +82,7 @@ Les demandes de formation, la planification des sessions, les horaires et le cal
 | User story | Titre | Statut | Spec |
 |---|---|---|---|
 | US-014 | Demandes de formation | 🟡 En cours — construite, en attente de vérification sur le serveur de test | [US-014.md](epic-003-requests-and-sessions/US-014.md) |
-| US-015 | Sessions | 🔲 À faire | [US-015.md](epic-003-requests-and-sessions/US-015.md) |
+| US-015 | Sessions | 🟡 En cours — construite, en attente de vérification sur le serveur de test | [US-015.md](epic-003-requests-and-sessions/US-015.md) |
 | US-016 | Horaires des sessions | 🔲 À faire | [US-016.md](epic-003-requests-and-sessions/US-016.md) |
 | US-017 | Calendrier des sessions | 🔲 À faire | [US-017.md](epic-003-requests-and-sessions/US-017.md) |
 
