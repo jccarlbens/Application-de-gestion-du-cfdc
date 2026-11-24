@@ -66,3 +66,8 @@ export function canAdjustRequest(roles: readonly Role[]): boolean {
 export function canDecideRequest(roles: readonly Role[]): boolean {
   return roles.some((role) => role === 'coordinator' || role === 'it_admin')
 }
+
+/** Planifier, reporter, annuler une session : coordonnateur et administrateur (US-015). */
+export function canPlanSession(roles: readonly Role[]): boolean {
+  return roles.some((role) => role === 'coordinator' || role === 'it_admin')
+}

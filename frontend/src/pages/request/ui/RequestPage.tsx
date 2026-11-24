@@ -18,6 +18,7 @@ import { canAdjustRequest, canDecideRequest, canSeeCatalogue, isAdmin, type View
 import { ApiError } from '../../../shared/api'
 import { AccessDenied } from '../../../shared/ui'
 import { AppShell } from '../../../widgets/app-shell'
+import { RequestSessions } from './RequestSessions'
 
 const primary = 'rounded-md bg-brand-700 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-60'
 const secondary = 'rounded-md border border-brand-100 px-4 py-2 text-sm font-medium text-brand-900 hover:bg-brand-50'
@@ -229,6 +230,7 @@ function RequestDetails({ id, viewer }: { id: string; viewer: Viewer }) {
       )}
       {mode === 'decide' && <DecisionForm request={r} onDone={() => setMode('view')} />}
       {mode === 'adjust' && <AdjustForm request={r} onDone={() => setMode('view')} />}
+      <RequestSessions request={r} viewer={viewer} />
       <HistoryPanel subjectType="training_requests" subjectId={r.id} emptyText="Aucune entrée au journal." />
     </>
   )

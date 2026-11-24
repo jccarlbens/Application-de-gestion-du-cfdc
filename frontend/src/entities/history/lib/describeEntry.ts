@@ -143,6 +143,30 @@ function describeRequest(entry: HistoryEntry): EntryDescription | null {
   return parts.length ? { text: parts.join(' ; '), needsDetails: adjusted.length > 0 } : null
 }
 
+function periodOf(values: Record<string, unknown> | null): string {
+  if (!values?.starts_on || !values?.ends_on) return ''
+  const day = (iso: unknown) => String(iso).split('-').reverse().join('/')
+  return values.starts_on === values.ends_on ? `le ${day(values.starts_on)}` : `du ${day(values.starts_on)} au ${day(values.ends_on)}`
+}
+
+/** Une session de formation (US-015) : planifiée, reportée, annulée, remise en planifiée. */
+function describeSession(entry: HistoryEntry): EntryDescription | null {
+  if (entry.action === 'create') return { text: `Session planifiée ${periodOf(entry.after)}`.trim(), needsDetails: false }
+  if (entry.action !== 'update') return null
+  const keys = changedKeys(entry)
+  const parts: string[] = []
+  if (keys.includes('status')) {
+    parts.push(
+      entry.after?.status === 'cancelled'
+        ? `Session annulée : ${String(entry.after?.cancel_reason ?? '')}`
+        : 'Session remise en « planifiée » (annulation corrigée)',
+    )
+  }
+  if (keys.includes('starts_on') || keys.includes('ends_on')) parts.push(`Session reportée : ${periodOf(entry.after)}`)
+  if (keys.includes('label')) parts.push('Libellé modifié')
+  return parts.length ? { text: parts.join(' ; '), needsDetails: false } : null
+}
+
 function describeNamed(entry: HistoryEntry, kind: 'Domaine' | 'Sous-domaine'): EntryDescription | null {
   const name = String(entry.after?.name ?? '')
   if (entry.action === 'create') return { text: `${kind} créé : « ${name} »`, needsDetails: false }
@@ -164,6 +188,7 @@ export function describeEntry(entry: HistoryEntry, names: Readonly<Record<string
   else if (entry.tableName === 'modules') description = describeModule(entry, names)
   else if (entry.tableName === 'course_documents') description = describeDocument(entry, names)
   else if (entry.tableName === 'training_requests') description = describeRequest(entry)
+  else if (entry.tableName === 'training_sessions') description = describeSession(entry)
   else if (entry.tableName === 'domains') description = describeNamed(entry, 'Domaine')
   else if (entry.tableName === 'subdomains') description = describeNamed(entry, 'Sous-domaine')
   if (description) return description

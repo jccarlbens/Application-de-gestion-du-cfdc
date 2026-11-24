@@ -5,6 +5,7 @@ export {
   canAdjustRequest,
   canDecideRequest,
   canManageAccounts,
+  canPlanSession,
   canRecordTraining,
   canSeeCatalogue,
   grantableRoles,

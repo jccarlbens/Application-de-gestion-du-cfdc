@@ -10,6 +10,9 @@ import { MyModulesPage } from '../pages/my-modules'
 import { RequestPage } from '../pages/request'
 import { NewRequestPage } from '../pages/request-new'
 import { RequestsPage } from '../pages/requests'
+import { SessionPage } from '../pages/session'
+import { NewSessionPage } from '../pages/session-new'
+import { SessionsPage } from '../pages/sessions'
 import { SectionPage } from '../pages/section'
 import { SetPasswordPage } from '../pages/set-password'
 import { TrainingPage } from '../pages/training'
@@ -18,7 +21,7 @@ import { TrainingsPage } from '../pages/trainings'
 import { MENU } from '../widgets/app-shell'
 
 // Les menus dont l'écran existe déjà ; les autres mènent à « Bientôt disponible ».
-const BUILT = new Set(['comptes', 'formations', 'documents', 'mes-modules', 'demandes'])
+const BUILT = new Set(['comptes', 'formations', 'documents', 'mes-modules', 'demandes', 'sessions'])
 
 export const router = createBrowserRouter([
   // Pages réservées aux personnes connectées : sans session, retour à /connexion.
@@ -35,6 +38,9 @@ export const router = createBrowserRouter([
   { path: '/demandes', element: <RequestsPage /> },
   { path: '/demandes/nouvelle', element: <NewRequestPage /> },
   { path: '/demandes/:id', element: <RequestPage /> },
+  { path: '/sessions', element: <SessionsPage /> },
+  { path: '/sessions/nouvelle', element: <NewSessionPage /> },
+  { path: '/sessions/:id', element: <SessionPage /> },
   ...MENU.filter((item) => !BUILT.has(item.key)).map((item) => ({
     path: item.path,
     element: <SectionPage menuKey={item.key} />,

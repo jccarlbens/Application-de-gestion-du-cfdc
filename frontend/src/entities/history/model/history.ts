@@ -1,5 +1,5 @@
 /** Les genres de fiches qui ont un historique (bll_history._READERS). */
-export type SubjectType = 'users' | 'trainings' | 'domains' | 'subdomains' | 'training_requests'
+export type SubjectType = 'users' | 'trainings' | 'domains' | 'subdomains' | 'training_requests' | 'training_sessions'
 
 export type HistoryEntry = {
   occurredAt: string
