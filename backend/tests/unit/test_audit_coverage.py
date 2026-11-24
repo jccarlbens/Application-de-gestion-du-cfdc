@@ -43,3 +43,7 @@ def test_the_catalogue_tables_are_audited() -> None:
 
 def test_training_requests_are_audited() -> None:
     assert "training_requests" in AUDITED
+
+
+def test_training_sessions_are_audited() -> None:
+    assert "training_sessions" in AUDITED
