@@ -39,3 +39,7 @@ def test_every_exemption_gives_its_reason() -> None:
 
 def test_the_catalogue_tables_are_audited() -> None:
     assert {"domains", "subdomains", "trainings", "modules", "course_documents"} <= AUDITED
+
+
+def test_training_requests_are_audited() -> None:
+    assert "training_requests" in AUDITED
