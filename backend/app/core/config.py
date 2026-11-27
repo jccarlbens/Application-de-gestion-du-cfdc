@@ -40,5 +40,10 @@ class Settings(BaseSettings):
     documents_dir: str = "/data/documents"
     document_max_bytes: int = 25 * 1024 * 1024
 
+    # Le fuseau du calendrier de l'AAN (Epic 3, E3-8) : « aujourd'hui » pour une
+    # date de réception, et les dates et heures prévues des sessions, qui se
+    # gardent sans fuseau. Les traces (journal, connexions) restent en UTC.
+    local_timezone: str = "America/Port-au-Prince"
+
 
 settings = Settings()

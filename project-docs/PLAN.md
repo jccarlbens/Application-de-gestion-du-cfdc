@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-23T16:31:09Z
+updated: 2026-11-23T17:25:50Z
 ---
 
 # PLAN.md — CFDC
@@ -27,7 +27,7 @@ updated: 2026-11-23T16:31:09Z
 |---|---|---|---|---|
 | 1 | `epic-001-setup-and-access` — Epic 1 — Mise en place et accès | WS-01, WS-05 (journal) | Must | ✅ Terminé — clos le 2026-11-17, voir `execution/EPIC_EXECUTION.md` |
 | 2 | `epic-002-trainings-and-modules` — Epic 2 — Formations et modules | WS-02 | Must | ✅ Terminé — clos le 2026-11-23, voir `execution/EPIC_EXECUTION.md` |
-| 3 | `epic-003-requests-and-sessions` — Epic 3 — Demandes et planification | WS-03 | Must | 🟡 En cours — créé le 2026-11-23, affinage en cours |
+| 3 | `epic-003-requests-and-sessions` — Epic 3 — Demandes et planification | WS-03 | Must | 🟡 En cours — affiné le 2026-11-23, US-014 à US-017 |
 | 4 | `epic-004-participants-and-tracking` | WS-04 | Must | ⏳ Pas démarré |
 | 5 | `epic-005-corrections` | WS-05 | Must | ⏳ Pas démarré |
 | 6 | `epic-006-overview-search-export` | WS-06 | Must | ⏳ Pas démarré |
@@ -98,7 +98,7 @@ Livre la double authentification par email (US-005), le mot de passe oublié (US
 
 ## Prochaines étapes immédiates
 
-> 1. Affiner l'Epic 3 (« Epic 3 — Demandes et planification », créé le 2026-11-23) : demandes de formation, sessions, horaires, calendrier ; puis écrire ses user stories.
+> 1. Affiner puis construire US-014 (demandes de formation) et US-015 (sessions), premières user stories de l'Epic 3.
 2. Poser au service informatique de l'AAN les questions Q1 et Q3 de `SOLUTION_DESIGN.md` §15 (Docker, système des serveurs, sortie vers internet) : leurs réponses conditionnent l'Epic 7 et la mise en service.
 3. Ne pas mettre en service avant la fin de l'Epic 7 (double authentification par email et mot de passe oublié).
 

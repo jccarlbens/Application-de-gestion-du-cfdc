@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-23T16:29:06Z
+updated: 2026-11-24T17:24:51Z
 ---
 
 # GLOSSARY.md — CFDC
@@ -76,7 +76,8 @@ updated: 2026-11-23T16:29:06Z
 | **Domaine** | Le premier niveau de classement des formations : « Sûreté-Sécurité », « Accueil ». Chaque domaine contient des sous-domaines. Liste tenue par l'administrateur |
 | **Sous-domaine** | Le second niveau de classement, à l'intérieur d'un domaine : par exemple « Conduite sur la rampe » (Sûreté-Sécurité) ou « Protocole » (Accueil). Une formation se range dans un seul sous-domaine |
 | **Module** | Un cours d'une formation, dispensé par **un seul** formateur, avec ses documents de cours |
-| **Session** (de formation) | Une occurrence datée d'une formation, d'une heure à une semaine |
+| **Session** (de formation) | Une occurrence datée d'une formation, sur un ou plusieurs jours, **sans durée maximale** (décidé le 2026-11-24, US-015). Planifiée par le coordonnateur ; elle peut être reportée (ses dates changent) ou annulée, jamais supprimée |
+| **Créneau** | Une plage horaire d'une session : une date, une heure de début, une heure de fin, et éventuellement le module enseigné. Les horaires d'une session sont l'ensemble de ses créneaux |
 | **Demande de formation** | La requête administrative écrite d'un service demandeur, validée par le coordonnateur puis enregistrée |
 | **Inscription** | La présence d'un participant dans une session, avec sa présence, sa note et la remise de ses documents |
 | **Présence** | Un seul « présent / absent » par participant et par session, même sur plusieurs jours |

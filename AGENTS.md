@@ -1,6 +1,6 @@
 ---
 created: 2026-11-09T00:00:00Z
-updated: 2026-11-23T16:31:09Z
+updated: 2026-11-23T17:25:50Z
 ---
 
 # AGENTS.md — CFDC
@@ -9,7 +9,7 @@ updated: 2026-11-23T16:31:09Z
 
 L'application CFDC retrace les formations que dispense l'**Autorité Aéroportuaire Nationale (AAN)** à travers son **Centre de Formation et de Développement des Compétences (CFDC)** : formations, modules, sessions, participants (internes à l'AAN ou externes), présences, notes sur 100 et remise des attestations. Elle aide aussi à planifier le calendrier des formations. Elle remplace une gestion sur papier. **Aucun paiement.** Elle est construite par deux personnes : `jccarlbens` (auteur et administrateur informatique) et `caleb17`.
 
-**Phase actuelle :** Epic 1 (mise en place et accès) clos le 2026-11-17 ; Epic 2 (formations et modules) clos le 2026-11-23 ; Epic 3 (demandes et planification) en cours, affinage. La double authentification et le mot de passe oublié sont reportés à l'Epic 7, **à terminer avant toute mise en service**. Statut : `project-docs/execution/EPIC_EXECUTION.md`.
+**Phase actuelle :** Epic 1 (mise en place et accès) clos le 2026-11-17 ; Epic 2 (formations et modules) clos le 2026-11-23 ; Epic 3 (demandes et planification) en cours : US-014 à US-017. La double authentification et le mot de passe oublié sont reportés à l'Epic 7, **à terminer avant toute mise en service**. Statut : `project-docs/execution/EPIC_EXECUTION.md`.
 
 ## Carte des dossiers
 
@@ -90,7 +90,7 @@ Voir `project-docs/SOLUTION_DESIGN.md` §5 (pile), §11 (déploiement) et ses AD
 - **Suivi sur GitHub.** User story = issue, Epic = Milestone, tableau Projects « CFDC » n° 4. L'agent ne déplace jamais une issue sur le tableau et ne marque jamais une user story comme terminée de lui-même. Détail : `project-docs/PROJECT_WORKFLOW.md`.
 - **Le serveur décide des droits.** Chaque route de l'API est **soit publique, soit protégée** par `require_roles(...)` (un test échoue sinon) ; les règles plus fines restent dans la BLL ; masquer un bouton ou un menu ne suffit jamais. Les menus de l'interface suivent le tableau de `functional-specs/ws-func-01-accounts-and-access.md`.
 - **Chaque table est journalisée ou exemptée** (`EXEMPT_TABLES`, avec sa raison) ; un test échoue sinon (US-003).
-- **Rien ne s'efface sans trace.** Toute modification et toute suppression passe par le journal (qui, quoi, quand, avant, après) ; une information enregistrée ne se modifie ou ne se supprime que par une demande de correction validée par l'administrateur (`PRD.md` §7).
+- **Rien ne s'efface sans trace.** Toute modification et toute suppression passe par le journal (qui, quoi, quand, avant, après) ; une information enregistrée ne se modifie ou ne se supprime que par une demande de correction validée par l'administrateur (`PRD.md` §7), sauf deux exceptions voulues : ajuster une demande de formation, reporter ou annuler une session (`PRD.md` §2).
 - **Attention aux homonymes** : session de formation / session de connexion, demande de formation / demande de correction, chef de service du CFDC / chef du service demandeur (`GLOSSARY.md`).
 - **Base de données :** tables et champs en anglais, noms de tables au pluriel en `snake_case` ; horodatages en UTC (ISO-8601 avec `Z`), convertis en heure locale dans l'interface seulement.
 

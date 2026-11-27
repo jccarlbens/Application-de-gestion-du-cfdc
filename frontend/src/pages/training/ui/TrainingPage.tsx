@@ -16,6 +16,7 @@ import { AccessDenied } from '../../../shared/ui'
 import { AppShell } from '../../../widgets/app-shell'
 import { useHistoryNames } from '../model/useHistoryNames'
 import { ModulesSection } from './ModulesSection'
+import { TrainingSessions } from './TrainingSessions'
 
 /** La modification par l'administrateur (affinage de l'Epic 2, Q4). */
 function EditForm({ training, onDone }: { training: Training; onDone: () => void }) {
@@ -125,6 +126,7 @@ function TrainingDetails({ id, viewer }: { id: string; viewer: Viewer }) {
         </>
       )}
       <ModulesSection trainingId={t.id} viewer={viewer} />
+      <TrainingSessions trainingId={t.id} viewer={viewer} />
       <HistoryPanel subjectType="trainings" subjectId={t.id} emptyText="Aucune entrée au journal." names={names} />
     </>
   )

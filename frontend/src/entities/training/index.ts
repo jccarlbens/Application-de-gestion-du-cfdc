@@ -15,7 +15,7 @@ export {
   updateModule,
   updateTraining,
 } from './api/trainings'
-export { groupTrainings, type DomainGroup, type SubdomainGroup } from './lib/groupTrainings'
+export { groupTrainings, trainingOptions, type DomainGroup, type SubdomainGroup } from './lib/groupTrainings'
 export {
   DESCRIPTION_MAX,
   TITLE_MAX,

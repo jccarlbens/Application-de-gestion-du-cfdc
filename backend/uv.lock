@@ -114,6 +114,7 @@ dependencies = [
     { name = "python-multipart" },
     { name = "sqlalchemy" },
     { name = "structlog" },
+    { name = "tzdata" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -135,6 +136,7 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.34" },
     { name = "sqlalchemy", specifier = ">=2.0,<3" },
     { name = "structlog", specifier = ">=25.1" },
+    { name = "tzdata", specifier = ">=2026.6" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.52" },
 ]
 

@@ -85,6 +85,19 @@ EXPECTED = {
     ("POST", "/api/v1/documents/{document_id}/replace"): {Role.IT_ADMIN},
     ("GET", "/api/v1/documents/{document_id}/download"): {Role.TRAINER, Role.IT_ADMIN},
     ("GET", "/api/v1/me/modules"): {Role.TRAINER},
+    ("GET", "/api/v1/training-requests"): CATALOGUE,
+    ("POST", "/api/v1/training-requests"): WRITERS,
+    ("GET", "/api/v1/training-requests/{request_id}"): CATALOGUE,
+    ("PUT", "/api/v1/training-requests/{request_id}"): {Role.SECRETARY, Role.COORDINATOR, Role.IT_ADMIN},
+    ("POST", "/api/v1/training-requests/{request_id}/decision"): {Role.COORDINATOR, Role.IT_ADMIN},
+    ("GET", "/api/v1/training-sessions"): CATALOGUE,
+    ("GET", "/api/v1/trainings/{training_id}/sessions"): CATALOGUE,
+    ("GET", "/api/v1/training-requests/{request_id}/sessions"): CATALOGUE,
+    ("GET", "/api/v1/training-sessions/{session_id}"): CATALOGUE,
+    ("POST", "/api/v1/training-sessions"): {Role.COORDINATOR, Role.IT_ADMIN},
+    ("PUT", "/api/v1/training-sessions/{session_id}/dates"): {Role.COORDINATOR, Role.IT_ADMIN},
+    ("POST", "/api/v1/training-sessions/{session_id}/cancel"): {Role.COORDINATOR, Role.IT_ADMIN},
+    ("POST", "/api/v1/training-sessions/{session_id}/restore"): {Role.IT_ADMIN},
 }
 
 

@@ -14,6 +14,10 @@ _READERS = {
     "trainings": _CATALOGUE,
     "domains": _CATALOGUE,
     "subdomains": _CATALOGUE,
+    # Les demandes de formation (US-014) : tous ceux qui les voient.
+    "training_requests": _CATALOGUE,
+    # Les sessions de formation (US-015).
+    "training_sessions": _CATALOGUE,
 }
 
 # Les genres de fiches qui ont un historique, et qui peut lire au moins l'un
